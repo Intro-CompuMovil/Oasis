@@ -40,4 +40,4 @@ Descripción Harry
 #### Diagrama de clases
 ![image](https://github.com/user-attachments/assets/bad59b9d-4b9c-425b-a13d-61001aa59db9)
 #### Mockups
-[Link]
+[[Link]](https://www.figma.com/proto/jdS8oQTAvaDcgTRd93DOok/Untitled?node-id=0-1&t=YuhQ73h47tlVH6tE-1)
