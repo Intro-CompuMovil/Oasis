@@ -32,7 +32,7 @@ Soy Camilo, tengo 21 años y estudio ingeniería de sistemas. Desde el colegio a
 Mi nombre es Julián, tengo 23 años y estudio ingenieria de sistemas. Me gusta la ciber seguridad y de vez en cuando me pongo a estudiar sobre penetración de puertos y denegación de acceso para poder hacer pentesting y poder mejorar mis habilidades en el ámbito de la ciber defensa, actualmete estoy estudiando el kalilinux ya que ofrece una gran variedad de herramientas. En mi tiempo libre me gusta jugar videojuegos, leer y dibujar (estoy practicando mi arte digital).
 
 #### Harry Sanchez
-![Imagen de WhatsApp 2024-08-17 a las 17 49 37_6a76b60c](https://github.com/user-attachments/assets/4b55a027-c45c-4045-b15d-1e6748d44581)
+![Imagen de WhatsApp 2024-07-30 a las 08 14 08_9de296b1](https://github.com/user-attachments/assets/423af830-31da-4930-a21d-b595fbed9e10)
 Harry Sanchez, estudiante de ingenieria de sistemas de la pontificia universidad javeriana, 5 semestre. He estado en diferentes proyectos en bases de datos, redes y telecomunicaciones, desarrollo web y movil.
 
 #### Diagrama de casos de uso
