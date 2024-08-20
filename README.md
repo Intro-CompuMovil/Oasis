@@ -33,6 +33,7 @@ Mi nombre es Julián, tengo 23 años y estudio ingenieria de sistemas. Me gusta 
 
 #### Harry Sanchez
 ![Imagen de WhatsApp 2024-07-30 a las 08 14 08_9de296b1](https://github.com/user-attachments/assets/dfa9e1e7-4f2b-4432-9a61-9342e1ae0f56)
+
 Harry Sanchez, estudiante de ingenieria de sistemas de la pontificia universidad javeriana, 5 semestre. He estado en diferentes proyectos en bases de datos, redes y telecomunicaciones, desarrollo web y movil.
 
 #### Diagrama de casos de uso
