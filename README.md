@@ -28,8 +28,8 @@ Debido a temas de alcance del proyecto no se contempla la incorporación de vend
 Soy Camilo, tengo 21 años y estudio ingeniería de sistemas. Desde el colegio adquirí un interés por la programación y fue también ahí donde tuve mis primeras clases de c++. Actualmente manejo otros lenguajes como Java, Python, C, JS y TS. En mi tiempo libre me gusta compartir con familia o amigos, aprender tecnologías, jugar videojuegos y hacer actividades físicas.
 
 #### Julián Espinoza
-[Imagen]
-Descripción Julian
+![Image](https://github.com/Julian150301/imagen/blob/main/IMG_20190702_062151.jpg)
+Mi nombre es Julián, tengo 23 años y estudio ingenieria de sistemas. Me gusta la civer seguridad y de ves en cuando me pongo a estudiar sobre pretracion de puetos y denegacion de acceso para poder hacer pentesting y poder mejorar mis habilidades ne el ambito de la ciber defenza, actuaalmete estoy es estudiando el kalilinux ya que ofrece una gran variedad de herramientas. En mi tiempo libre me gusta jugar videojuegos, leer y dibujar (estoy practicando mi arte digital).
 
 #### Harry Sanchez
 [Imagen]
