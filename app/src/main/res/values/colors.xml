@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="oasis_azul_principal">#1A237E</color>
+    <color name="oasis_naranja_principal">#CA6747</color>
+    <color name="oasis_verde_principal">#4BAE4F</color>
+    <color name="oasis_verde_secundario">#804BAE4F</color>
+    <color name="blanco_fondo">#F5F5F5</color>
+</resources>

@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Oasis</string>
+    <string name="launcher_registrate"><u>Regístrate</u></string>
+    <string name="comprador_inicio_filtros"><u>Filtros</u></string>
+    <string name="categoria_ver_mas"><u>Ver más</u></string>
+    <string name="iniciar_sesion"><u>Iniciar sesión</u></string>
+</resources>

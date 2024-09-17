@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- res/layout/header.xml -->
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:paddingVertical="10dp"
+    android:paddingHorizontal="10dp"
+    android:background="@color/oasis_azul_principal">
+
+    <TextView
+        android:id="@+id/tvHeaderTitulo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:textSize="20sp"
+        android:layout_marginStart="5dp"
+        android:layout_weight="0.4"
+        android:textColor="@android:color/white"/>
+
+    <ImageView
+        android:id="@+id/headerBanner"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_weight="0.6"
+        android:src="@drawable/banner" />
+</LinearLayout>
