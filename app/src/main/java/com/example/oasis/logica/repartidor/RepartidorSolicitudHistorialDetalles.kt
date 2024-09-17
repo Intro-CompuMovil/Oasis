@@ -17,7 +17,7 @@ class RepartidorSolicitudHistorialDetalles : AppCompatActivity() {
     private lateinit var solicitud: Solicitud
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_repartidor_solicitud_detalles)
+        setContentView(R.layout.activity_repartidor_solicitud_historial_detalles)
 
         UIHelper().setupRepartidorFooter(this)
         UIHelper().setupHeader(this, "Detalles de la solicitud")
