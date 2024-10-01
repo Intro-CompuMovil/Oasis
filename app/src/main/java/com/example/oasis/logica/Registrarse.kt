@@ -14,8 +14,13 @@ import com.example.oasis.MainActivity
 import com.example.oasis.R
 import com.example.oasis.logica.comprador.CompradorInicio
 import com.example.oasis.logica.repartidor.RepartidorInicio
+import com.example.oasis.logica.utility.FieldValidatorHelper
 
 class Registrarse : AppCompatActivity() {
+    private lateinit var emailError: TextView
+    private lateinit var passwordError: TextView
+    private lateinit var nombreError: TextView
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_registrarse)
@@ -26,17 +31,22 @@ class Registrarse : AppCompatActivity() {
     private fun initUI(){
         val email = findViewById<EditText>(R.id.emailEditText)
         val password = findViewById<EditText>(R.id.passwordEditText)
-        initIniciarSesion(email, password)
+        val nombre = findViewById<EditText>(R.id.nombreEditText)
+        emailError = findViewById(R.id.emailError)
+        passwordError = findViewById(R.id.passwordError)
+        nombreError = findViewById(R.id.nombreError)
+        initIniciarSesion(email, password, nombre)
         initRegistrarse()
     }
 
-    private fun initIniciarSesion(email: EditText, password: EditText){
+    private fun initIniciarSesion(email: EditText, password: EditText, nombre: EditText){
         val btnIniciarSesion = findViewById<Button>(R.id.launcherIniciarSesion)
         val radioButtonComprador = findViewById<RadioButton>(R.id.radioButtonComprador)
         btnIniciarSesion.setOnClickListener {
             val emailTxt = email.text.toString()
             val passwordTxt = password.text.toString()
-            if (emailTxt.isNotEmpty() && passwordTxt.isNotEmpty()){
+            val nombreTxt = nombre.text.toString()
+            if (!checkErrors(emailTxt, passwordTxt, nombreTxt)){
                 if (radioButtonComprador.isChecked){
                     val intent = Intent(this, CompradorInicio::class.java)
                     startActivity(intent)
@@ -56,5 +66,30 @@ class Registrarse : AppCompatActivity() {
                 startActivity(this)
             }
         }
+    }
+
+    private fun checkErrors(email: String, password: String, nombre:String): Boolean{
+        var error = false
+        if (email.isEmpty()){
+            emailError.text = "Campo vacío"
+            error = true
+        }else{emailError.text = ""}
+
+        if (!FieldValidatorHelper().validateEmail(email)){
+            emailError.text = "Email inválido"
+            error = true
+        }else{emailError.text = ""}
+
+        if (password.isEmpty()){
+            passwordError.text = "Campo vacío"
+            error = true
+        }else{passwordError.text = ""}
+
+        if (nombre.isEmpty()){
+            nombreError.text = "Campo vacío"
+            error = true
+        }else{nombreError.text = ""}
+
+        return error
     }
 }

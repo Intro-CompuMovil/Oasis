@@ -79,7 +79,16 @@
             android:hint="Ingresa tu nombre"
             android:autofillHints="password"
             android:textColor="@color/black"
-            android:layout_marginBottom="10dp"/>
+            android:layout_marginBottom="2dp"/>
+
+        <TextView
+            android:id="@+id/nombreError"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="12sp"
+            android:textAlignment="textEnd"
+            android:textColor="#FF5722"
+            android:text=""/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -98,7 +107,16 @@
             android:hint="Ingresa tu correo"
             android:autofillHints="emailAddress"
             android:textColor="@color/black"
-            android:layout_marginBottom="10dp"/>
+            android:layout_marginBottom="2dp"/>
+
+        <TextView
+            android:id="@+id/emailError"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="12sp"
+            android:textAlignment="textEnd"
+            android:textColor="#FF5722"
+            android:text=""/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -117,7 +135,16 @@
             android:hint="Ingresa tu contraseña"
             android:autofillHints="password"
             android:textColor="@color/black"
-            android:layout_marginBottom="10dp"/>
+            android:layout_marginBottom="2dp"/>
+
+        <TextView
+            android:id="@+id/passwordError"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="12sp"
+            android:textAlignment="textEnd"
+            android:textColor="#FF5722"
+            android:text=""/>
 
     </LinearLayout>
 

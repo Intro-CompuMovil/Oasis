@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.oasis.logica.Registrarse
 import com.example.oasis.logica.comprador.CompradorInicio
 import com.example.oasis.logica.repartidor.RepartidorInicio
+import com.example.oasis.logica.utility.FieldValidatorHelper
 import com.example.oasis.model.Order
 import com.example.oasis.model.Product
 import com.example.oasis.model.Solicitud
@@ -66,6 +67,9 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private lateinit var emailError: TextView
+    private lateinit var passwordError: TextView
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -76,6 +80,8 @@ class MainActivity : AppCompatActivity() {
     private fun initUI(){
         val email = findViewById<EditText>(R.id.emailEditText)
         val password = findViewById<EditText>(R.id.passwordEditText)
+        emailError = findViewById(R.id.emailError)
+        passwordError = findViewById(R.id.passwordError)
         initIniciarSesion(email, password)
         initRegistrarse()
     }
@@ -86,7 +92,7 @@ class MainActivity : AppCompatActivity() {
         btnIniciarSesion.setOnClickListener {
             val emailTxt = email.text.toString()
             val passwordTxt = password.text.toString()
-            if (emailTxt.isNotEmpty() && passwordTxt.isNotEmpty()){
+            if (!checkErrors(emailTxt, passwordTxt)){
                 if (radioButtonComprador.isChecked){
                     val intent = Intent(this, CompradorInicio::class.java)
                     startActivity(intent)
@@ -106,5 +112,25 @@ class MainActivity : AppCompatActivity() {
                 startActivity(this)
             }
         }
+    }
+
+    private fun checkErrors(email: String, password: String): Boolean{
+        var error = false
+        if (email.isEmpty()){
+            emailError.text = "Campo vacío"
+            error = true
+        } else{emailError.text = ""}
+
+        if (!FieldValidatorHelper().validateEmail(email)){
+            emailError.text = "Email inválido"
+            error = true
+        }else{emailError.text = ""}
+
+        if (password.isEmpty()){
+            passwordError.text = "Campo vacío"
+            error = true
+        }else{passwordError.text = ""}
+
+        return error
     }
 }

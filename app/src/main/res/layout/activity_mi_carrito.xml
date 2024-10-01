@@ -107,11 +107,11 @@
     </LinearLayout>
 
     <ScrollView
+        android:id="@+id/scrollView2"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:background="@color/blanco_fondo"
-        android:layout_marginBottom="15dp"
-        app:layout_constraintBottom_toTopOf="@+id/tvMiCarritoSubtotalProductosTitulo"
+        app:layout_constraintBottom_toTopOf="@+id/tvMiCarritoDireccionTitulo"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/miCarritoIndices">
@@ -134,14 +134,35 @@
     </ScrollView>
 
     <TextView
+        android:id="@+id/tvMiCarritoDireccionTitulo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginBottom="10dp"
+        android:text="Dirección seleccionada: "
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toTopOf="@+id/tvMiCarritoSubtotalProductosTitulo"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/tvMiCarritoDireccion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="@+id/tvMiCarritoDireccionTitulo"
+        app:layout_constraintStart_toEndOf="@+id/tvMiCarritoDireccionTitulo" />
+
+    <TextView
         android:id="@+id/tvMiCarritoSubtotalProductosTitulo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
         android:layout_marginBottom="10dp"
         android:text="Subtotal productos: "
-        android:textSize="18sp"
         android:textColor="@color/black"
+        android:textSize="18sp"
         app:layout_constraintBottom_toTopOf="@+id/tvMiCarritoOtrosCobrosTitulo"
         app:layout_constraintStart_toStartOf="parent" />
 
@@ -149,10 +170,9 @@
         android:id="@+id/tvMiCarritoSubtotalProductos"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
         android:textColor="@color/black"
         android:textSize="18sp"
-        app:layout_constraintBottom_toTopOf="@+id/tvMiCarritoOtrosCobrosTitulo"
+        app:layout_constraintBottom_toBottomOf="@+id/tvMiCarritoSubtotalProductosTitulo"
         app:layout_constraintStart_toEndOf="@+id/tvMiCarritoSubtotalProductosTitulo" />
 
     <TextView

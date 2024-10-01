@@ -4,5 +4,6 @@ class Data {
     companion object{
         const val MY_PERMISSIONS_REQUEST_LOCATION = 1
         const val MY_PERMISSIONS_REQUEST_CAMERA = 2
+        const val MY_PERMISSIONS_REQUEST_STORAGE = 3
     }
 }

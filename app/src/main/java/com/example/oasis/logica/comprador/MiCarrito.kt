@@ -22,6 +22,7 @@ import com.example.oasis.model.Solicitud
 class MiCarrito : AppCompatActivity(), SeleccionarDireccion.SeleccionarDireccionListener {
     private var direccionSeleccionada: String = ""
     private lateinit var btnPagar: Button
+    private lateinit var tvDireccion: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,6 +44,7 @@ class MiCarrito : AppCompatActivity(), SeleccionarDireccion.SeleccionarDireccion
         val carritoTotal = findViewById<TextView>(R.id.tvMiCarritoTotal)
         val subtotalProductos = findViewById<TextView>(R.id.tvMiCarritoSubtotalProductos)
         val otrosCobros = findViewById<TextView>(R.id.tvMiCarritoOtrosCobros)
+        tvDireccion = findViewById(R.id.tvMiCarritoDireccion)
 
         val comision = getProductosSubtotal() * 0.1
         subtotalProductos.text = getProductosSubtotal().toString()
@@ -111,6 +113,7 @@ class MiCarrito : AppCompatActivity(), SeleccionarDireccion.SeleccionarDireccion
 
     override fun onDireccionSeleccionada(direccion: String) {
         direccionSeleccionada = direccion
+        tvDireccion.text = direccion
     }
 
     private fun requestPermissions(context: Activity, permiso: String, justificacion:String, idCode:Int){
