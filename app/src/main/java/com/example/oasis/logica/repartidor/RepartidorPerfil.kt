@@ -139,7 +139,8 @@ class RepartidorPerfil : AppCompatActivity() {
 
     private fun initFotoPerfilButton(){
         btnFotoPerfil = findViewById(R.id.FotoPerfilbtn)
-
+        btnFotoPerfil.isEnabled = false
+        btnFotoPerfil.isClickable = false
         btnFotoPerfil.setOnClickListener {
             showImagePickerOptions()
         }

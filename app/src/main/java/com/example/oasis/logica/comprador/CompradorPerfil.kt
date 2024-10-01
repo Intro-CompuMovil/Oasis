@@ -98,8 +98,6 @@ class CompradorPerfil : AppCompatActivity() {
             habilitarEdicionPerfil(tvNombre, tvCorreo, btnGuardar)
         }
 
-
-
         btnGuardar.setOnClickListener {
             btnEditarPerfil.isEnabled = true
             btnEditarPerfil.isClickable = true
@@ -145,7 +143,8 @@ class CompradorPerfil : AppCompatActivity() {
 
     private fun initFotoPerfilButton(){
         btnFotoPerfil = findViewById(R.id.FotoPerfilbtn)
-
+        btnFotoPerfil.isEnabled = false
+        btnFotoPerfil.isClickable = false
         btnFotoPerfil.setOnClickListener {
             showImagePickerOptions()
         }
