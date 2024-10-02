@@ -3,7 +3,6 @@
     <style name="Base.Theme.Oasis" parent="Theme.Material3.DynamicColors.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
-        <item name="android:forceDarkAllowed">false</item>
         <item name="android:statusBarColor">@color/oasis_azul_principal</item>
         <item name="colorPrimary">@color/oasis_azul_principal</item>
         <item name="colorSecondary">@color/oasis_naranja_principal</item>
@@ -11,6 +10,9 @@
         <item name="android:textColor">#000000</item>
         <item name="android:colorBackground">@color/blanco_fondo</item>
     </style>
+
+    <color name="edit_text_backdround">#FFFFFF</color>
+    <color name="disabled_edit_text_backdround">#80FFFFFF</color>
 
     <style name="Theme.Oasis" parent="Base.Theme.Oasis" />
 </resources>

@@ -14,8 +14,7 @@
         android:layout_height="wrap_content"
         android:text=""
         android:textSize="18sp"
-        android:textStyle="bold"
-        android:textColor="@color/black"/>
+        android:textStyle="bold"/>
 
     <!-- RecyclerView horizontal para los productos de la categoría -->
     <androidx.recyclerview.widget.RecyclerView
@@ -37,8 +36,7 @@
             android:id="@+id/tvSeeMore"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/categoria_ver_mas"
-            android:textColor="@color/black"/>
+            android:text="@string/categoria_ver_mas"/>
     </LinearLayout>
 
 </LinearLayout>

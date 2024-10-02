@@ -27,6 +27,7 @@ import androidx.core.view.WindowInsetsCompat
 import com.example.oasis.MainActivity
 import com.example.oasis.R
 import com.example.oasis.datos.Data
+import com.example.oasis.logica.utility.AppUtilityHelper
 import com.example.oasis.logica.utility.FieldValidatorHelper
 import com.example.oasis.logica.utility.UIHelper
 import java.io.File
@@ -38,19 +39,6 @@ class RepartidorPerfil : AppCompatActivity() {
     private lateinit var btnFotoPerfil: ImageButton
 
     lateinit var photoUri: Uri
-
-    private val pickImageLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-        if (result.resultCode == Activity.RESULT_OK) {
-            val data: Intent? = result.data
-            btnFotoPerfil.setImageURI(data?.data)
-        }
-    }
-
-    private val takePictureLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-        if (result.resultCode == Activity.RESULT_OK) {
-            btnFotoPerfil.setImageURI(photoUri)
-        }
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -87,40 +75,49 @@ class RepartidorPerfil : AppCompatActivity() {
         val btnGuardar = findViewById<Button>(R.id.btnGuardar)
         val tvNombre = findViewById<EditText>(R.id.etNombrePerfil)
         val tvCorreo = findViewById<EditText>(R.id.etCorreoPerfil)
+        val tvDescripcionCambiarFoto = findViewById<TextView>(R.id.tvDescripcionCambiarFoto)
 
         btnEditarPerfil.setOnClickListener {
             btnEditarPerfil.isEnabled = false
             btnEditarPerfil.isClickable = false
             habilitarEdicionPerfil(tvNombre, tvCorreo, btnGuardar)
+            tvDescripcionCambiarFoto.visibility = TextView.VISIBLE
         }
 
         btnGuardar.setOnClickListener {
-            btnEditarPerfil.isEnabled = true
-            btnEditarPerfil.isClickable = true
-            guardarCambios(tvNombre, tvCorreo)
-            deshabilitarEdicionPerfil(tvNombre, tvCorreo, btnGuardar)
+            if (guardarCambios(tvNombre, tvCorreo)){
+                btnEditarPerfil.isEnabled = true
+                btnEditarPerfil.isClickable = true
+                deshabilitarEdicionPerfil(tvNombre, tvCorreo, btnGuardar)
+                tvDescripcionCambiarFoto.visibility = TextView.INVISIBLE
+            }
         }
     }
 
-    private fun guardarCambios(tvNombre: TextView, tvCorreo: TextView){
+    private fun guardarCambios(tvNombre: TextView, tvCorreo: TextView): Boolean{
         val nombre = tvNombre.text.toString()
         val correo = tvCorreo.text.toString()
+        var cambiosCorrectos = false
 
         if(nombre.isEmpty() || correo.isEmpty()){
             Toast.makeText(this, "Por favor llena todos los campos", Toast.LENGTH_SHORT).show()
         }
-        if (FieldValidatorHelper().validateEmail(correo)){
+        if (!FieldValidatorHelper().validateEmail(correo)){
             Toast.makeText(this, "Correo inválido", Toast.LENGTH_SHORT).show()
         }
         else{
             MainActivity.setUsuarioNombre(nombre)
             Toast.makeText(this, "Cambios guardados", Toast.LENGTH_SHORT).show()
+            cambiosCorrectos = true
         }
+        return cambiosCorrectos
     }
 
     private fun habilitarEdicionPerfil(tvNombre: TextView, tvCorreo: TextView, btnGuardar: Button){
         tvNombre.isEnabled = true
+        tvNombre.setTextColor(ContextCompat.getColor(this, R.color.black))
         tvCorreo.isEnabled = true
+        tvCorreo.setTextColor(ContextCompat.getColor(this, R.color.black))
         btnFotoPerfil.isEnabled = true
         btnFotoPerfil.isClickable = true
         btnGuardar.isEnabled = true
@@ -129,7 +126,9 @@ class RepartidorPerfil : AppCompatActivity() {
 
     private fun deshabilitarEdicionPerfil(tvNombre: TextView, tvCorreo: TextView, btnGuardar: Button){
         tvNombre.isEnabled = false
+        tvNombre.setTextColor(ContextCompat.getColor(this, R.color.white))
         tvCorreo.isEnabled = false
+        tvCorreo.setTextColor(ContextCompat.getColor(this, R.color.white))
         btnFotoPerfil.isEnabled = false
         btnFotoPerfil.isClickable = false
         btnGuardar.isEnabled = false
@@ -142,60 +141,17 @@ class RepartidorPerfil : AppCompatActivity() {
         btnFotoPerfil.isEnabled = false
         btnFotoPerfil.isClickable = false
         btnFotoPerfil.setOnClickListener {
-            showImagePickerOptions()
+            requestPermissions()
         }
     }
 
-    private fun showImagePickerOptions() {
-        val options = arrayOf("Tomar foto", "Elegir de la galería")
-        val builder = android.app.AlertDialog.Builder(this)
-        builder.setTitle("Selecciona una opción")
-        builder.setItems(options) { dialog, which ->
-            when (which) {
-                0 -> requestCamera()
-                1 -> requestStorage()
-            }
-        }
-        builder.show()
-    }
-
-    private fun openCamera() {
-        val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-        createImageFile()
-        takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri)
-        takePictureLauncher.launch(takePictureIntent)
-    }
-
-    private fun openGallery() {
-        Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI).also { pickPhotoIntent ->
-            pickImageLauncher.launch(pickPhotoIntent)
-        }
-    }
-
-    private fun requestCamera(){
+    private fun requestPermissions(){
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.CAMERA), Data.MY_PERMISSIONS_REQUEST_CAMERA)
         }
         else{
-            openCamera()
-        }
-    }
-
-    private fun requestStorage(){
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            // Permiso de camara concedido, pedir el de galeria
             ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), Data.MY_PERMISSIONS_REQUEST_STORAGE)
-        }
-        else{
-            openGallery()
-        }
-    }
-
-    private fun createImageFile(): File {
-        val timeStamp = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
-        val storageDir: File = getExternalFilesDir(Environment.DIRECTORY_PICTURES)!!
-        return File.createTempFile("JPEG_${timeStamp}_", ".jpg", storageDir).also {
-            // Guardamos el archivo URI
-            photoUri = FileProvider.getUriForFile(this, "com.example.oasis.fileprovider", it)
         }
     }
 
@@ -203,18 +159,18 @@ class RepartidorPerfil : AppCompatActivity() {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
 
         when (requestCode) {
-            Data.MY_PERMISSIONS_REQUEST_STORAGE -> {
-                if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
-                    // Permiso concedido
-                    openGallery()
-                } else {
-                    denegarFuncionalidad()
-                }
-            }
             Data.MY_PERMISSIONS_REQUEST_CAMERA -> {
                 if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
                     // Permiso concedido
-                    openCamera()
+                } else {
+                    denegarFuncionalidad()
+                }
+                ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), Data.MY_PERMISSIONS_REQUEST_STORAGE)
+            }
+            Data.MY_PERMISSIONS_REQUEST_STORAGE -> {
+                if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+                    // Permiso concedido
+                    showImageChooser()
                 } else {
                     denegarFuncionalidad()
                 }
@@ -223,6 +179,47 @@ class RepartidorPerfil : AppCompatActivity() {
     }
 
     private fun denegarFuncionalidad() {
-        Toast.makeText(this, "Por favor acepta los permisos para cambiar la foto", Toast.LENGTH_SHORT).show()
+        Toast.makeText(this, "Por favor acepte los permisos para cambiar la foto", Toast.LENGTH_SHORT).show()
+    }
+
+    private fun showImageChooser() {
+        val chooserIntent = Intent.createChooser(Intent(), "Selecciona una opción")
+        val intentArray = mutableListOf<Intent>()
+
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
+            val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+            val tmpPictureFile = AppUtilityHelper.createTempPictureFile(this)
+            photoUri = FileProvider.getUriForFile(this, "com.example.oasis.fileprovider", tmpPictureFile)
+            takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri)
+            intentArray.add(takePictureIntent)
+        }
+
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+            val pickPhotoIntent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+            intentArray.add(pickPhotoIntent)
+        }
+
+        chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, intentArray.toTypedArray())
+
+        // Lanzar el chooser
+        imageChooserLauncher.launch(chooserIntent)
+    }
+
+    // Registrar el ActivityResultLauncher para manejar el resultado
+    private val imageChooserLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            val data: Intent? = result.data
+
+            // Verificar si viene de la cámara o la galería
+            if (data != null && data.data != null) {
+                // Imagen desde galería
+                val selectedImageUri = data.data
+                btnFotoPerfil.setImageURI(selectedImageUri)
+            } else {
+                // Imagen desde la cámara
+                btnFotoPerfil.setImageURI(photoUri)
+            }
+        }
+        AppUtilityHelper.deleteTempFiles(this)
     }
 }
