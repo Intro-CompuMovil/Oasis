@@ -32,15 +32,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Dirección final: "
-            android:textSize="16sp"
-            android:textColor="@color/black"/>
+            android:textSize="16sp"/>
 
         <TextView
             android:id="@+id/tvSolicitudDireccion"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="16sp"
-            android:textColor="@color/black"/>
+            android:textSize="16sp"/>
     </LinearLayout>
 
     <ImageView
@@ -95,17 +93,17 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Distancia total: "
-                    android:textColor="@color/white"/>
+                    android:textColor="@color/textColorSecondary"/>
                 <TextView
                     android:id="@+id/tvSolicitudDistanciaTotal"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/white"/>
+                    android:textColor="@color/textColorSecondary"/>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Km"
-                    android:textColor="@color/white"/>
+                    android:textColor="@color/textColorSecondary"/>
             </LinearLayout>
 
             <LinearLayout
@@ -117,12 +115,12 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Comisión: "
-                    android:textColor="@color/white"/>
+                    android:textColor="@color/textColorSecondary"/>
                 <TextView
                     android:id="@+id/tvSolicitudComision"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/white"/>
+                    android:textColor="@color/textColorSecondary"/>
             </LinearLayout>
 
             <TextView
@@ -130,7 +128,7 @@
                 android:layout_height="wrap_content"
                 android:text="¿Productos recogidos?"
                 android:textAlignment="center"
-                android:textColor="@color/white"/>
+                android:textColor="@color/textColorSecondary"/>
 
             <RadioGroup
                 android:layout_width="match_parent"
@@ -147,14 +145,14 @@
 
                     app:backgroundTint="@null"
                     android:text="Si"
-                    android:textColor="@color/white"/>
+                    android:textColor="@color/textColorSecondary"/>
 
                 <RadioButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     app:buttonTint="@color/white"
                     android:text="No"
-                    android:textColor="@color/white"/>
+                    android:textColor="@color/textColorSecondary"/>
 
             </RadioGroup>
 

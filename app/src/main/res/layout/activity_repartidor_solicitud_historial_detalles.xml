@@ -26,7 +26,7 @@
         android:layout_marginTop="10dp"
         android:text="Productos"
         android:textSize="18sp"
-        android:textColor="@color/black"
+
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/header" />
 
@@ -55,8 +55,7 @@
             android:layout_weight="0.5"
             android:text="Producto"
             android:textAlignment="center"
-            android:textSize="16sp"
-            android:textColor="@color/black"/>
+            android:textSize="16sp"/>
 
         <TextView
             android:layout_width="0dp"
@@ -64,8 +63,7 @@
             android:layout_weight="0.2"
             android:text="Cantidad"
             android:textAlignment="center"
-            android:textSize="16sp"
-            android:textColor="@color/black"/>
+            android:textSize="16sp"/>
 
         <TextView
             android:layout_width="0dp"
@@ -73,8 +71,7 @@
             android:layout_weight="0.3"
             android:text="Distancia"
             android:textAlignment="center"
-            android:textSize="16sp"
-            android:textColor="@color/black"/>
+            android:textSize="16sp"/>
 
     </LinearLayout>
 
@@ -111,7 +108,7 @@
         android:layout_marginBottom="10dp"
         android:text="Distancia final: "
         android:textSize="18sp"
-        android:textColor="@color/black"
+
         app:layout_constraintBottom_toTopOf="@+id/tvRepartidorSolicitudComisionTitulo"
         app:layout_constraintStart_toStartOf="parent" />
 
@@ -120,7 +117,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="10dp"
-        android:textColor="@color/black"
+
         android:textSize="18sp"
         app:layout_constraintBottom_toTopOf="@+id/tvRepartidorSolicitudComisionTitulo"
         app:layout_constraintStart_toEndOf="@+id/tvRepartidorSolicitudDistanciaTotalProductosTitulo" />
@@ -132,7 +129,7 @@
         android:layout_marginStart="10dp"
         android:layout_marginBottom="10dp"
         android:text="Comisión: "
-        android:textColor="@color/black"
+
         android:textSize="18sp"
         app:layout_constraintBottom_toTopOf="@+id/footer"
         app:layout_constraintStart_toStartOf="parent" />
@@ -141,7 +138,7 @@
         android:id="@+id/tvRepartidorSolicitudComision"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@color/black"
+
         android:textSize="18sp"
         android:layout_marginBottom="10dp"
         app:layout_constraintBottom_toTopOf="@+id/footer"

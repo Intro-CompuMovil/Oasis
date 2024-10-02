@@ -33,7 +33,6 @@
                 android:layout_height="wrap_content"
                 android:paddingBottom="10dp"
                 android:text="Valor Total: $"
-                android:textColor="@color/black"
                 android:textSize="20sp" />
 
             <TextView
@@ -41,8 +40,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="0"
-                android:textSize="20sp"
-                android:textColor="@color/black"/>
+                android:textSize="20sp"/>
         </LinearLayout>
 
         <TextView
@@ -53,7 +51,6 @@
             android:layout_marginTop="10dp"
             android:text="Productos"
             android:textSize="18sp"
-            android:textColor="@color/black"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/linearLayout2" />
 
@@ -82,8 +79,7 @@
                 android:layout_weight="0.5"
                 android:text="Producto"
                 android:textAlignment="center"
-                android:textSize="16sp"
-                android:textColor="@color/black"/>
+                android:textSize="16sp"/>
 
             <TextView
                 android:layout_width="0dp"
@@ -91,8 +87,7 @@
                 android:layout_weight="0.2"
                 android:text="Cantidad"
                 android:textAlignment="center"
-                android:textSize="16sp"
-                android:textColor="@color/black"/>
+                android:textSize="16sp"/>
 
             <TextView
                 android:layout_width="0dp"
@@ -100,8 +95,7 @@
                 android:layout_weight="0.3"
                 android:text="Subtotal"
                 android:textAlignment="center"
-                android:textSize="16sp"
-                android:textColor="@color/black"/>
+                android:textSize="16sp"/>
 
         </LinearLayout>
 
@@ -139,7 +133,6 @@
             android:layout_marginBottom="10dp"
             android:text="Subtotal productos: "
             android:textSize="18sp"
-            android:textColor="@color/black"
             app:layout_constraintBottom_toTopOf="@+id/tvCompradorSolicitudOtrosCobrosTitulo"
             app:layout_constraintStart_toStartOf="parent" />
 
@@ -148,7 +141,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
-            android:textColor="@color/black"
             android:textSize="18sp"
             app:layout_constraintBottom_toTopOf="@+id/tvCompradorSolicitudOtrosCobrosTitulo"
             app:layout_constraintStart_toEndOf="@+id/tvCompradorSolicitudSubtotalProductosTitulo" />
@@ -160,7 +152,6 @@
             android:layout_marginStart="10dp"
             android:layout_marginBottom="10dp"
             android:text="Comisión y otros: "
-            android:textColor="@color/black"
             android:textSize="18sp"
             app:layout_constraintBottom_toTopOf="@+id/tvCompradorSolicitudEstadoTitulo"
             app:layout_constraintStart_toStartOf="parent" />
@@ -169,7 +160,6 @@
             android:id="@+id/tvCompradorSolicitudCobros"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/black"
             android:textSize="18sp"
             android:layout_marginBottom="10dp"
             app:layout_constraintBottom_toTopOf="@+id/tvCompradorSolicitudEstadoTitulo"
@@ -182,7 +172,6 @@
             android:layout_marginStart="10dp"
             android:layout_marginBottom="10dp"
             android:text="Estado: "
-            android:textColor="@color/black"
             android:textSize="18sp"
             app:layout_constraintBottom_toTopOf="@+id/tvCompradorSolicitudFechaTitulo"
             app:layout_constraintStart_toStartOf="parent" />
@@ -191,7 +180,6 @@
             android:id="@+id/tvCompradorSolicitudEstado"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/black"
             android:textSize="18sp"
             app:layout_constraintBottom_toBottomOf="@+id/tvCompradorSolicitudEstadoTitulo"
             app:layout_constraintStart_toEndOf="@+id/tvCompradorSolicitudEstadoTitulo" />
@@ -204,7 +192,6 @@
             android:layout_marginBottom="10dp"
             android:text="Fecha: "
             android:textSize="18sp"
-            android:textColor="@color/black"
             app:layout_constraintBottom_toTopOf="@+id/footer"
             app:layout_constraintStart_toStartOf="parent"  />
 
@@ -213,7 +200,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
-            android:textColor="@color/black"
             android:textSize="18sp"
             app:layout_constraintBottom_toTopOf="@+id/footer"
             app:layout_constraintStart_toEndOf="@+id/tvCompradorSolicitudFechaTitulo" />

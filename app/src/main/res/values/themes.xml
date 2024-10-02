@@ -1,4 +1,4 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
     <!-- Base application theme. -->
     <style name="Base.Theme.Oasis" parent="Theme.Material3.DynamicColors.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
@@ -11,8 +11,12 @@
         <item name="android:colorBackground">@color/blanco_fondo</item>
     </style>
 
-    <color name="edit_text_backdround">#FFFFFF</color>
-    <color name="disabled_edit_text_backdround">#80FFFFFF</color>
+    <color name="secundary_color">@color/oasis_naranja_principal</color>
+    <color name="button_secondary_color">@color/oasis_naranja_principal</color>
+    <color name="disabled_button_secondary_color">#80CA6747</color>
+    <color name="edit_text_background">#FFFFFF</color>
+    <color name="disabled_edit_text_background">#80FFFFFF</color>
+    <color name="textColorSecondary">#FFFFFF</color>
 
     <style name="Theme.Oasis" parent="Base.Theme.Oasis" />
 </resources>

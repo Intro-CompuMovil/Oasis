@@ -36,7 +36,7 @@
             android:button="@null"
             android:checked="true"
             android:text="Comprador"
-            android:textColor="@color/white"
+            android:textColor="@color/textColorSecondary"
             android:textSize="18sp" />
 
         <RadioButton
@@ -47,7 +47,7 @@
             android:background="@drawable/button_selector_launcher"
             android:button="@null"
             android:text="Repartidor"
-            android:textColor="@color/white"
+            android:textColor="@color/textColorSecondary"
             android:textSize="18sp" />
     </RadioGroup>
 
@@ -66,7 +66,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Nombre: "
-            android:textColor="@color/white"
+            android:textColor="@color/textColorSecondary"
             android:textSize="18sp"
             android:layout_marginBottom="5dp"/>
 
@@ -78,7 +78,6 @@
             android:inputType="textPassword"
             android:hint="Ingresa tu nombre"
             android:autofillHints="password"
-            android:textColor="@color/black"
             android:layout_marginBottom="2dp"/>
 
         <TextView
@@ -94,7 +93,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Email: "
-            android:textColor="@color/white"
+            android:textColor="@color/textColorSecondary"
             android:textSize="18sp"
             android:layout_marginBottom="5dp"/>
 
@@ -106,7 +105,6 @@
             android:inputType="textEmailAddress"
             android:hint="Ingresa tu correo"
             android:autofillHints="emailAddress"
-            android:textColor="@color/black"
             android:layout_marginBottom="2dp"/>
 
         <TextView
@@ -122,7 +120,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Contraseña: "
-            android:textColor="@color/white"
+            android:textColor="@color/textColorSecondary"
             android:textSize="18sp"
             android:layout_marginBottom="5dp"/>
 
@@ -134,7 +132,6 @@
             android:inputType="textPassword"
             android:hint="Ingresa tu contraseña"
             android:autofillHints="password"
-            android:textColor="@color/black"
             android:layout_marginBottom="2dp"/>
 
         <TextView
@@ -162,7 +159,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="¿Ya tienes una cuenta?"
-            android:textColor="@color/white"
+            android:textColor="@color/textColorSecondary"
             android:textSize="18sp" />
 
         <TextView
@@ -171,7 +168,7 @@
             android:layout_height="wrap_content"
             android:clickable="true"
             android:text="@string/iniciar_sesion"
-            android:textColor="@color/white"
+            android:textColor="@color/textColorSecondary"
             android:textSize="18sp" />
 
     </LinearLayout>
@@ -180,10 +177,10 @@
         android:id="@+id/launcherIniciarSesion"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:backgroundTint="@color/oasis_naranja_principal"
+        android:backgroundTint="@color/button_secondary_color"
         android:text="Registrarse"
         android:textSize="18sp"
-        android:textColor="@color/white"
+        android:textColor="@color/textColorSecondary"
 
         app:layout_constraintEnd_toEndOf="@+id/launcher_form"
         app:layout_constraintTop_toTopOf="@+id/linearLayout" />

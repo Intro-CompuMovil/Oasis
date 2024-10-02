@@ -25,7 +25,7 @@
         android:layout_gravity="center"
         android:layout_marginHorizontal="16dp"
         android:layout_marginTop="16dp"
-        android:background="@color/oasis_naranja_principal"
+        android:background="@drawable/common_information_box"
         android:clipToPadding="false"
         android:elevation="4dp"
         android:gravity="center_vertical"
@@ -125,7 +125,7 @@
             android:layout_marginHorizontal="10dp"
             android:background="@drawable/button_selector"
             android:text="Editar perfil"
-            android:textColor="@color/white"
+            android:textColor="@color/textColorSecondary"
             android:textSize="16sp"
             app:backgroundTint="@null" />
 
@@ -139,7 +139,7 @@
             android:enabled="false"
             android:clickable="false"
             android:text="Guardar"
-            android:textColor="@color/white"
+            android:textColor="@color/textColorSecondary"
             android:textSize="16sp"
             app:backgroundTint="@null" />
     </LinearLayout>
@@ -152,7 +152,7 @@
         android:background="@drawable/button_footer"
         android:paddingHorizontal="30dp"
         android:text="Salir"
-        android:textColor="@color/white"
+        android:textColor="@color/textColorSecondary"
         android:textSize="20sp"
         app:backgroundTint="@null"
         app:layout_constraintBottom_toTopOf="@+id/footer"

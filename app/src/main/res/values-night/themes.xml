@@ -1,16 +1,21 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
     <!-- Base application theme. -->
     <style name="Base.Theme.Oasis" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your dark theme here. -->
         <!-- <item name="colorPrimary">@color/my_dark_primary</item> -->
         <item name="android:statusBarColor">@color/oasis_azul_principal</item>
         <item name="colorPrimary">@color/oasis_azul_principal</item>
-        <item name="colorSecondary">@color/oasis_naranja_principal</item>
+        <item name="colorSecondary">#994D35</item>
 
-        <item name="android:textColor">@color/blanco_fondo</item>
-        <item name="android:colorBackground">#565656</item>
+        <item name="android:textColor">#E0E0E0</item>
+        <item name="android:colorBackground">#1F1F1F</item>
     </style>
 
-    <color name="edit_text_backdround">#646464</color>
-    <color name="disabled_edit_text_backdround">#80434343</color>
+    <color name="secundary_color">#C34822</color>
+    <color name="button_secondary_color">#C34822</color>
+    <color name="disabled_button_secondary_color">#80C34822</color>
+    <color name="edit_text_background">#858585</color>
+    <color name="disabled_edit_text_background">#505050</color>
+    <color name="textColorSecondary">#B0B0B0</color>
+
 </resources>

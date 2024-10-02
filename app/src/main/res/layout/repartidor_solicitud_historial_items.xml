@@ -5,7 +5,7 @@
     android:padding="10dp"
     android:layout_marginVertical="10dp"
     android:orientation="vertical"
-    android:background="@drawable/button_footer">
+    android:background="@drawable/common_information_box">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -15,13 +15,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Solicitud del "
-            android:textColor="@color/white"
+            android:textColor="@color/textColorSecondary"
             android:textSize="20sp"/>
         <TextView
             android:id="@+id/tvRepartidorSolicitudFecha"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/white"
+            android:textColor="@color/textColorSecondary"
             android:textSize="20sp"/>
     </LinearLayout>
 
@@ -41,14 +41,14 @@
                 android:layout_height="wrap_content"
                 android:text="Comisión: "
                 android:textSize="16sp"
-                android:textColor="@color/white"/>
+                android:textColor="@color/textColorSecondary"/>
             <TextView
                 android:id="@+id/tvRepartidorSolicitudComision"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text=""
                 android:textSize="16sp"
-                android:textColor="@color/white"/>
+                android:textColor="@color/textColorSecondary"/>
         </LinearLayout>
         <LinearLayout
             android:layout_width="wrap_content"
@@ -60,14 +60,14 @@
                 android:layout_height="wrap_content"
                 android:text="Dirección: "
                 android:textSize="16sp"
-                android:textColor="@color/white"/>
+                android:textColor="@color/textColorSecondary"/>
             <TextView
                 android:id="@+id/tvRepartidorSolicitudDireccion"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text=""
                 android:textSize="16sp"
-                android:textColor="@color/white"/>
+                android:textColor="@color/textColorSecondary"/>
         </LinearLayout>
     </LinearLayout>
     <LinearLayout
@@ -79,14 +79,14 @@
             android:layout_height="wrap_content"
             android:text="Num Productos: "
             android:textSize="16sp"
-            android:textColor="@color/white"/>
+            android:textColor="@color/textColorSecondary"/>
         <TextView
             android:id="@+id/tvRepartidorSolicitudNumProductos"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text=""
             android:textSize="16sp"
-            android:textColor="@color/white"/>
+            android:textColor="@color/textColorSecondary"/>
     </LinearLayout>
 
 </LinearLayout>
