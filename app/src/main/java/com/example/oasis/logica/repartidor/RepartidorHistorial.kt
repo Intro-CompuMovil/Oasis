@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.oasis.MainActivity
 import com.example.oasis.R
 import com.example.oasis.logica.adapters.RepartidorSolicitudesHistorialAdapter
+import com.example.oasis.logica.db.DataBaseSimulator
 import com.example.oasis.logica.utility.UIHelper
 
 class RepartidorHistorial : AppCompatActivity() {
@@ -29,9 +30,9 @@ class RepartidorHistorial : AppCompatActivity() {
     private fun initSolicitudes(){
         val rvSolicitudes = findViewById<RecyclerView>(R.id.rvRepartidorSolicitudesHistorial)
 
-        val solicitudes = MainActivity.solicitudesList
-        val solicitudesFinalizadas = solicitudes.filter { it.getEstado() == "Entregado" }
+        val dataBaseSimulator = DataBaseSimulator(this)
+        val solicitudes = dataBaseSimulator.getSolicitudesByUser(RepartidorInicio.repartidor.getEmail())
         rvSolicitudes.layoutManager = LinearLayoutManager(this)
-        rvSolicitudes.adapter = RepartidorSolicitudesHistorialAdapter(this, solicitudesFinalizadas)
+        rvSolicitudes.adapter = RepartidorSolicitudesHistorialAdapter(this, solicitudes)
     }
 }

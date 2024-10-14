@@ -35,7 +35,7 @@ class CompradorSolicitudNoEntregada : AppCompatActivity() {
 
         solicitudTotal.text = solicitud.getTotal().toString()
         estado.text = solicitud.getEstado()
-        solicitudDireccion.text = solicitud.getDireccion()
+        solicitudDireccion.text = solicitud.getUbicacion().getDireccion()
     }
 
     private fun requestPermissions(context: Activity, permiso: String, justificacion:String, idCode:Int){

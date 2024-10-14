@@ -4,7 +4,8 @@ import java.io.Serializable
 
 class Order (
     private var producto: Product,
-    private var cantidad: Int
+    private var cantidad: Int,
+    private var estadoOrden: String
 ): Serializable{
     // Getters
     fun getProducto(): Product {
@@ -15,6 +16,10 @@ class Order (
         return cantidad
     }
 
+    fun getEstadoOrden(): String {
+        return estadoOrden
+    }
+
     // Setters
     fun setProducto(product: Product) {
         this.producto = product
@@ -22,5 +27,9 @@ class Order (
 
     fun setCantidad(quantity: Int) {
         this.cantidad = quantity
+    }
+
+    fun setEstadoOrden(orderState: String) {
+        this.estadoOrden = orderState
     }
 }

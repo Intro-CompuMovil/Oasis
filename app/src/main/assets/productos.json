@@ -1,0 +1,182 @@
+[
+  {
+    "id": 1,
+    "nombre": "Laptop",
+    "descripcion": "Laptop HP",
+    "puntaje": 4.7,
+    "precio": 1000.0,
+    "categoria": "Tecnología",
+    "imagen": "https://m.media-amazon.com/images/I/91UaM92H1dL._AC_SX450_.jpg"
+  },
+  {
+    "id": 2,
+    "nombre": "Smartphone",
+    "descripcion": "Smartphone Samsung",
+    "puntaje": 4.5,
+    "precio": 500.0,
+    "categoria": "Tecnología",
+    "imagen": ""
+  },
+  {
+    "id": 3,
+    "nombre": "Tablet",
+    "descripcion": "Tablet Lenovo",
+    "puntaje": 4.3,
+    "precio": 300.0,
+    "categoria": "Tecnología",
+    "imagen": ""
+  },
+  {
+    "id": 4,
+    "nombre": "Smartwatch",
+    "descripcion": "Smartwatch Xiaomi",
+    "puntaje": 4.2,
+    "precio": 200.0,
+    "categoria": "Tecnología",
+    "imagen": ""
+  },
+  {
+    "id": 5,
+    "nombre": "Audífonos",
+    "descripcion": "Audífonos Sony",
+    "puntaje": 4.1,
+    "precio": 100.0,
+    "categoria": "Tecnología",
+    "imagen": ""
+  },
+  {
+    "id": 6,
+    "nombre": "Sofá",
+    "descripcion": "Sofá de 3 plazas",
+    "puntaje": 4.8,
+    "precio": 800.0,
+    "categoria": "Hogar",
+    "imagen": ""
+  },
+  {
+    "id": 7,
+    "nombre": "Mesa",
+    "descripcion": "Mesa de comedor",
+    "puntaje": 4.6,
+    "precio": 400.0,
+    "categoria": "Hogar",
+    "imagen": ""
+  },
+  {
+    "id": 8,
+    "nombre": "Silla",
+    "descripcion": "Silla de oficina",
+    "puntaje": 4.4,
+    "precio": 200.0,
+    "categoria": "Hogar",
+    "imagen": ""
+  },
+  {
+    "id": 9,
+    "nombre": "Cama",
+    "descripcion": "Cama matrimonial",
+    "puntaje": 4.3,
+    "precio": 600.0,
+    "categoria": "Hogar",
+    "imagen": ""
+  },
+  {
+    "id": 10,
+    "nombre": "Escritorio",
+    "descripcion": "Escritorio de madera",
+    "puntaje": 4.2,
+    "precio": 300.0,
+    "categoria": "Hogar",
+    "imagen": ""
+  },
+  {
+    "id": 11,
+    "nombre": "Camisa",
+    "descripcion": "Camisa de vestir",
+    "puntaje": 4.7,
+    "precio": 50.0,
+    "categoria": "Moda",
+    "imagen": ""
+  },
+  {
+    "id": 12,
+    "nombre": "Pantalón",
+    "descripcion": "Pantalón de mezclilla",
+    "puntaje": 4.5,
+    "precio": 40.0,
+    "categoria": "Moda",
+    "imagen": ""
+  },
+  {
+    "id": 13,
+    "nombre": "Zapatos",
+    "descripcion": "Zapatos de piel",
+    "puntaje": 4.3,
+    "precio": 60.0,
+    "categoria": "Moda",
+    "imagen": ""
+  },
+  {
+    "id": 14,
+    "nombre": "Chamarra",
+    "descripcion": "Chamarra de cuero",
+    "puntaje": 4.2,
+    "precio": 70.0,
+    "categoria": "Moda",
+    "imagen": ""
+  },
+  {
+    "id": 15,
+    "nombre": "Reloj",
+    "descripcion": "Reloj de pulsera",
+    "puntaje": 4.1,
+    "precio": 30.0,
+    "categoria": "Moda",
+    "imagen": ""
+  },
+  {
+    "id": 16,
+    "nombre": "Balón",
+    "descripcion": "Balón de fútbol",
+    "puntaje": 4.8,
+    "precio": 20.0,
+    "categoria": "Deportes",
+    "imagen": ""
+  },
+  {
+    "id": 17,
+    "nombre": "Raqueta",
+    "descripcion": "Raqueta de tenis",
+    "puntaje": 4.6,
+    "precio": 30.0,
+    "categoria": "Deportes",
+    "imagen": ""
+  },
+  {
+    "id": 18,
+    "nombre": "Tenis",
+    "descripcion": "Tenis para correr",
+    "puntaje": 4.4,
+    "precio": 40.0,
+    "categoria": "Deportes",
+    "imagen": ""
+  },
+  {
+    "id": 19,
+    "nombre": "Bicicleta",
+    "descripcion": "Bicicleta de montaña",
+    "puntaje": 4.3,
+    "precio": 200.0,
+    "categoria": "Deportes",
+    "imagen": ""
+  },
+  {
+    "id": 20,
+    "nombre": "Pesas",
+    "descripcion": "Pesas de 5 kg",
+    "puntaje": 4.2,
+    "precio": 50.0,
+    "categoria": "Deportes",
+    "imagen": ""
+  }
+]

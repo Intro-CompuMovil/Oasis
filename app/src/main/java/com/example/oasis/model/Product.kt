@@ -3,16 +3,19 @@ package com.example.oasis.model
 import java.io.Serializable
 
 class Product(
-    private var id: Int,
+    private var idProducto: Int,
     private var nombre: String,
     private var descripcion: String,
     private var puntaje: Float,
     private var precio: Double,
-    private var categoria: String
+    private var categoria: String,
+    private var imagen: String,
+    private var productoLatitud: Double,
+    private var productoLongitud: Double
 ):Serializable {
     // Getters
     fun getId(): Int {
-        return id
+        return idProducto
     }
     fun getNombre(): String {
         return nombre
@@ -34,9 +37,21 @@ class Product(
         return categoria
     }
 
+    fun getImagen(): String {
+        return imagen
+    }
+
+    fun getProductoLatitud(): Double {
+        return productoLatitud
+    }
+
+    fun getProductoLongitud(): Double {
+        return productoLongitud
+    }
+
     // Setters
     fun setId(id: Int) {
-        this.id = id
+        this.idProducto = id
     }
     fun setNombre(nombre: String) {
         this.nombre = nombre
@@ -56,5 +71,17 @@ class Product(
 
     fun setCategoria(categoria: String) {
         this.categoria = categoria
+    }
+
+    fun setImagen(imagen: String) {
+        this.imagen = imagen
+    }
+
+    fun setProductoLatitud(productoLatitud: Double) {
+        this.productoLatitud = productoLatitud
+    }
+
+    fun setProductoLongitud(productoLongitud: Double) {
+        this.productoLongitud = productoLongitud
     }
 }

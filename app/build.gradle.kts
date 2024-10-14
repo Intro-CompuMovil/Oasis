@@ -14,7 +14,21 @@ android {
         versionCode = 1
         versionName = "1.0"
 
+        buildConfigField(
+            "String",
+            "MAPS_API_KEY",
+            "\"${project.findProperty("MAPS_API_KEY")}\""
+        )
+        val apiKey = if (project.hasProperty("MAPS_API_KEY")) project.property("MAPS_API_KEY") as String else ""
+        buildConfigField("String", "MAPS_API_KEY", "\"$apiKey\"")
+        manifestPlaceholders["MAPS_API_KEY"] = "\$MAPS_API_KEY"
+
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildFeatures {
+        viewBinding = true
+        buildConfig = true
     }
 
     buildTypes {
@@ -42,6 +56,19 @@ dependencies {
     implementation(libs.material)
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
+    implementation(libs.osmdroid.android)
+    implementation(libs.play.services.location)
+    implementation(libs.play.services.maps)
+    implementation (libs.kotlinx.coroutines.core)
+    implementation (libs.kotlinx.coroutines.android)
+    implementation(libs.play.services.location)
+    implementation(libs.play.services.maps)
+    implementation(libs.kotlinx.coroutines.core)
+    implementation(libs.kotlinx.coroutines.android)
+    implementation(libs.osmdroid.android)
+    implementation (libs.gson)
+    implementation (libs.glide)
+    annotationProcessor (libs.compiler)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

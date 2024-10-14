@@ -16,11 +16,13 @@ import com.example.oasis.MainActivity
 import com.example.oasis.R
 import com.example.oasis.datos.Data
 import com.example.oasis.logica.adapters.CarritoAdapter
+import com.example.oasis.logica.db.DataBaseSimulator
 import com.example.oasis.logica.utility.UIHelper
 import com.example.oasis.model.Solicitud
+import com.example.oasis.model.Ubicacion
 
 class MiCarrito : AppCompatActivity(), SeleccionarDireccion.SeleccionarDireccionListener {
-    private var direccionSeleccionada: String = ""
+    private var direccionSeleccionada: Ubicacion = Ubicacion(0.0,  0.0, "")
     private lateinit var btnPagar: Button
     private lateinit var tvDireccion: TextView
 
@@ -81,9 +83,10 @@ class MiCarrito : AppCompatActivity(), SeleccionarDireccion.SeleccionarDireccion
     }
 
     private fun procederPago(){
-        if (direccionSeleccionada.isNotEmpty()){
+        if (direccionSeleccionada.getDireccion().isNotEmpty()){
             val solicitud = getSolicitud()
-            MainActivity.solicitudesList.add(solicitud)
+            val dataBaseSimulator = DataBaseSimulator(this)
+            dataBaseSimulator.addSolicitud(solicitud)
             MainActivity.clearCarrito()
             val intent = Intent(this, CompradorSolicitudNoEntregada::class.java)
             intent.putExtra("solicitud", solicitud)
@@ -100,7 +103,8 @@ class MiCarrito : AppCompatActivity(), SeleccionarDireccion.SeleccionarDireccion
         val estado = "No entregado"
         val direccion = direccionSeleccionada
         val fecha = java.time.LocalDateTime.now()
-        return Solicitud(0, ordenes, total, fecha, estado, direccion)
+        val comprador = CompradorInicio.comprador
+        return Solicitud(0, ordenes, total, fecha, estado, direccion, comprador, null, null, null)
     }
 
     private fun initDireccion() {
@@ -111,9 +115,9 @@ class MiCarrito : AppCompatActivity(), SeleccionarDireccion.SeleccionarDireccion
         }
     }
 
-    override fun onDireccionSeleccionada(direccion: String) {
-        direccionSeleccionada = direccion
-        tvDireccion.text = direccion
+    override fun onDireccionSeleccionada(ubicacion: Ubicacion) {
+        direccionSeleccionada = ubicacion
+        tvDireccion.text = ubicacion.getDireccion()
     }
 
     private fun requestPermissions(context: Activity, permiso: String, justificacion:String, idCode:Int){

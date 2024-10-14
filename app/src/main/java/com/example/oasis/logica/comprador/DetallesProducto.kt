@@ -2,6 +2,7 @@ package com.example.oasis.logica.comprador
 
 import android.os.Bundle
 import android.widget.ImageButton
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
@@ -10,6 +11,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.oasis.MainActivity
 import com.example.oasis.R
+import com.example.oasis.logica.utility.AppUtilityHelper
 import com.example.oasis.logica.utility.UIHelper
 import com.example.oasis.model.Order
 import com.example.oasis.model.Product
@@ -31,11 +33,13 @@ class DetallesProducto : AppCompatActivity() {
         val productDescription = findViewById<TextView>(R.id.tvDetallesProductoDescripcion)
         val productPrice = findViewById<TextView>(R.id.tvDetallesProductoPrecio)
         val productCalificacion = findViewById<TextView>(R.id.tvDetallesProductoCalificacion)
+        val productImage = findViewById<ImageView>(R.id.ivDetallesProductoImagen)
 
         productName.text = product.getNombre()
         productDescription.text = product.getDescripcion()
         productPrice.text = product.getPrecio().toString()
         productCalificacion.text = product.getPuntaje().toString()
+        AppUtilityHelper.cargarProductoImagen(productImage, product, this)
     }
 
     private fun initButtons(product: Product){
@@ -57,7 +61,7 @@ class DetallesProducto : AppCompatActivity() {
         }
         val btnAddToCart = findViewById<ImageButton>(R.id.btnDetallesProductoAgregarCarrito)
         btnAddToCart.setOnClickListener {
-            if (MainActivity.addProductToCarrito(Order(product, productCantidad.text.toString().toInt()))) {
+            if (MainActivity.addProductToCarrito(Order(product, productCantidad.text.toString().toInt(), "No entregado"))) {
                 Toast.makeText(this, "Producto añadido al carrito", Toast.LENGTH_SHORT).show()
             } else {
                 Toast.makeText(this, "Producto ya está en el carrito, cantidad actualizada", Toast.LENGTH_SHORT).show()

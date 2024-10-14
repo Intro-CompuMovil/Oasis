@@ -75,7 +75,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/rounded_edit_text"
-            android:inputType="textPassword"
+            android:inputType="text"
             android:hint="Ingresa tu nombre"
             android:autofillHints="password"
             android:layout_marginBottom="2dp"/>

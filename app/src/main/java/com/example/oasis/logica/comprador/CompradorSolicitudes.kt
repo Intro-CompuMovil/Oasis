@@ -11,6 +11,7 @@ import com.example.oasis.MainActivity
 import com.example.oasis.R
 import com.example.oasis.logica.adapters.CompradorSolicitudAdapter
 import com.example.oasis.logica.adapters.CompradorSolicitudesAdapter
+import com.example.oasis.logica.db.DataBaseSimulator
 import com.example.oasis.logica.utility.UIHelper
 
 class CompradorSolicitudes : AppCompatActivity() {
@@ -30,7 +31,8 @@ class CompradorSolicitudes : AppCompatActivity() {
     private fun initSolicitudes(){
         val rvSolicitudes = findViewById<RecyclerView>(R.id.rvCompradorSolicitudes)
 
-        val solicitudes = MainActivity.solicitudesList
+        val dataBaseSimulator = DataBaseSimulator(this)
+        val solicitudes = dataBaseSimulator.getSolicitudesByUser(CompradorInicio.comprador.getEmail())
         rvSolicitudes.layoutManager = LinearLayoutManager(this)
         rvSolicitudes.adapter = CompradorSolicitudesAdapter(this, solicitudes)
     }

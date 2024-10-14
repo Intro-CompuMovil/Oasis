@@ -10,6 +10,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.oasis.R
 import com.example.oasis.logica.comprador.DetallesProducto
+import com.example.oasis.logica.utility.AppUtilityHelper
 import com.example.oasis.model.Product
 
 class BusquedaProductAdapter(private val context: Context, private val productList: List<Product>) :
@@ -25,6 +26,8 @@ class BusquedaProductAdapter(private val context: Context, private val productLi
         holder.productNombre.text = product.getNombre()
         holder.productCalificacion.text = product.getPuntaje().toString()+"/5"
         holder.productPrecio.text = "$"+product.getPrecio().toString()
+        AppUtilityHelper.cargarProductoImagen(holder.productImage, product, context)
+
         // holder.imgProduct.setImageResource(product.image)
         holder.itemView.setOnClickListener {
             Intent(context, DetallesProducto::class.java).apply {

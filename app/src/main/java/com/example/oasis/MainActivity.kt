@@ -9,7 +9,9 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.example.oasis.logica.Registrarse
 import com.example.oasis.logica.comprador.CompradorInicio
+import com.example.oasis.logica.db.DataBaseSimulator
 import com.example.oasis.logica.repartidor.RepartidorInicio
+import com.example.oasis.logica.utility.AppUtilityHelper
 import com.example.oasis.logica.utility.FieldValidatorHelper
 import com.example.oasis.model.Order
 import com.example.oasis.model.Product
@@ -17,25 +19,11 @@ import com.example.oasis.model.Solicitud
 
 class MainActivity : AppCompatActivity() {
     companion object{
-        private var usuarioNombre: String = "Usuario1"
         private var carrito: MutableList<Order> = mutableListOf()
         private var productsList: MutableList<Product> = mutableListOf()
-        var direccionesList: MutableList<String> = mutableListOf(
-            "Calle 1 # 1-1",
-            "Calle 2 # 2-2",
-            "Calle 3 # 3-3",
-            "Calle 4 # 4-4"
-        )
 
         var solicitudesList: MutableList<Solicitud> = mutableListOf()
-        val repartidorNombre = "Repartidor1"
 
-        fun getUsuarioNombre(): String{
-            return usuarioNombre
-        }
-        fun setUsuarioNombre(nombre: String){
-            usuarioNombre = nombre
-        }
         fun getCarrito(): MutableList<Order>{
             return carrito
         }
@@ -69,11 +57,13 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var emailError: TextView
     private lateinit var passwordError: TextView
+    private lateinit var dataBaseSimulator: DataBaseSimulator
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        dataBaseSimulator = DataBaseSimulator(this)
         initUI()
     }
 
@@ -89,20 +79,40 @@ class MainActivity : AppCompatActivity() {
     private fun initIniciarSesion(email: EditText, password: EditText){
         val btnIniciarSesion = findViewById<Button>(R.id.launcherIniciarSesion)
         val radioButtonComprador = findViewById<RadioButton>(R.id.radioButtonComprador)
+
         btnIniciarSesion.setOnClickListener {
             val emailTxt = email.text.toString()
             val passwordTxt = password.text.toString()
             if (!checkErrors(emailTxt, passwordTxt)){
                 if (radioButtonComprador.isChecked){
-                    val intent = Intent(this, CompradorInicio::class.java)
-                    startActivity(intent)
+                    iniciarSesionComprador(emailTxt, passwordTxt)
                 }
                 else{
-                    Intent(this, RepartidorInicio::class.java).apply {
-                        startActivity(this)
-                    }
+                    iniciarSesionRepartidor(emailTxt, passwordTxt)
                 }
             }
+        }
+    }
+
+    private fun iniciarSesionComprador(email: String, password: String){
+        val comprador = dataBaseSimulator.loginComprador(email, password)
+        if (comprador != null){
+            CompradorInicio.comprador = comprador
+            val intent = Intent(this, CompradorInicio::class.java)
+            startActivity(intent)
+        }else{
+            AppUtilityHelper.showErrorDialog(this,  "Usuario o contraseña incorrectos")
+        }
+    }
+
+    private fun iniciarSesionRepartidor(email: String, password: String){
+        val repartidor = dataBaseSimulator.loginRepartidor(email, password)
+        if (repartidor != null){
+            RepartidorInicio.repartidor = repartidor
+            val intent = Intent(this, RepartidorInicio::class.java)
+            startActivity(intent)
+        } else{
+            AppUtilityHelper.showErrorDialog(this,  "Usuario o contraseña incorrectos")
         }
     }
     private fun initRegistrarse(){

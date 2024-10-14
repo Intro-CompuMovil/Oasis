@@ -9,6 +9,8 @@
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_margin="5dp"
+        android:scaleType="centerInside"
+        android:background="@null"
         android:src="@drawable/product_sample" />
 
     <LinearLayout

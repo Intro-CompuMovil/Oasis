@@ -69,7 +69,7 @@ class RepartidorEntrega : AppCompatActivity() {
 
         distanciaTotal.text = "8.5"
         comision.text = solicitud.getTotal().times(0.1).toString()
-        solicitudDireccion.text = solicitud.getDireccion()
+        solicitudDireccion.text = solicitud.getUbicacion().getDireccion()
     }
 
     private fun initButtons(){

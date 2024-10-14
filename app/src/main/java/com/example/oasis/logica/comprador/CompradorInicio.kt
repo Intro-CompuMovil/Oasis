@@ -11,21 +11,33 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.oasis.MainActivity
 import com.example.oasis.R
 import com.example.oasis.logica.adapters.CategoryAdapter
+import com.example.oasis.logica.db.DataBaseSimulator
 import com.example.oasis.logica.utility.UIHelper
 import com.example.oasis.model.Category
+import com.example.oasis.model.Comprador
 import com.example.oasis.model.Order
 import com.example.oasis.model.Product
 import com.example.oasis.model.Solicitud
+import com.example.oasis.model.Ubicacion
 import java.time.LocalDateTime
 
 
 class CompradorInicio : AppCompatActivity() {
+    private val dataBase = DataBaseSimulator(this)
+    companion object{
+        var comprador : Comprador = Comprador(-1, "", "", "", mutableListOf())
+
+        fun agregarDireccion(direccion: Ubicacion, dataBaseSimulator: DataBaseSimulator){
+            comprador.agregarDireccion(direccion)
+            dataBaseSimulator.actualizarComprador(comprador)
+        }
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_comprador_inicio)
 
         UIHelper().setupFooter(this)
-        val nombreUsuario = MainActivity.getUsuarioNombre()
+        val nombreUsuario = comprador.getNombre()
         UIHelper().setupHeader(this, "Hola, $nombreUsuario")
         initUI()
     }
@@ -66,7 +78,7 @@ class CompradorInicio : AppCompatActivity() {
     }
 
     private fun getCategories(): List<Category> {
-        val productsList = mutableListOf<Product>(
+        /*val productsList = mutableListOf<Product>(
             Product(1, "Laptop", "Laptop HP", 4.7f, 1000.0, "Tecnología"),
             Product(2, "Smartphone", "Smartphone Samsung", 4.5f, 500.0, "Tecnología"),
             Product(3, "Tablet", "Tablet Lenovo", 4.3f, 300.0, "Tecnología"),
@@ -87,14 +99,16 @@ class CompradorInicio : AppCompatActivity() {
             Product(18, "Tenis", "Tenis para correr", 4.4f, 40.0, "Deportes"),
             Product(19, "Bicicleta", "Bicicleta de montaña", 4.3f, 200.0, "Deportes"),
             Product(20, "Pesas", "Pesas de 5 kg", 4.2f, 50.0, "Deportes")
-        )
+        )*/
+        val productsList = dataBase.getProducts()
         MainActivity.setProductsList(productsList)
-        val categoryList = productsList.groupBy { it.getCategoria() }.map { Category(it.key, it.value) }
-        val solicitud = Solicitud(1, listOf( Order(MainActivity.getProductsList()[0], 1), Order(
-            MainActivity.getProductsList()[5], 3)
-        ), 3740.0, LocalDateTime.parse("2021-10-10T10:10:10"), "Entregado", "Calle 1 # 1-1")
 
-        if (MainActivity.solicitudesList.isEmpty()) MainActivity.solicitudesList = mutableListOf(solicitud)
+        val categoryList = productsList.groupBy { it.getCategoria() }.map { Category(it.key, it.value) }
+        /*val solicitud = Solicitud(1, listOf( Order(MainActivity.getProductsList()[0], 1), Order(
+            MainActivity.getProductsList()[5], 3)
+        ), 3740.0, LocalDateTime.parse("2021-10-10T10:10:10"), "Entregado", "Calle 1 # 1-1")*/
+
+        //if (MainActivity.solicitudesList.isEmpty()) MainActivity.solicitudesList = mutableListOf(solicitud)
 
         return categoryList
     }

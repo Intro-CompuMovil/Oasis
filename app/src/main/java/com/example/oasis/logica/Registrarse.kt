@@ -13,18 +13,24 @@ import androidx.core.view.WindowInsetsCompat
 import com.example.oasis.MainActivity
 import com.example.oasis.R
 import com.example.oasis.logica.comprador.CompradorInicio
+import com.example.oasis.logica.db.DataBaseSimulator
 import com.example.oasis.logica.repartidor.RepartidorInicio
+import com.example.oasis.logica.utility.AppUtilityHelper
 import com.example.oasis.logica.utility.FieldValidatorHelper
+import com.example.oasis.model.Comprador
+import com.example.oasis.model.Repartidor
 
 class Registrarse : AppCompatActivity() {
     private lateinit var emailError: TextView
     private lateinit var passwordError: TextView
     private lateinit var nombreError: TextView
+    private lateinit var dataBaseSimulator: DataBaseSimulator
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_registrarse)
 
+        dataBaseSimulator = DataBaseSimulator(this)
         initUI()
     }
 
@@ -48,15 +54,34 @@ class Registrarse : AppCompatActivity() {
             val nombreTxt = nombre.text.toString()
             if (!checkErrors(emailTxt, passwordTxt, nombreTxt)){
                 if (radioButtonComprador.isChecked){
-                    val intent = Intent(this, CompradorInicio::class.java)
-                    startActivity(intent)
+                    registrarComprador(emailTxt, passwordTxt, nombreTxt)
                 }
                 else{
-                    Intent(this, RepartidorInicio::class.java).apply {
-                        startActivity(this)
-                    }
+                    registrarRepartidor(emailTxt, passwordTxt, nombreTxt)
                 }
             }
+        }
+    }
+
+    private fun registrarComprador(email: String, password: String, nombre: String){
+        val comprador = Comprador(-1, nombre, email, password, mutableListOf())
+        if (dataBaseSimulator.registerComprador(comprador)) {
+            CompradorInicio.comprador = comprador
+            val intent = Intent(this, CompradorInicio::class.java)
+            startActivity(intent)
+        } else{
+            AppUtilityHelper.showErrorDialog(this,  "El email ya está registrado")
+        }
+    }
+
+    private fun registrarRepartidor(email: String, password: String, nombre: String){
+        val repartidor = Repartidor(-1, nombre, email, password)
+        if (dataBaseSimulator.registerRepartidor(repartidor)) {
+            RepartidorInicio.repartidor = repartidor
+            val intent = Intent(this, RepartidorInicio::class.java)
+            startActivity(intent)
+        } else{
+            AppUtilityHelper.showErrorDialog(this,  "El email ya está registrado")
         }
     }
     private fun initRegistrarse(){

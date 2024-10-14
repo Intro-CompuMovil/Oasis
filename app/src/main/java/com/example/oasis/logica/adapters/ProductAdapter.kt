@@ -6,12 +6,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.oasis.MainActivity
 import com.example.oasis.R
 import com.example.oasis.logica.comprador.DetallesProducto
+import com.example.oasis.logica.utility.AppUtilityHelper
 import com.example.oasis.model.Order
 import com.example.oasis.model.Product
 import kotlin.math.min
@@ -28,7 +31,9 @@ class ProductAdapter(private val context: Context, private val productList: List
     override fun onBindViewHolder(holder: ProductViewHolder, position: Int) {
         val product = productList[position]
         holder.productName.text = product.getNombre()
+        AppUtilityHelper.cargarProductoImagen(holder.btnProduct, product, context)
         // holder.imgProduct.setImageResource(product.image)
+
         holder.btnProduct.setOnClickListener {
             Intent(context, DetallesProducto::class.java).apply {
                 putExtra("product", product)
@@ -36,7 +41,7 @@ class ProductAdapter(private val context: Context, private val productList: List
             }
         }
         holder.btnAddProduct.setOnClickListener {
-            if (MainActivity.addProductToCarrito(Order(product, 1))) {
+            if (MainActivity.addProductToCarrito(Order(product, 1, "No entregado"))) {
                 Toast.makeText(context, "Producto añadido al carrito", Toast.LENGTH_SHORT).show()
             } else {
                 Toast.makeText(context, "Producto ya está en el carrito, cantidad actualizada", Toast.LENGTH_SHORT).show()

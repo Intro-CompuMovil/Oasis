@@ -23,7 +23,7 @@ class RepartidorSolicitudesHistorialAdapter (private val context: Context, priva
         val solicitud = solicitudes[position]
         holder.fecha.text = DateHelper().getDateWithHour(solicitud.getFecha())
         holder.comision.text = (solicitud.getTotal() * 0.1).toString()
-        holder.direccion.text = solicitud.getDireccion()
+        holder.direccion.text = solicitud.getUbicacion().getDireccion()
         holder.numProductos.text = solicitud.getOrdenes().size.toString()
 
         holder.itemView.setOnClickListener {

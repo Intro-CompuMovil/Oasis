@@ -29,6 +29,7 @@ import androidx.core.view.WindowInsetsCompat
 import com.example.oasis.MainActivity
 import com.example.oasis.R
 import com.example.oasis.datos.Data
+import com.example.oasis.logica.db.DataBaseSimulator
 import com.example.oasis.logica.utility.AppUtilityHelper
 import com.example.oasis.logica.utility.FieldValidatorHelper
 import com.example.oasis.logica.utility.UIHelper
@@ -56,9 +57,9 @@ class CompradorPerfil : AppCompatActivity() {
         val tvCorreo = findViewById<EditText>(R.id.etCorreoPerfil)
         val lvDirecciones = findViewById<ListView>(R.id.lvDireccionesPerfil)
 
-        tvNombre.setText(MainActivity.getUsuarioNombre())
-        tvCorreo.setText("user1@example.com")
-        lvDirecciones.adapter = DireccionesAdapter(this, MainActivity.direccionesList)
+        tvNombre.setText(CompradorInicio.comprador.getNombre())
+        tvCorreo.setText(CompradorInicio.comprador.getEmail())
+        lvDirecciones.adapter = DireccionesAdapter(this, CompradorInicio.comprador.getDirecciones())
 
         initFotoPerfilButton()
         initEdicionPerfil()
@@ -110,7 +111,12 @@ class CompradorPerfil : AppCompatActivity() {
             Toast.makeText(this, "Correo inválido", Toast.LENGTH_SHORT).show()
         }
         else{
-            MainActivity.setUsuarioNombre(nombre)
+            val compradorTmp = CompradorInicio.comprador
+            compradorTmp.setNombre(nombre)
+            val dataBaseSimulator = DataBaseSimulator(this)
+            if (dataBaseSimulator.actualizarComprador(compradorTmp)) {
+                CompradorInicio.comprador.setNombre(nombre)
+            }
             Toast.makeText(this, "Cambios guardados", Toast.LENGTH_SHORT).show()
             cambiosCorrectos = true
         }
@@ -120,8 +126,8 @@ class CompradorPerfil : AppCompatActivity() {
     private fun habilitarEdicionPerfil(tvNombre: TextView, tvCorreo: TextView, btnGuardar: Button){
         tvNombre.isEnabled = true
         tvNombre.setTextColor(ContextCompat.getColor(this, R.color.black))
-        tvCorreo.isEnabled = true
-        tvCorreo.setTextColor(ContextCompat.getColor(this, R.color.black))
+        /*tvCorreo.isEnabled = true
+        tvCorreo.setTextColor(ContextCompat.getColor(this, R.color.black))*/
         btnFotoPerfil.isEnabled = true
         btnFotoPerfil.isClickable = true
         btnGuardar.isEnabled = true
@@ -131,8 +137,8 @@ class CompradorPerfil : AppCompatActivity() {
     private fun deshabilitarEdicionPerfil(tvNombre: TextView, tvCorreo: TextView, btnGuardar: Button){
         tvNombre.isEnabled = false
         tvNombre.setTextColor(ContextCompat.getColor(this, R.color.white))
-        tvCorreo.isEnabled = false
-        tvCorreo.setTextColor(ContextCompat.getColor(this, R.color.white))
+        /*tvCorreo.isEnabled = false
+        tvCorreo.setTextColor(ContextCompat.getColor(this, R.color.white))*/
         btnFotoPerfil.isEnabled = false
         btnFotoPerfil.isClickable = false
         btnGuardar.isEnabled = false

@@ -34,5 +34,6 @@ class RepartidorSolicitudDetallesAdapter (
         val nombre: TextView = itemView.findViewById(R.id.tvRepartidorSolicitudOrdenesProductoNombre)
         val cantidad: TextView = itemView.findViewById(R.id.tvRepartidorSolicitudOrdenesProductoCantidad)
         val distancia: TextView = itemView.findViewById(R.id.tvRepartidorSolicitudOrdenesProductoDistancia)
+
     }
 }

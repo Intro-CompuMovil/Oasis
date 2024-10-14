@@ -8,15 +8,15 @@
     android:layout_margin="8dp"
     android:gravity="center">
 
-    <!-- Imagen del producto (puede ser un ImageView con un placeholder) -->
     <ImageButton
         android:id="@+id/btnProduct"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:background="@drawable/product_sample"
-        android:scaleType="centerCrop"/>
+        android:padding="4dp"
+        android:background="@null"
+        android:src="@drawable/product_sample"
+        android:scaleType="centerInside"/>
 
-    <!-- Botón para añadir producto -->
     <ImageButton
         android:id="@+id/btnAddProduct"
         android:layout_width="35dp"
