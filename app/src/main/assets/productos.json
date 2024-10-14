@@ -6,7 +6,9 @@
     "puntaje": 4.7,
     "precio": 1000.0,
     "categoria": "Tecnología",
-    "imagen": "https://m.media-amazon.com/images/I/91UaM92H1dL._AC_SX450_.jpg"
+    "imagen": "https://m.media-amazon.com/images/I/91UaM92H1dL._AC_SX450_.jpg",
+    "latitud": "4.701952560702678",
+    "longitud": "-74.04136478641928"
   },
   {
     "id": 2,
