@@ -7,8 +7,8 @@
     "precio": 1000.0,
     "categoria": "Tecnología",
     "imagen": "https://m.media-amazon.com/images/I/91UaM92H1dL._AC_SX450_.jpg",
-    "latitud": "4.701952560702678",
-    "longitud": "-74.04136478641928"
+    "latitud": "4.7030305711389815",
+    "longitud": "-74.04128977050219"
   },
   {
     "id": 2,
@@ -18,8 +18,8 @@
     "precio": 500.0,
     "categoria": "Tecnología",
     "imagen": "https://m.media-amazon.com/images/I/51PtFHUPjBL.__AC_SX300_SY300_QL70_FMwebp_.jpg",
-    "latitud": "",
-    "longitud": ""
+    "latitud": "4.678775869906327",
+    "longitud": "-74.048238579122"
   },
   {
     "id": 3,
@@ -29,8 +29,8 @@
     "precio": 300.0,
     "categoria": "Tecnología",
     "imagen": "https://m.media-amazon.com/images/I/61PnHlc0HCL.__AC_SY445_SX342_QL70_FMwebp_.jpg",
-    "latitud": "",
-    "longitud": ""
+    "latitud": "4.668909848790507",
+    "longitud": "-74.05249755969257"
   },
   {
     "id": 4,
@@ -40,8 +40,8 @@
     "precio": 200.0,
     "categoria": "Tecnología",
     "imagen": "https://m.media-amazon.com/images/I/711f6KLsMaL._AC_SX679_.jpg",
-    "latitud": "",
-    "longitud": ""
+    "latitud": "4.658827637822503",
+    "longitud": "-74.05786066562389"
   },
   {
     "id": 5,
@@ -51,8 +51,8 @@
     "precio": 100.0,
     "categoria": "Tecnología",
     "imagen": "https://m.media-amazon.com/images/I/41+1Csr1pSL._AC_SY300_SX300_.jpg",
-    "latitud": "",
-    "longitud": ""
+    "latitud": "4.715869348241859",
+    "longitud": "-74.02910219986018"
   },
   {
     "id": 6,
@@ -62,8 +62,8 @@
     "precio": 800.0,
     "categoria": "Hogar",
     "imagen": "https://m.media-amazon.com/images/I/61-YZAc9zeL.__AC_SX300_SY300_QL70_FMwebp_.jpg",
-    "latitud": "",
-    "longitud": ""
+    "latitud": "4.701952560702678",
+    "longitud": "-74.04136478641928"
   },
   {
     "id": 7,
@@ -73,8 +73,8 @@
     "precio": 400.0,
     "categoria": "Hogar",
     "imagen": "https://www.amazon.com/-/es/utilidad-plegable-escritorio-campamento-manualidades/dp/B08QV95NVT/ref=sr_1_4?__mk_es_US=%C3%85M%C3%85%C5%BD%C3%95%C3%91&sr=8-4",
-    "latitud": "",
-    "longitud": ""
+    "latitud": "4.712835185358797",
+    "longitud": "-74.07179316753297"
   },
   {
     "id": 8,
@@ -84,8 +84,8 @@
     "precio": 200.0,
     "categoria": "Hogar",
     "imagen": "https://m.media-amazon.com/images/I/71i08qnZeDL._AC_SX679_.jpg",
-    "latitud": "",
-    "longitud": ""
+    "latitud": "4.712835185358797",
+    "longitud": "-74.07179316753297"
   },
   {
     "id": 9,
@@ -95,8 +95,8 @@
     "precio": 600.0,
     "categoria": "Hogar",
     "imagen": "https://m.media-amazon.com/images/I/81lTUWPc4oL.__AC_SX300_SY300_QL70_FMwebp_.jpg",
-    "latitud": "",
-    "longitud": ""
+    "latitud": "4.7331507556813435",
+    "longitud": "-74.06668624159238"
   },
   {
     "id": 10,
@@ -106,8 +106,8 @@
     "precio": 300.0,
     "categoria": "Hogar",
     "imagen": "https://m.media-amazon.com/images/I/81ioD6WoCeL.__AC_SX300_SY300_QL70_FMwebp_.jpg",
-    "latitud": "",
-    "longitud": ""
+    "latitud": "4.7331507556813435",
+    "longitud": "-74.06668624159238"
   },
   {
     "id": 11,
@@ -117,8 +117,8 @@
     "precio": 50.0,
     "categoria": "Moda",
     "imagen": "https://m.media-amazon.com/images/I/51rkKPruYvL._AC_SX569_.jpg",
-    "latitud": "",
-    "longitud": ""
+    "latitud": "4.695037188428458",
+    "longitud": "-74.08694752165657"
   },
   {
     "id": 12,
@@ -128,8 +128,8 @@
     "precio": 40.0,
     "categoria": "Moda",
     "imagen": "https://m.media-amazon.com/images/I/71u-r5z+keL._AC_SX679_.jpg",
-    "latitud": "",
-    "longitud": ""
+    "latitud": "4.695037188428458",
+    "longitud": "-74.08694752165657"
   },
   {
     "id": 13,
@@ -139,8 +139,8 @@
     "precio": 60.0,
     "categoria": "Moda",
     "imagen": "https://m.media-amazon.com/images/I/71k2ZobLduL._AC_SY695_.jpg",
-    "latitud": "",
-    "longitud": ""
+    "latitud": "4.680794186643802",
+    "longitud": "-74.08117975151184"
   },
   {
     "id": 14,
@@ -150,8 +150,8 @@
     "precio": 70.0,
     "categoria": "Moda",
     "imagen": "https://m.media-amazon.com/images/I/71zwwEe2nLL._AC_SX679_.jpg",
-    "latitud": "",
-    "longitud": ""
+    "latitud": "4.680794186643802",
+    "longitud": "-74.08117975151184"
   },
   {
     "id": 15,
@@ -161,8 +161,8 @@
     "precio": 30.0,
     "categoria": "Moda",
     "imagen": "https://m.media-amazon.com/images/I/61TLVPYrx5L._AC_SY695_.jpg",
-    "latitud": "",
-    "longitud": ""
+    "latitud": "4.665767612445835",
+    "longitud": "-74.05797531125539"
   },
   {
     "id": 16,
@@ -172,8 +172,8 @@
     "precio": 20.0,
     "categoria": "Deportes",
     "imagen": "https://m.media-amazon.com/images/I/71RyK2qVMWL.__AC_SX300_SY300_QL70_FMwebp_.jpg",
-    "latitud": "",
-    "longitud": ""
+    "latitud": "4.665767612445835",
+    "longitud": "-74.05797531125539"
   },
   {
     "id": 17,
@@ -183,8 +183,8 @@
     "precio": 30.0,
     "categoria": "Deportes",
     "imagen": "https://m.media-amazon.com/images/I/71NjVS5BeEL.__AC_SX300_SY300_QL70_FMwebp_.jpg",
-    "latitud": "",
-    "longitud": ""
+    "latitud": "4.600115822900158",
+    "longitud": "-74.07821148644963"
   },
   {
     "id": 18,
@@ -194,8 +194,8 @@
     "precio": 40.0,
     "categoria": "Deportes",
     "imagen": "https://m.media-amazon.com/images/I/61J+fImqBTL._AC_SY695_.jpg",
-    "latitud": "",
-    "longitud": ""
+    "latitud": "4.613930019015963",
+    "longitud": "-74.09547646943852"
   },
   {
     "id": 19,
@@ -205,8 +205,8 @@
     "precio": 200.0,
     "categoria": "Deportes",
     "imagen": "https://m.media-amazon.com/images/I/71X+l+AirLL._AC_SX679_.jpg",
-    "latitud": "",
-    "longitud": ""
+    "latitud": "4.613930019015963",
+    "longitud": "-74.09547646943852"
   },
   {
     "id": 20,
@@ -216,7 +216,7 @@
     "precio": 50.0,
     "categoria": "Deportes",
     "imagen": "https://m.media-amazon.com/images/I/61jau6tusOL.__AC_SX300_SY300_QL70_FMwebp_.jpg",
-    "latitud": "",
-    "longitud": ""
+    "latitud": "4.7026831425249025",
+    "longitud": "-74.0411204928239"
   }
 ]
