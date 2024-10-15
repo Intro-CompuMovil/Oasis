@@ -67,15 +67,16 @@ class RepartidorInicio : AppCompatActivity() {
         rvSolicitudes.layoutManager = LinearLayoutManager(this)
         val dataBaseSimulator = DataBaseSimulator(this)
         solicitudes = dataBaseSimulator.getSolicitudesActivas()
-        val haySolicitudActiva = solicitudes.find { it.getRepartidor()?.getEmail() == repartidor.getEmail() }
+        /*val haySolicitudActiva = solicitudes.find { it.getRepartidor()?.getEmail() == repartidor.getEmail() }
         if (haySolicitudActiva != null) {
             Intent(this, RepartidorEntrega::class.java).also {
                 it.putExtra("solicitud", haySolicitudActiva)
                 startActivity(it)
-            }
-        }else{
+            }*/
+        /*}else{
             loadSolicitudes()
-        }
+        }*/
+        loadSolicitudes()
     }
 
     private fun loadSolicitudes() {
@@ -83,7 +84,7 @@ class RepartidorInicio : AppCompatActivity() {
             getLastLocation { location ->
                 val ubicacion = Ubicacion(location?.latitude ?: 0.0, location?.longitude ?: 0.0, "")
                 val solicitudesOrdenadas = orderSolicitudesByDistance(solicitudes, ubicacion)
-                rvSolicitudes.adapter = RepartidorInicioAdapter(this, solicitudesOrdenadas, ubicacion)
+                rvSolicitudes.adapter = RepartidorInicioAdapter(this, solicitudesOrdenadas, ubicacion, repartidor)
             }
         } else {
             requestLocationPermission()
@@ -128,7 +129,7 @@ class RepartidorInicio : AppCompatActivity() {
             }else{
                 Toast.makeText(this, "Necesita dar permiso para ubicar solicitudes cercanas", Toast.LENGTH_LONG).show()
                 if ( rvSolicitudes.adapter == null){
-                    rvSolicitudes.adapter = RepartidorInicioAdapter(this, solicitudes, null)
+                    rvSolicitudes.adapter = RepartidorInicioAdapter(this, solicitudes, null, repartidor)
                 }
             }
         }

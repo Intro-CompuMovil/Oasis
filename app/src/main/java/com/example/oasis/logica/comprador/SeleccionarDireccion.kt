@@ -56,7 +56,6 @@ class SeleccionarDireccion : DialogFragment() {
         btnAgregarDireccion.setOnClickListener {
             val nuevaDireccion = etNuevaDireccion.text.toString()
             if (nuevaDireccion.isNotEmpty()){
-                val adressList = geoCoder.getFromLocationName(nuevaDireccion, 1)
                 agregarDireccion(nuevaDireccion)
             }
         }

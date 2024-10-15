@@ -35,11 +35,9 @@ class RepartidorSolicitudDetalles : AppCompatActivity() {
 
     private fun initUI(){
         solicitud = intent.getSerializableExtra("solicitud") as Solicitud
-        val tvDistanciaFinal = findViewById<TextView>(R.id.tvRepartidorSolicitudDistanciaFinalProductos)
         val tvComision = findViewById<TextView>(R.id.tvRepartidorSolicitudComision)
         val tvDireccion = findViewById<TextView>(R.id.tvRepartidorSolicitudDireccion)
 
-        tvDistanciaFinal.text = "8.5Km"
         tvComision.text = solicitud.getTotal().toString()
         tvDireccion.text = solicitud.getUbicacion().getDireccion()
 

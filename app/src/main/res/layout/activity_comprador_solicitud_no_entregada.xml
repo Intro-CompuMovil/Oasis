@@ -41,99 +41,161 @@
             android:textSize="16sp"/>
     </LinearLayout>
 
-    <ImageView
+    <org.osmdroid.views.MapView
+        android:id="@+id/osmMap"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:src="@drawable/map"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/header"
-        app:layout_constraintBottom_toTopOf="@+id/rlSolicitudNoEntregada"/>
+        app:layout_constraintBottom_toTopOf="@+id/footer"/>
 
-
-    <RelativeLayout
-        android:id="@+id/rlSolicitudNoEntregada"
-        android:layout_width="match_parent"
+    <FrameLayout
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="20dp"
-        android:layout_marginVertical="10dp"
-        android:padding="10dp"
-        android:background="@drawable/solicitud_no_entregada"
-        app:layout_constraintBottom_toTopOf="@+id/footer"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
-
-        <ImageView
-            android:id="@+id/ivSolicitudNoEntregada"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/button_footer"
-            android:scaleType="centerCrop"
-            android:src="@drawable/binoculars" />
+        android:layout_marginEnd="10dp"
+        app:layout_constraintBottom_toTopOf="@+id/frameLayout2"
+        app:layout_constraintEnd_toEndOf="parent">
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentEnd="true"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="10dp"
-            android:layout_toEndOf="@+id/ivSolicitudNoEntregada">
+            android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/tvSolicitudEstadoRepartidor"
-                android:layout_width="match_parent"
+            <ImageButton
+                android:id="@+id/location_button"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/map_controls_buttons"
+                android:padding="10dp"
+                android:scaleType="centerInside"
+                android:src="@drawable/crosshair"
+                app:tint="#E0E0E0" />
+
+            <ImageButton
+                android:id="@+id/zoom_in_button"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/map_controls_buttons"
+                android:padding="10dp"
+                android:scaleType="centerInside"
+                android:src="@drawable/plus_1"
+                app:tint="#E0E0E0" />
+
+            <ImageButton
+                android:id="@+id/zoom_out_button"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:background="@drawable/map_controls_buttons"
+                android:padding="10dp"
+                android:scaleType="centerInside"
+                android:src="@drawable/minus_1"
+                app:tint="#E0E0E0" />
+        </LinearLayout>
+    </FrameLayout>
+
+
+    <FrameLayout
+        android:id="@+id/frameLayout2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@+id/footer"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <RelativeLayout
+            android:id="@+id/rlSolicitudNoEntregada"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginVertical="10dp"
+            android:background="@drawable/solicitud_no_entregada"
+            android:padding="10dp">
+
+            <ImageView
+                android:id="@+id/ivSolicitudNoEntregada"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/button_footer"
+                android:scaleType="centerInside"
+                android:src="@drawable/binoculars" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Buscanco repartidor..."
-                android:textAlignment="center"
-                android:textColor="@color/textColorSecondary"/>
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_toEndOf="@+id/ivSolicitudNoEntregada"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tvSolicitudEstadoRepartidor"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Buscanco repartidor..."
+                    android:textAlignment="center"
+                    android:textColor="@color/textColorSecondary" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingVertical="10dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Costo total: "
+                        android:textColor="@color/textColorSecondary" />
+
+                    <TextView
+                        android:id="@+id/tvSolicitudCostoTotal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/textColorSecondary" />
+                </LinearLayout>
+
+            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_below="@+id/ivSolicitudNoEntregada"
+                android:layout_marginHorizontal="10dp"
                 android:paddingVertical="10dp">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Costo total: "
-                    android:textColor="@color/textColorSecondary"/>
+                    android:text="Estado: "
+                    android:textColor="@color/textColorSecondary" />
+
                 <TextView
-                    android:id="@+id/tvSolicitudCostoTotal"
+                    android:id="@+id/tvSolicitudEstado"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/textColorSecondary"/>
+                    android:textColor="@color/textColorSecondary" />
+
+                <Button
+                    android:id="@+id/btnEstadoSolicitud"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/button_footer"
+                    android:layout_marginStart="10dp"
+                    android:text="Ver solicitud"
+                    app:backgroundTint="@null" />
             </LinearLayout>
 
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="10dp"
-            android:layout_below="@+id/ivSolicitudNoEntregada"
-            android:paddingVertical="10dp">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Estado: "
-                android:textColor="@color/textColorSecondary" />
-
-            <TextView
-                android:id="@+id/tvSolicitudEstado"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/textColorSecondary" />
-        </LinearLayout>
-
-    </RelativeLayout>
-
+        </RelativeLayout>
+    </FrameLayout>
 
     <LinearLayout
         android:id="@+id/footer"

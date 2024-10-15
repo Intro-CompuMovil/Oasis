@@ -66,6 +66,7 @@ dependencies {
     implementation(libs.kotlinx.coroutines.core)
     implementation(libs.kotlinx.coroutines.android)
     implementation(libs.osmdroid.android)
+    implementation (libs.osmbonuspack)
     implementation (libs.gson)
     implementation (libs.glide)
     annotationProcessor (libs.compiler)

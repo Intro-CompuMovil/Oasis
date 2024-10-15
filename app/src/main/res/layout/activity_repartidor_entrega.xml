@@ -41,137 +41,208 @@
             android:textSize="16sp"/>
     </LinearLayout>
 
-    <ImageView
+    <org.osmdroid.views.MapView
+        android:id="@+id/osmMap"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:src="@drawable/map"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/header"
-        app:layout_constraintBottom_toTopOf="@+id/rlSolicitudNoEntregada"/>
+        app:layout_constraintBottom_toTopOf="@+id/footer" />
 
-
-    <RelativeLayout
-        android:id="@+id/rlSolicitudNoEntregada"
-        android:layout_width="match_parent"
+    <FrameLayout
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="20dp"
-        android:layout_marginVertical="10dp"
-        android:padding="10dp"
-        android:background="@drawable/solicitud_no_entregada"
-        app:layout_constraintBottom_toTopOf="@+id/footer"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
-
-        <ImageButton
-            android:id="@+id/ibSolicitudNoEntregada"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/button_footer"
-            android:scaleType="centerCrop"
-            android:src="@drawable/add_photo" />
+        android:layout_marginEnd="10dp"
+        app:layout_constraintBottom_toTopOf="@+id/frameLayout"
+        app:layout_constraintEnd_toEndOf="parent">
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentEnd="true"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="10dp"
-            android:layout_toEndOf="@+id/ibSolicitudNoEntregada">
+            android:orientation="vertical">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Distancia total: "
-                    android:textColor="@color/textColorSecondary"/>
-                <TextView
-                    android:id="@+id/tvSolicitudDistanciaTotal"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/textColorSecondary"/>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Km"
-                    android:textColor="@color/textColorSecondary"/>
-            </LinearLayout>
+            <ImageButton
+                android:id="@+id/location_button"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:padding="10dp"
+                android:background="@drawable/map_controls_buttons"
+                android:src="@drawable/crosshair"
+                android:scaleType="centerInside"
+                android:layout_marginBottom="10dp"
+                app:tint="#E0E0E0" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingVertical="10dp">
+            <ImageButton
+                android:id="@+id/zoom_in_button"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:padding="10dp"
+                android:background="@drawable/map_controls_buttons"
+                android:src="@drawable/plus_1"
+                android:scaleType="centerInside"
+                android:layout_marginBottom="10dp"
+                app:tint="#E0E0E0"/>
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Comisión: "
-                    android:textColor="@color/textColorSecondary"/>
-                <TextView
-                    android:id="@+id/tvSolicitudComision"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/textColorSecondary"/>
-            </LinearLayout>
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="¿Productos recogidos?"
-                android:textAlignment="center"
-                android:textColor="@color/textColorSecondary"/>
-
-            <RadioGroup
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center">
-
-                <RadioButton
-                    android:id="@+id/rbSolicitudProductosRecogidosSi"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="10dp"
-                    app:buttonTint="@color/white"
-
-                    app:backgroundTint="@null"
-                    android:text="Si"
-                    android:textColor="@color/textColorSecondary"/>
-
-                <RadioButton
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:buttonTint="@color/white"
-                    android:text="No"
-                    android:textColor="@color/textColorSecondary"/>
-
-            </RadioGroup>
-
+            <ImageButton
+                android:id="@+id/zoom_out_button"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:padding="10dp"
+                android:background="@drawable/map_controls_buttons"
+                android:src="@drawable/minus_1"
+                android:scaleType="centerInside"
+                app:tint="#E0E0E0"/>
         </LinearLayout>
+    </FrameLayout>
 
-        <Button
-            android:id="@+id/btnRepartidorSolicitudFinalizar"
-            android:layout_width="wrap_content"
+
+    <FrameLayout
+        android:id="@+id/frameLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@+id/footer"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <RelativeLayout
+            android:id="@+id/rlSolicitudNoEntregada"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/ibSolicitudNoEntregada"
-            android:layout_alignParentStart="true"
-            android:layout_marginTop="10dp"
-            android:layout_marginStart="10dp"
-            android:background="@drawable/button_footer"
-            android:text="Finalizar"
-            app:backgroundTint="@null" />
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginVertical="10dp"
+            android:background="@drawable/solicitud_no_entregada"
+            android:padding="10dp"
+            app:layout_constraintBottom_toTopOf="@+id/footer"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
 
-    </RelativeLayout>
+            <ImageButton
+                android:id="@+id/ibSolicitudNoEntregada"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/button_footer"
+                android:scaleType="centerInside"
+                android:src="@drawable/add_photo" />
 
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_toEndOf="@+id/ibSolicitudNoEntregada"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Ordenes recogidas: "
+                        android:textColor="@color/textColorSecondary" />
+
+                    <TextView
+                        android:id="@+id/tvSolicitudProductosRecogidos"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/textColorSecondary" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingVertical="10dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Comisión: "
+                        android:textColor="@color/textColorSecondary" />
+
+                    <TextView
+                        android:id="@+id/tvSolicitudComision"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/textColorSecondary" />
+                </LinearLayout>
+
+                <!--<LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Ordenes recogidas: "
+                        android:textColor="@color/textColorSecondary" />
+
+                    <TextView
+                        android:id="@+id/tvSolicitudProductosRecogidos"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+                </LinearLayout>-->
+
+                <!--<RadioGroup
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <RadioButton
+                        android:id="@+id/rbSolicitudProductosRecogidosSi"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:text="Si"
+
+                        android:textColor="@color/textColorSecondary"
+                        app:backgroundTint="@null"
+                        app:buttonTint="@color/white" />
+
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="No"
+                        android:textColor="@color/textColorSecondary"
+                        app:buttonTint="@color/white" />
+
+                </RadioGroup>-->
+
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/btnRepartidorSolicitudFinalizar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/ibSolicitudNoEntregada"
+                android:layout_alignParentStart="true"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/button_footer"
+                android:text="Finalizar"
+                app:backgroundTint="@null" />
+
+            <Button
+                android:id="@+id/btnEstadoSolicitud"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/btnRepartidorSolicitudFinalizar"
+                android:layout_toEndOf="@+id/btnRepartidorSolicitudFinalizar"
+                android:background="@drawable/button_footer"
+                android:layout_marginStart="10dp"
+                android:text="Ver solicitud"
+                app:backgroundTint="@null" />
+
+        </RelativeLayout>
+    </FrameLayout>
 
     <LinearLayout
         android:id="@+id/footer"

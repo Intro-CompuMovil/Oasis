@@ -126,7 +126,7 @@ class DataBaseSimulator(private val context: Context) {
         val jsonFileString = AppUtilityHelper.loadJSONFromExternalStorage(context, solicitudesJson)
         val listSolicitudType = object : TypeToken<MutableList<Solicitud>>() {}.type
         val solicitudes = gson.fromJson<MutableList<Solicitud>>(jsonFileString, listSolicitudType)
-        val index = solicitudes.indexOfFirst { it.getId() == solicitud.getId() }
+        val index = solicitudes.indexOfFirst { it.getFecha() == solicitud.getFecha() }
         if (index == -1) {
             return false
         }

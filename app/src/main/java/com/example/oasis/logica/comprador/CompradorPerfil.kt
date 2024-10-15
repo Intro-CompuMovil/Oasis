@@ -193,27 +193,27 @@ class CompradorPerfil : AppCompatActivity() {
     }
 
     private fun showImageChooser() {
-    val chooserIntent = Intent.createChooser(Intent(), "Selecciona una opción")
-    val intentArray = mutableListOf<Intent>()
+        val chooserIntent = Intent.createChooser(Intent(), "Selecciona una opción")
+        val intentArray = mutableListOf<Intent>()
 
-    if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
-        val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-        val tmpPictureFile = AppUtilityHelper.createTempPictureFile(this)
-        photoUri = FileProvider.getUriForFile(this, "com.example.oasis.fileprovider", tmpPictureFile)
-        takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri)
-        intentArray.add(takePictureIntent)
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
+            val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+            val tmpPictureFile = AppUtilityHelper.createTempPictureFile(this)
+            photoUri = FileProvider.getUriForFile(this, "com.example.oasis.fileprovider", tmpPictureFile)
+            takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri)
+            intentArray.add(takePictureIntent)
+        }
+
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+            val pickPhotoIntent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+            intentArray.add(pickPhotoIntent)
+        }
+
+        chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, intentArray.toTypedArray())
+
+        // Lanzar el chooser
+        imageChooserLauncher.launch(chooserIntent)
     }
-
-    if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
-        val pickPhotoIntent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
-        intentArray.add(pickPhotoIntent)
-    }
-
-    chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, intentArray.toTypedArray())
-
-    // Lanzar el chooser
-    imageChooserLauncher.launch(chooserIntent)
-}
 
     // Registrar el ActivityResultLauncher para manejar el resultado
     private val imageChooserLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->

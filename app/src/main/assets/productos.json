@@ -1,182 +1,222 @@
 [
   {
-    "id": 1,
+    "idProducto": 1,
     "nombre": "Laptop",
     "descripcion": "Laptop HP",
     "puntaje": 4.7,
     "precio": 1000.0,
     "categoria": "Tecnología",
-    "imagen": "https://m.media-amazon.com/images/I/91UaM92H1dL._AC_SX450_.jpg"
+    "imagen": "https://m.media-amazon.com/images/I/91UaM92H1dL._AC_SX450_.jpg",
+    "productoLatitud": 4.642095,
+    "productoLongitud": -74.113714
   },
   {
-    "id": 2,
+    "idProducto": 2,
     "nombre": "Smartphone",
     "descripcion": "Smartphone Samsung",
     "puntaje": 4.5,
     "precio": 500.0,
     "categoria": "Tecnología",
-    "imagen": ""
+    "imagen": "https://m.media-amazon.com/images/I/51PtFHUPjBL.__AC_SX300_SY300_QL70_FMwebp_.jpg",
+    "productoLatitud": 4.647011,
+    "productoLongitud": -74.115402
   },
   {
-    "id": 3,
+    "idProducto": 3,
     "nombre": "Tablet",
     "descripcion": "Tablet Lenovo",
     "puntaje": 4.3,
     "precio": 300.0,
     "categoria": "Tecnología",
-    "imagen": ""
+    "imagen": "https://m.media-amazon.com/images/I/61PnHlc0HCL.__AC_SY445_SX342_QL70_FMwebp_.jpg",
+    "productoLatitud": 4.668909,
+    "productoLongitud": -74.052497
   },
   {
-    "id": 4,
+    "idProducto": 4,
     "nombre": "Smartwatch",
     "descripcion": "Smartwatch Xiaomi",
     "puntaje": 4.2,
     "precio": 200.0,
     "categoria": "Tecnología",
-    "imagen": ""
+    "imagen": "https://m.media-amazon.com/images/I/711f6KLsMaL._AC_SX679_.jpg",
+    "productoLatitud": 4.658827,
+    "productoLongitud": -74.057860
   },
   {
-    "id": 5,
+    "idProducto": 5,
     "nombre": "Audífonos",
     "descripcion": "Audífonos Sony",
     "puntaje": 4.1,
     "precio": 100.0,
     "categoria": "Tecnología",
-    "imagen": ""
+    "imagen": "https://m.media-amazon.com/images/I/41+1Csr1pSL._AC_SY300_SX300_.jpg",
+    "productoLatitud": 4.715869,
+    "productoLongitud": -74.029102
   },
   {
-    "id": 6,
+    "idProducto": 6,
     "nombre": "Sofá",
     "descripcion": "Sofá de 3 plazas",
     "puntaje": 4.8,
     "precio": 800.0,
     "categoria": "Hogar",
-    "imagen": ""
+    "imagen": "https://m.media-amazon.com/images/I/61-YZAc9zeL.__AC_SX300_SY300_QL70_FMwebp_.jpg",
+    "productoLatitud": 4.701952,
+    "productoLongitud": -74.041364
   },
   {
-    "id": 7,
+    "idProducto": 7,
     "nombre": "Mesa",
     "descripcion": "Mesa de comedor",
     "puntaje": 4.6,
     "precio": 400.0,
     "categoria": "Hogar",
-    "imagen": ""
+    "imagen": "https://m.media-amazon.com/images/I/51UMEm+pkcL._AC_SX679_.jpg",
+    "productoLatitud": 4.712835,
+    "productoLongitud": -74.071793
   },
   {
-    "id": 8,
+    "idProducto": 8,
     "nombre": "Silla",
     "descripcion": "Silla de oficina",
     "puntaje": 4.4,
     "precio": 200.0,
     "categoria": "Hogar",
-    "imagen": ""
+    "imagen": "https://m.media-amazon.com/images/I/71i08qnZeDL._AC_SX679_.jpg",
+    "productoLatitud": 4.719835,
+    "productoLongitud": -74.071793
   },
   {
-    "id": 9,
+    "idProducto": 9,
     "nombre": "Cama",
     "descripcion": "Cama matrimonial",
     "puntaje": 4.3,
     "precio": 600.0,
     "categoria": "Hogar",
-    "imagen": ""
+    "imagen": "https://m.media-amazon.com/images/I/81lTUWPc4oL.__AC_SX300_SY300_QL70_FMwebp_.jpg",
+    "productoLatitud": 4.733150,
+    "productoLongitud": -74.066686
   },
   {
-    "id": 10,
+    "idProducto": 10,
     "nombre": "Escritorio",
     "descripcion": "Escritorio de madera",
     "puntaje": 4.2,
     "precio": 300.0,
     "categoria": "Hogar",
-    "imagen": ""
+    "imagen": "https://m.media-amazon.com/images/I/81ioD6WoCeL.__AC_SX300_SY300_QL70_FMwebp_.jpg",
+    "productoLatitud": 4.739150,
+    "productoLongitud": -74.066686
   },
   {
-    "id": 11,
+    "idProducto": 11,
     "nombre": "Camisa",
     "descripcion": "Camisa de vestir",
     "puntaje": 4.7,
     "precio": 50.0,
     "categoria": "Moda",
-    "imagen": ""
+    "imagen": "https://m.media-amazon.com/images/I/51rkKPruYvL._AC_SX569_.jpg",
+    "productoLatitud": 4.695037,
+    "productoLongitud": -74.086947
   },
   {
-    "id": 12,
+    "idProducto": 12,
     "nombre": "Pantalón",
     "descripcion": "Pantalón de mezclilla",
     "puntaje": 4.5,
     "precio": 40.0,
     "categoria": "Moda",
-    "imagen": ""
+    "imagen": "https://m.media-amazon.com/images/I/71u-r5z+keL._AC_SX679_.jpg",
+    "productoLatitud": 4.701037,
+    "productoLongitud": -74.086947
   },
   {
-    "id": 13,
+    "idProducto": 13,
     "nombre": "Zapatos",
     "descripcion": "Zapatos de piel",
     "puntaje": 4.3,
     "precio": 60.0,
     "categoria": "Moda",
-    "imagen": ""
+    "imagen": "https://m.media-amazon.com/images/I/71k2ZobLduL._AC_SY695_.jpg",
+    "productoLatitud": 4.680794,
+    "productoLongitud": -74.081179
   },
   {
-    "id": 14,
+    "idProducto": 14,
     "nombre": "Chamarra",
     "descripcion": "Chamarra de cuero",
     "puntaje": 4.2,
     "precio": 70.0,
     "categoria": "Moda",
-    "imagen": ""
+    "imagen": "https://m.media-amazon.com/images/I/71zwwEe2nLL._AC_SX679_.jpg",
+    "productoLatitud": 4.689794,
+    "productoLongitud": -74.081179
   },
   {
-    "id": 15,
+    "idProducto": 15,
     "nombre": "Reloj",
     "descripcion": "Reloj de pulsera",
     "puntaje": 4.1,
     "precio": 30.0,
     "categoria": "Moda",
-    "imagen": ""
+    "imagen": "https://m.media-amazon.com/images/I/61TLVPYrx5L._AC_SY695_.jpg",
+    "productoLatitud": 4.665767,
+    "productoLongitud": -74.057975
   },
   {
-    "id": 16,
+    "idProducto": 16,
     "nombre": "Balón",
     "descripcion": "Balón de fútbol",
     "puntaje": 4.8,
     "precio": 20.0,
     "categoria": "Deportes",
-    "imagen": ""
+    "imagen": "https://m.media-amazon.com/images/I/71RyK2qVMWL.__AC_SX300_SY300_QL70_FMwebp_.jpg",
+    "productoLatitud": 4.672767,
+    "productoLongitud": -74.057975
   },
   {
-    "id": 17,
+    "idProducto": 17,
     "nombre": "Raqueta",
     "descripcion": "Raqueta de tenis",
     "puntaje": 4.6,
     "precio": 30.0,
     "categoria": "Deportes",
-    "imagen": ""
+    "imagen": "https://m.media-amazon.com/images/I/71NjVS5BeEL.__AC_SX300_SY300_QL70_FMwebp_.jpg",
+    "productoLatitud": 4.600115,
+    "productoLongitud": -74.078211
   },
   {
-    "id": 18,
+    "idProducto": 18,
     "nombre": "Tenis",
     "descripcion": "Tenis para correr",
     "puntaje": 4.4,
     "precio": 40.0,
     "categoria": "Deportes",
-    "imagen": ""
+    "imagen": "https://m.media-amazon.com/images/I/61J+fImqBTL._AC_SY695_.jpg",
+    "productoLatitud": 4.613930,
+    "productoLongitud": -74.095476
   },
   {
-    "id": 19,
+    "idProducto": 19,
     "nombre": "Bicicleta",
     "descripcion": "Bicicleta de montaña",
     "puntaje": 4.3,
     "precio": 200.0,
     "categoria": "Deportes",
-    "imagen": ""
+    "imagen": "https://m.media-amazon.com/images/I/71X+l+AirLL._AC_SX679_.jpg",
+    "productoLatitud": 4.619930,
+    "productoLongitud": -74.095476
   },
   {
-    "id": 20,
+    "idProducto": 20,
     "nombre": "Pesas",
     "descripcion": "Pesas de 5 kg",
     "puntaje": 4.2,
     "precio": 50.0,
     "categoria": "Deportes",
-    "imagen": ""
+    "imagen": "https://m.media-amazon.com/images/I/61jau6tusOL.__AC_SX300_SY300_QL70_FMwebp_.jpg",
+    "productoLatitud": 4.702683,
+    "productoLongitud": -74.041120
   }
 ]

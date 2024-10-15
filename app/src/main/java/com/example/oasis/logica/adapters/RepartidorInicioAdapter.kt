@@ -8,17 +8,20 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.oasis.R
+import com.example.oasis.logica.db.DataBaseSimulator
 import com.example.oasis.logica.repartidor.RepartidorEntrega
 import com.example.oasis.logica.repartidor.RepartidorSolicitudDetalles
 import com.example.oasis.logica.utility.AppUtilityHelper
 import com.example.oasis.logica.utility.DateHelper
+import com.example.oasis.model.Repartidor
 import com.example.oasis.model.Solicitud
 import com.example.oasis.model.Ubicacion
 
 class RepartidorInicioAdapter(
     private val context: Context,
     private val solicitudes: List<Solicitud>,
-    private val repartidorUbicacion: Ubicacion?
+    private val repartidorUbicacion: Ubicacion?,
+    private val repartidor: Repartidor
 ) : RecyclerView.Adapter<RepartidorInicioAdapter.RepartidorViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RepartidorViewHolder {
@@ -35,6 +38,8 @@ class RepartidorInicioAdapter(
         holder.fecha.text = DateHelper().getDateWithHour(solicitud.getFecha())
 
         holder.itemView.setOnClickListener {
+            solicitud.setRepartidor(repartidor)
+            DataBaseSimulator(context).actualizarSolicitud(solicitud)
             Intent(context, RepartidorSolicitudDetalles::class.java).apply {
                 putExtra("solicitud", solicitud)
                 context.startActivity(this)

@@ -35,6 +35,7 @@ class MainActivity : AppCompatActivity() {
                 carrito.forEach { if (it.getProducto().getId()==order.getProducto().getId()) it.setCantidad(order.getCantidad()) }
                 return false
             }
+            order.setEstadoOrden("No recogido")
             carrito.add(order)
             return true
         }

@@ -7,4 +7,6 @@
     <color name="oasis_verde_principal">#4BAE4F</color>
     <color name="oasis_verde_secundario">#804BAE4F</color>
     <color name="blanco_fondo">#F5F5F5</color>
+    <color name="rojo">#9D1616</color>
+    <color name="verde">#4BAE4F</color>
 </resources>
