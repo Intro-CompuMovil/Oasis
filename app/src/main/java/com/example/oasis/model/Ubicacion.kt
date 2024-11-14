@@ -7,6 +7,13 @@ class Ubicacion(
     private var longitud: Double,
     private var direccion: String
 ): Serializable {
+
+    constructor(): this(
+        0.0,
+        0.0,
+        ""
+    )
+
     fun getLatitud(): Double{
         return latitud
     }

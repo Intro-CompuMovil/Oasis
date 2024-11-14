@@ -13,6 +13,19 @@ class Product(
     private var productoLatitud: Double,
     private var productoLongitud: Double
 ):Serializable {
+
+    constructor(): this(
+        0,
+        "",
+        "",
+        0.0F,
+        0.0,
+        "",
+        "",
+        0.0,
+        0.0
+    )
+
     // Getters
     fun getId(): Int {
         return idProducto

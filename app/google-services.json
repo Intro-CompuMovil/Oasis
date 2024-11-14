@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "912473107448",
+    "firebase_url": "https://proyecto-e1852-default-rtdb.firebaseio.com",
+    "project_id": "proyecto-e1852",
+    "storage_bucket": "proyecto-e1852.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:912473107448:android:f9d6e29144d6e4149a440d",
+        "android_client_info": {
+          "package_name": "com.example.oasis"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCXb4rnqmBIRddavIHRg53Y4iOW4EJoxCA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

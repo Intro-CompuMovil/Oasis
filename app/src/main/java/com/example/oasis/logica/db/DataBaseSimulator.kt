@@ -7,7 +7,6 @@ import com.example.oasis.model.Comprador
 import com.example.oasis.model.Product
 import com.example.oasis.model.Repartidor
 import com.example.oasis.model.Solicitud
-import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.google.gson.reflect.TypeToken
 import java.time.LocalDateTime
@@ -126,7 +125,7 @@ class DataBaseSimulator(private val context: Context) {
         val jsonFileString = AppUtilityHelper.loadJSONFromExternalStorage(context, solicitudesJson)
         val listSolicitudType = object : TypeToken<MutableList<Solicitud>>() {}.type
         val solicitudes = gson.fromJson<MutableList<Solicitud>>(jsonFileString, listSolicitudType)
-        val index = solicitudes.indexOfFirst { it.getFecha() == solicitud.getFecha() }
+        val index = solicitudes.indexOfFirst { it.getFechaAsLocalDateTime() == solicitud.getFechaAsLocalDateTime() }
         if (index == -1) {
             return false
         }

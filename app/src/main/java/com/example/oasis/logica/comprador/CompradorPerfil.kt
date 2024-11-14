@@ -30,6 +30,7 @@ import com.example.oasis.MainActivity
 import com.example.oasis.R
 import com.example.oasis.datos.Data
 import com.example.oasis.logica.db.DataBaseSimulator
+import com.example.oasis.logica.db.FireBaseDataBase
 import com.example.oasis.logica.utility.AppUtilityHelper
 import com.example.oasis.logica.utility.FieldValidatorHelper
 import com.example.oasis.logica.utility.UIHelper
@@ -69,6 +70,8 @@ class CompradorPerfil : AppCompatActivity() {
         val btnSalir = findViewById<TextView>(R.id.btnSalir)
 
         btnSalir.setOnClickListener {
+            FireBaseDataBase().logout()
+            MainActivity.clearCarrito()
             Intent(this, MainActivity::class.java).also {
                 startActivity(it)
             }

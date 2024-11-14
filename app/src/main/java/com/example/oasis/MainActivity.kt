@@ -7,15 +7,18 @@ import android.widget.EditText
 import android.widget.RadioButton
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import com.example.oasis.logica.Registrarse
 import com.example.oasis.logica.comprador.CompradorInicio
 import com.example.oasis.logica.db.DataBaseSimulator
+import com.example.oasis.logica.db.FireBaseDataBase
 import com.example.oasis.logica.repartidor.RepartidorInicio
 import com.example.oasis.logica.utility.AppUtilityHelper
 import com.example.oasis.logica.utility.FieldValidatorHelper
 import com.example.oasis.model.Order
 import com.example.oasis.model.Product
 import com.example.oasis.model.Solicitud
+import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
     companion object{
@@ -96,24 +99,39 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun iniciarSesionComprador(email: String, password: String){
-        val comprador = dataBaseSimulator.loginComprador(email, password)
-        if (comprador != null){
-            CompradorInicio.comprador = comprador
-            val intent = Intent(this, CompradorInicio::class.java)
-            startActivity(intent)
-        }else{
-            AppUtilityHelper.showErrorDialog(this,  "Usuario o contraseña incorrectos")
+        val dataBase = FireBaseDataBase()
+        lifecycleScope.launch {
+            if (dataBase.loginUser(email, password)){
+                val comprador = dataBase.getComprador()
+                if (comprador != null){
+                    CompradorInicio.comprador = comprador
+                    val intent = Intent(this@MainActivity, CompradorInicio::class.java)
+                    startActivity(intent)
+                } else{
+                    AppUtilityHelper.showErrorDialog(this@MainActivity,  "Error al obtener el comprador")
+                }
+            } else{
+                AppUtilityHelper.showErrorDialog(this@MainActivity,  "Usuario o contraseña incorrectos")
+            }
         }
+
     }
 
     private fun iniciarSesionRepartidor(email: String, password: String){
-        val repartidor = dataBaseSimulator.loginRepartidor(email, password)
-        if (repartidor != null){
-            RepartidorInicio.repartidor = repartidor
-            val intent = Intent(this, RepartidorInicio::class.java)
-            startActivity(intent)
-        } else{
-            AppUtilityHelper.showErrorDialog(this,  "Usuario o contraseña incorrectos")
+        val dataBase = FireBaseDataBase()
+        lifecycleScope.launch {
+            if (dataBase.loginUser(email, password)){
+                val repartidor = dataBase.getRepartidor()
+                if (repartidor != null){
+                    RepartidorInicio.repartidor = repartidor
+                    val intent = Intent(this@MainActivity, RepartidorInicio::class.java)
+                    startActivity(intent)
+                } else{
+                    AppUtilityHelper.showErrorDialog(this@MainActivity,  "Error al obtener el repartidor")
+                }
+            } else{
+                AppUtilityHelper.showErrorDialog(this@MainActivity,  "Usuario o contraseña incorrectos")
+            }
         }
     }
     private fun initRegistrarse(){
@@ -143,5 +161,31 @@ class MainActivity : AppCompatActivity() {
         }else{passwordError.text = ""}
 
         return error
+    }
+
+    override fun onStart(){
+        super.onStart()
+
+        val currentUser = FireBaseDataBase().getCurrentComprador()
+        if (currentUser != null){
+            lifecycleScope.launch {
+                val user = FireBaseDataBase().getComprador()
+                if (user != null){
+                    CompradorInicio.comprador = user
+                    val intent = Intent(this@MainActivity, CompradorInicio::class.java)
+                    startActivity(intent)
+                } else{
+                    val repartidor = FireBaseDataBase().getRepartidor()
+                    if (repartidor != null){
+                        RepartidorInicio.repartidor = repartidor
+                        val intent = Intent(this@MainActivity, RepartidorInicio::class.java)
+                        startActivity(intent)
+                    }
+                    else{
+                        AppUtilityHelper.showErrorDialog(this@MainActivity,  "Error al obtener el usuario")
+                    }
+                }
+            }
+        }
     }
 }

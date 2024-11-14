@@ -7,6 +7,13 @@ class Order (
     private var cantidad: Int,
     private var estadoOrden: String
 ): Serializable{
+
+    constructor(): this(
+        Product(),
+        0,
+        ""
+    )
+
     // Getters
     fun getProducto(): Product {
         return producto

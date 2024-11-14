@@ -2,12 +2,13 @@ package com.example.oasis.model
 
 import java.io.Serializable
 import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 class Solicitud(
-    private var idSolicitud: Int,
+    private var idSolicitud: String,
     private var ordenes: List<Order>,
     private var total: Double,
-    private var fecha: LocalDateTime,
+    private var fecha: String,
     private var estadoSolicitud: String,
     private var ubicacion: Ubicacion,
     private var comprador: Comprador,
@@ -15,7 +16,45 @@ class Solicitud(
     private var repartidorLatitud: Double?,
     private var repartidorLongitud: Double?
 ): Serializable {
-    fun getId(): Int{
+
+    constructor(): this(
+        "",
+        mutableListOf(),
+        0.0,
+        "",
+        "",
+        Ubicacion(),
+        Comprador(),
+        null,
+        null,
+        null
+    )
+
+    constructor(
+        idSolicitud: String,
+        ordenes: List<Order>,
+        total: Double,
+        fecha: LocalDateTime,
+        estadoSolicitud: String,
+        ubicacion: Ubicacion,
+        comprador: Comprador,
+        repartidor: Repartidor?,
+        repartidorLatitud: Double?,
+        repartidorLongitud: Double?
+    ) : this(
+        idSolicitud,
+        ordenes,
+        total,
+        fecha.format(DateTimeFormatter.ISO_DATE_TIME),  // Convierte a formato ISO-8601
+        estadoSolicitud,
+        ubicacion,
+        comprador,
+        repartidor,
+        repartidorLatitud,
+        repartidorLongitud
+    )
+
+    fun getId(): String{
         return idSolicitud
     }
 
@@ -27,7 +66,11 @@ class Solicitud(
         return total
     }
 
-    fun getFecha(): LocalDateTime{
+    fun getFechaAsLocalDateTime(): LocalDateTime{
+        return LocalDateTime.parse(fecha, DateTimeFormatter.ISO_DATE_TIME)
+    }
+
+    fun getFecha(): String{
         return fecha
     }
 
@@ -55,7 +98,7 @@ class Solicitud(
         return repartidorLongitud
     }
 
-    fun setId(id: Int){
+    fun setId(id: String){
         this.idSolicitud = id
     }
 
@@ -67,7 +110,7 @@ class Solicitud(
         this.total = total
     }
 
-    fun setFecha(fecha: LocalDateTime){
+    fun setFecha(fecha: String){
         this.fecha = fecha
     }
 

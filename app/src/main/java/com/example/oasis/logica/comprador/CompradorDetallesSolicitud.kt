@@ -39,7 +39,7 @@ class CompradorDetallesSolicitud : AppCompatActivity() {
         subtotalProductos.text = subtotalProductosResultado.toString()
         otrosCobros.text = comision.toString()
         carritoTotal.text = solicitud.getTotal().toString()
-        fecha.text = DateHelper().getDateWithHour(solicitud.getFecha())
+        fecha.text = DateHelper().getDateWithHour(solicitud.getFechaAsLocalDateTime())
         estado.text = solicitud.getEstado()
     }
 

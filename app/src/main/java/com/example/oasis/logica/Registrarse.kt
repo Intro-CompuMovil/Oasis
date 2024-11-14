@@ -6,19 +6,19 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.RadioButton
 import android.widget.TextView
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
+import androidx.lifecycle.lifecycleScope
 import com.example.oasis.MainActivity
 import com.example.oasis.R
 import com.example.oasis.logica.comprador.CompradorInicio
 import com.example.oasis.logica.db.DataBaseSimulator
+import com.example.oasis.logica.db.FireBaseDataBase
 import com.example.oasis.logica.repartidor.RepartidorInicio
 import com.example.oasis.logica.utility.AppUtilityHelper
 import com.example.oasis.logica.utility.FieldValidatorHelper
 import com.example.oasis.model.Comprador
 import com.example.oasis.model.Repartidor
+import kotlinx.coroutines.launch
 
 class Registrarse : AppCompatActivity() {
     private lateinit var emailError: TextView
@@ -64,24 +64,36 @@ class Registrarse : AppCompatActivity() {
     }
 
     private fun registrarComprador(email: String, password: String, nombre: String){
-        val comprador = Comprador(-1, nombre, email, password, mutableListOf())
-        if (dataBaseSimulator.registerComprador(comprador)) {
-            CompradorInicio.comprador = comprador
-            val intent = Intent(this, CompradorInicio::class.java)
-            startActivity(intent)
-        } else{
-            AppUtilityHelper.showErrorDialog(this,  "El email ya está registrado")
+        val comprador = Comprador("", nombre, email, password, mutableListOf())
+        lifecycleScope.launch {
+            val dataBase = FireBaseDataBase()
+            dataBase.registerUser(comprador.getEmail(), comprador.getContrasena())
+            dataBase.createComprador(comprador)
+
+            if (comprador.getId().isNotEmpty()) {
+                CompradorInicio.comprador = comprador
+                val intent = Intent(this@Registrarse, CompradorInicio::class.java)
+                startActivity(intent)
+            } else{
+                AppUtilityHelper.showErrorDialog(this@Registrarse,  "El email ya está registrado")
+            }
         }
     }
 
     private fun registrarRepartidor(email: String, password: String, nombre: String){
-        val repartidor = Repartidor(-1, nombre, email, password)
-        if (dataBaseSimulator.registerRepartidor(repartidor)) {
-            RepartidorInicio.repartidor = repartidor
-            val intent = Intent(this, RepartidorInicio::class.java)
-            startActivity(intent)
-        } else{
-            AppUtilityHelper.showErrorDialog(this,  "El email ya está registrado")
+        val repartidor = Repartidor("1", nombre, email, password)
+        lifecycleScope.launch {
+            val dataBase = FireBaseDataBase()
+            dataBase.registerUser(repartidor.getEmail(), repartidor.getContrasena())
+            dataBase.createRepartidor(repartidor)
+
+            if (repartidor.getId().isNotEmpty()) {
+                RepartidorInicio.repartidor = repartidor
+                val intent = Intent(this@Registrarse, RepartidorInicio::class.java)
+                startActivity(intent)
+            } else{
+                AppUtilityHelper.showErrorDialog(this@Registrarse,  "El email ya está registrado")
+            }
         }
     }
     private fun initRegistrarse(){

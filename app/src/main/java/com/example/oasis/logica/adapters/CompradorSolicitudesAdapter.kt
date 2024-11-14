@@ -26,7 +26,7 @@ class CompradorSolicitudesAdapter(private val context: Context, private val soli
         holder.tvSolicitudEstado.text = request.getEstado()
         holder.tvSolicitudTotal.text = request.getTotal().toString()
         holder.tvCantidadProductos.text = request.getOrdenes().size.toString()
-        holder.tvSolicitudFecha.text = DateHelper().getDateWithHour(request.getFecha())
+        holder.tvSolicitudFecha.text = DateHelper().getDateWithHour(request.getFechaAsLocalDateTime())
 
         holder.itemView.setOnClickListener {
             if (request.getEstado() == "Entregado") {

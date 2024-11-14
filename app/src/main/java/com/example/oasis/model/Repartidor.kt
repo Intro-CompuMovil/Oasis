@@ -3,13 +3,21 @@ package com.example.oasis.model
 import java.io.Serializable
 
 class Repartidor (
-    private var idUsuario: Int,
+    private var idUsuario: String,
     private var nombre: String,
     private var email: String,
     private var contrasena: String
 ) : Serializable {
+
+    constructor(): this(
+        "",
+        "",
+        "",
+        ""
+    )
+
     // Getters
-    fun getId(): Int {
+    fun getId(): String {
         return idUsuario
     }
 
@@ -29,7 +37,7 @@ class Repartidor (
 
     // Setters
 
-    fun setId(id: Int) {
+    fun setId(id: String) {
         this.idUsuario = id
     }
 

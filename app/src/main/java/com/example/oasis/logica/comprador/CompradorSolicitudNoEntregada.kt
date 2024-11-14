@@ -4,13 +4,18 @@ import android.Manifest
 import android.app.Activity
 import android.app.UiModeManager
 import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Location
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
+import android.view.View
+import android.widget.FrameLayout
+import android.widget.ImageButton
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.IntentSenderRequest
@@ -21,7 +26,6 @@ import androidx.core.content.ContextCompat
 import com.example.oasis.BuildConfig
 import com.example.oasis.R
 import com.example.oasis.databinding.ActivityCompradorSolicitudNoEntregadaBinding
-import com.example.oasis.databinding.ActivityRepartidorEntregaBinding
 import com.example.oasis.datos.Data
 import com.example.oasis.logica.ListaEstadoSolicitud
 import com.example.oasis.logica.db.DataBaseSimulator
@@ -40,8 +44,12 @@ import com.google.android.gms.location.LocationSettingsResponse
 import com.google.android.gms.location.Priority
 import com.google.android.gms.location.SettingsClient
 import com.google.android.gms.tasks.Task
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import org.osmdroid.api.IMapController
-import org.osmdroid.bonuspack.routing.OSRMRoadManager
 import org.osmdroid.config.Configuration
 import org.osmdroid.events.MapListener
 import org.osmdroid.events.ScrollEvent
@@ -64,6 +72,8 @@ class CompradorSolicitudNoEntregada : AppCompatActivity() {
     private lateinit var binding: ActivityCompradorSolicitudNoEntregadaBinding
     private lateinit var solicitud: Solicitud
     private lateinit var dataBaseSimulator: DataBaseSimulator
+    private lateinit var solicitudRef: DatabaseReference
+    private lateinit var solicitudEventListener: ValueEventListener
     private lateinit var map: MapView
     private lateinit var mFusedLocationClient: FusedLocationProviderClient
     private lateinit var mLocationRequest: LocationRequest
@@ -89,15 +99,13 @@ class CompradorSolicitudNoEntregada : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_comprador_solicitud_no_entregada)
 
-        UIHelper().setupFooter(this)
-        UIHelper().setupHeader(this, "Solicitud en camino")
-
         Configuration.getInstance().setUserAgentValue(BuildConfig.APPLICATION_ID)
         binding = ActivityCompradorSolicitudNoEntregadaBinding.inflate(layoutInflater)
         setContentView(binding.root)
         map = binding.osmMap
         mapController = map.controller
 
+        UIHelper().setupFooter(this)
         dataBaseSimulator = DataBaseSimulator(this)
 
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
@@ -114,6 +122,8 @@ class CompradorSolicitudNoEntregada : AppCompatActivity() {
                     currentLocationMarker.icon = ContextCompat.getDrawable(this, R.drawable.marker_normal_icon)
                     updateMarker(it)
                     adjustMarkerSize(currentLocationMarker)
+                    mapController.setZoom(normalZoom)
+                    mapController.setCenter(currentLocationMarker.position)
 
                     initActivity()
                 }
@@ -148,8 +158,6 @@ class CompradorSolicitudNoEntregada : AppCompatActivity() {
 
     private fun updateMarker(location: Location){
         GeoPoint(location.latitude, location.longitude).let {
-            mapController.setZoom(normalZoom)
-            mapController.setCenter(it)
             currentLocationMarker.position = it
             currentLocationMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM)
             currentLocationMarker.title = "Ubicación actual"
@@ -213,11 +221,9 @@ class CompradorSolicitudNoEntregada : AppCompatActivity() {
     private fun initResumen(solicitud: Solicitud){
         val solicitudTotal = findViewById<TextView>(R.id.tvSolicitudCostoTotal)
         val estado = findViewById<TextView>(R.id.tvSolicitudEstado)
-        val solicitudDireccion = findViewById<TextView>(R.id.tvSolicitudDireccion)
 
         solicitudTotal.text = solicitud.getTotal().toString()
         estado.text = solicitud.getEstado()
-        solicitudDireccion.text = solicitud.getUbicacion().getDireccion()
     }
 
     private fun initDeliveryMarker(){
@@ -261,22 +267,24 @@ class CompradorSolicitudNoEntregada : AppCompatActivity() {
     }
 
     private fun initActualicacionesSolicitud(){
-        val handler = Handler(Looper.getMainLooper())
-        val runnable = object : Runnable {
-            override fun run() {
-                // Aquí revisa las actualizaciones en dataBaseSimulator
-                val solicitudes = dataBaseSimulator.getSolicitudesByUser(CompradorInicio.comprador.getEmail())
-                val updatedSolicitud = solicitudes.find { it.getFecha() == solicitud.getFecha() }
-                if (updatedSolicitud != null && updatedSolicitud != solicitud) {
+        val ref = FirebaseDatabase.getInstance().getReference(Data.PATH_DATABASE_SOLICITUDES)
+        solicitudRef = ref.child(solicitud.getId())
+
+        solicitudEventListener = (object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val updatedSolicitud = snapshot.getValue(Solicitud::class.java)
+                if (updatedSolicitud != null) {
                     checkActualizaciones(updatedSolicitud)
                     solicitud = updatedSolicitud
-                    initResumen(solicitud)
-
                 }
-                handler.postDelayed(this, 6000) // 6 segundos
             }
-        }
-        handler.post(runnable)
+
+            override fun onCancelled(error: DatabaseError) {
+                Log.e("FireBaseDataBase", "Error al obtener las solicitudes: $error")
+            }
+        })
+
+        solicitudRef.addValueEventListener(solicitudEventListener)
     }
 
     private fun checkActualizaciones(updatedSolicitud: Solicitud){
@@ -292,14 +300,18 @@ class CompradorSolicitudNoEntregada : AppCompatActivity() {
                 repartidorLocation.latitude = updatedSolicitud.getRepartidorLatitud()!!
                 repartidorLocation.longitude = updatedSolicitud.getRepartidorLongitud()!!
 
-                repartidorMarker = Marker(map)
-                repartidorMarker.icon = ContextCompat.getDrawable(this, R.drawable.marker_user_icon)
-                repartidorMarker.position = GeoPoint(repartidorLocation.latitude, repartidorLocation.longitude)
-                repartidorMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM)
-                repartidorMarker.title = "Ubicación del repartidor"
-                map.overlays.add(repartidorMarker)
+                actualizarPosicionSolicitud()
             }
         }
+    }
+
+    private fun actualizarPosicionSolicitud(){
+        repartidorMarker = Marker(map)
+        repartidorMarker.icon = ContextCompat.getDrawable(this, R.drawable.marker_user_icon)
+        repartidorMarker.position = GeoPoint(repartidorLocation.latitude, repartidorLocation.longitude)
+        repartidorMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM)
+        repartidorMarker.title = "Ubicación del repartidor"
+        map.overlays.add(repartidorMarker)
     }
 
     private fun actualizarPosicionRepartidor(updatedSolicitud: Solicitud){
@@ -375,5 +387,24 @@ class CompradorSolicitudNoEntregada : AppCompatActivity() {
 
         tvSolicitudEstadoRepartidor.text = "Sin acceso a ubicación"
         ivSolicitudNooEntregada.setImageResource(R.drawable.warning)
+    }
+
+    override fun onPause(){
+        super.onPause()
+        stopLocationUpdates()
+    }
+
+    private fun stopLocationUpdates() {
+        if (mLocationCallback != null) {
+            mFusedLocationClient.removeLocationUpdates(mLocationCallback)
+        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+
+        if(::solicitudRef.isInitialized){
+            solicitudRef.removeEventListener(solicitudEventListener)
+        }
     }
 }

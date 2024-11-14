@@ -3,19 +3,27 @@ package com.example.oasis.model
 import java.io.Serializable
 
 class Comprador(
-    private var idUsuario: Int,
+    private var idUsuario: String,
     private var nombre: String,
     private var email: String,
     private var contrasena: String,
     private var direcciones : MutableList<Ubicacion>
 ) : Serializable{
 
+    constructor() : this(
+        "",
+        "",
+        "",
+        "",
+        mutableListOf()
+    )
+
     fun agregarDireccion(direccion: Ubicacion){
         direcciones.add(direccion)
     }
 
     // Getters
-    fun getId(): Int {
+    fun getId(): String {
         return idUsuario
     }
 
@@ -31,13 +39,13 @@ class Comprador(
         return contrasena
     }
 
-    fun getDirecciones(): MutableList<Ubicacion> {
-        return direcciones
+    fun getDirecciones(): List<Ubicacion> {
+        return direcciones.toList()
     }
 
     // Setters
 
-    fun setId(id: Int) {
+    fun setId(id: String) {
         this.idUsuario = id
     }
 

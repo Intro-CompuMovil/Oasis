@@ -65,6 +65,7 @@ class RepartidorSolicitudDetalles : AppCompatActivity() {
             ActivityCompat.requestPermissions(context, arrayOf(permiso), idCode)
         } else {
             Intent(this, RepartidorEntrega::class.java).apply {
+                solicitud.setRepartidor(RepartidorInicio.repartidor)
                 putExtra("solicitud", solicitud)
                 startActivity(this)
             }
@@ -79,6 +80,7 @@ class RepartidorSolicitudDetalles : AppCompatActivity() {
                 var mensaje = ""
                 if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
                     Intent(this, RepartidorEntrega::class.java).apply {
+                        solicitud.setRepartidor(RepartidorInicio.repartidor)
                         putExtra("solicitud", solicitud)
                         startActivity(this)
                     }

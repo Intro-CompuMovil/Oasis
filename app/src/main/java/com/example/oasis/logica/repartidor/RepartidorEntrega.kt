@@ -37,6 +37,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
@@ -47,6 +48,7 @@ import com.example.oasis.databinding.ActivityRepartidorEntregaBinding
 import com.example.oasis.datos.Data
 import com.example.oasis.logica.ListaEstadoSolicitud
 import com.example.oasis.logica.db.DataBaseSimulator
+import com.example.oasis.logica.db.FireBaseDataBase
 import com.example.oasis.logica.utility.AppUtilityHelper
 import com.example.oasis.logica.utility.UIHelper
 import com.example.oasis.model.Order
@@ -97,10 +99,11 @@ class RepartidorEntrega : AppCompatActivity() {
     private val minLocationUpdateInterval:Long = 5000
     private val minLight = 1500
     private val noAvaliableMarkerName = "Cargando dirección..."
-    private val ordenesRecogidas = 0
+    private var ordenesRecogidas = 0
 
     private lateinit var solicitud: Solicitud
     private lateinit var dataBaseSimulator: DataBaseSimulator
+    private lateinit var dataBase: FireBaseDataBase
     private lateinit var binding: ActivityRepartidorEntregaBinding
     private lateinit var map: MapView
     private lateinit var mFusedLocationClient: FusedLocationProviderClient
@@ -119,9 +122,10 @@ class RepartidorEntrega : AppCompatActivity() {
     private lateinit var sensorManager: SensorManager
     private lateinit var lightSensor: Sensor
     private lateinit var lightSensorListener: SensorEventListener
-    private var lightSensorInitialized = false
     private lateinit var barometerSensor: Sensor
     private lateinit var barometerSensorListener: SensorEventListener
+    private var lightSensorInitialized = false
+    private var barometerSensorInitialized = false
     private var lastAltitude: Float = 0.0f
 
     private val takePictureLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
@@ -150,7 +154,6 @@ class RepartidorEntrega : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_repartidor_entrega)
 
-        UIHelper().setupRepartidorFooter(this)
         UIHelper().setupHeader(this, "Ruta de entrega")
 
         Configuration.getInstance().setUserAgentValue(BuildConfig.APPLICATION_ID)
@@ -160,7 +163,8 @@ class RepartidorEntrega : AppCompatActivity() {
         mapController = map.controller
         roadManager = OSRMRoadManager(this, "ANDROID")
 
-        dataBaseSimulator = DataBaseSimulator(this)
+        dataBase = FireBaseDataBase()
+        UIHelper().setupRepartidorFooter(this)
 
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
         mLocationRequest = createLocationRequest()
@@ -176,6 +180,8 @@ class RepartidorEntrega : AppCompatActivity() {
                     currentLocationMarker.icon = ContextCompat.getDrawable(this, R.drawable.marker_user_icon)
                     updateMarker(it)
                     adjustMarkerSize(currentLocationMarker)
+                    mapController.setZoom(normalZoom)
+                    mapController.setCenter(currentLocationMarker.position)
 
                     initActivity()
                 }
@@ -211,8 +217,6 @@ class RepartidorEntrega : AppCompatActivity() {
 
     private fun updateMarker(location: Location){
         GeoPoint(location.latitude, location.longitude).let {
-            mapController.setZoom(normalZoom)
-            mapController.setCenter(it)
             currentLocationMarker.position = it
             currentLocationMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM)
             currentLocationMarker.title = "Ubicación actual"
@@ -224,7 +228,9 @@ class RepartidorEntrega : AppCompatActivity() {
     private fun actualizarSolicitudRepartidorUbicacion(){
         solicitud.setRepartidorLatitud(currentLocation.latitude)
         solicitud.setRepartidorLongitud(currentLocation.longitude)
-        dataBaseSimulator.actualizarSolicitud(solicitud)
+        lifecycleScope.launch {
+            dataBase.updateSolicitud(solicitud)
+        }
     }
 
     private fun checkProximityAndPickupOrders() {
@@ -242,6 +248,8 @@ class RepartidorEntrega : AppCompatActivity() {
                 }
                 if (currentLocation.distanceTo(orderLocation) <= 30) {
                     order.setEstadoOrden("Recogido")
+                    ordenesRecogidas++
+                    binding.tvSolicitudProductosRecogidos.text = ordenesRecogidas.toString()
                     map.overlays.remove(marker)
                     actualizarOrdenDeSolicitud(order)
                     iterator.remove()
@@ -257,7 +265,9 @@ class RepartidorEntrega : AppCompatActivity() {
                 it.setEstadoOrden(order.getEstadoOrden())
             }
         }
-        dataBaseSimulator.actualizarSolicitud(solicitud)
+        lifecycleScope.launch {
+            dataBase.updateSolicitud(solicitud)
+        }
     }
 
     private fun startLocationUpdates() {
@@ -447,21 +457,25 @@ class RepartidorEntrega : AppCompatActivity() {
 
     private fun initBarometerSensor() {
         sensorManager = getSystemService(Context.SENSOR_SERVICE) as SensorManager
-        barometerSensor = sensorManager.getDefaultSensor(Sensor.TYPE_PRESSURE)!!
-        barometerSensorListener = object : SensorEventListener {
-            override fun onSensorChanged(event: SensorEvent) {
-                val pressure = event.values[0]
-                val altitude = SensorManager.getAltitude(SensorManager.PRESSURE_STANDARD_ATMOSPHERE, pressure)
-                if (altitude != lastAltitude) {
-                    lastAltitude = altitude
-                    val altitudeStr = String.format("%.2f", altitude)
-                    Toast.makeText(this@RepartidorEntrega, "Altura registrada: $altitudeStr m.s.n.m", Toast.LENGTH_LONG).show()
+        val sensor = sensorManager.getDefaultSensor(Sensor.TYPE_PRESSURE)
+        if (sensor != null){
+            barometerSensor = sensor
+            barometerSensorListener = object : SensorEventListener {
+                override fun onSensorChanged(event: SensorEvent) {
+                    val pressure = event.values[0]
+                    val altitude = SensorManager.getAltitude(SensorManager.PRESSURE_STANDARD_ATMOSPHERE, pressure)
+                    if (altitude != lastAltitude) {
+                        lastAltitude = altitude
+                        val altitudeStr = String.format("%.2f", altitude)
+                        Toast.makeText(this@RepartidorEntrega, "Altura registrada: $altitudeStr m.s.n.m", Toast.LENGTH_LONG).show()
+                    }
                 }
-            }
 
-            override fun onAccuracyChanged(sensor: Sensor, accuracy: Int) {}
+                override fun onAccuracyChanged(sensor: Sensor, accuracy: Int) {}
+            }
+            sensorManager.registerListener(barometerSensorListener, barometerSensor, SensorManager.SENSOR_DELAY_NORMAL)
+            barometerSensorInitialized = true
         }
-        sensorManager.registerListener(barometerSensorListener, barometerSensor, SensorManager.SENSOR_DELAY_NORMAL)
     }
 
     private fun initResumen(solicitud: Solicitud){
@@ -506,7 +520,9 @@ class RepartidorEntrega : AppCompatActivity() {
         btnFinalizar.setOnClickListener {
             if (fotoTomada && rbProductosRecogidos){
                 solicitud.setEstado("Entregado")
-                dataBaseSimulator.actualizarSolicitud(solicitud)
+                lifecycleScope.launch {
+                    dataBase.updateSolicitud(solicitud)
+                }
                 Intent(this, RepartidorInicio::class.java).apply {
                     startActivity(this)
                 }
@@ -583,6 +599,7 @@ class RepartidorEntrega : AppCompatActivity() {
         mapController.setZoom(normalZoom)
 
         if (lightSensorInitialized) sensorManager.registerListener(lightSensorListener, lightSensor, SensorManager.SENSOR_DELAY_NORMAL)
+        if (barometerSensorInitialized) sensorManager.registerListener(barometerSensorListener, barometerSensor, SensorManager.SENSOR_DELAY_NORMAL)
     }
     override fun onPause() {
         super.onPause()
@@ -590,7 +607,7 @@ class RepartidorEntrega : AppCompatActivity() {
         stopLocationUpdates()
 
         if (lightSensorInitialized) sensorManager.unregisterListener(lightSensorListener)
-        sensorManager.unregisterListener(barometerSensorListener)
+        if (barometerSensorInitialized) sensorManager.unregisterListener(barometerSensorListener)
     }
 
     private fun stopLocationUpdates() {

@@ -12,6 +12,7 @@ import com.example.oasis.MainActivity
 import com.example.oasis.R
 import com.example.oasis.logica.adapters.CategoryAdapter
 import com.example.oasis.logica.db.DataBaseSimulator
+import com.example.oasis.logica.db.FireBaseDataBase
 import com.example.oasis.logica.utility.UIHelper
 import com.example.oasis.model.Category
 import com.example.oasis.model.Comprador
@@ -25,11 +26,10 @@ import java.time.LocalDateTime
 class CompradorInicio : AppCompatActivity() {
     private val dataBase = DataBaseSimulator(this)
     companion object{
-        var comprador : Comprador = Comprador(-1, "", "", "", mutableListOf())
+        var comprador : Comprador = Comprador("", "", "", "", mutableListOf())
 
-        fun agregarDireccion(direccion: Ubicacion, dataBaseSimulator: DataBaseSimulator){
+        fun agregarDireccion(direccion: Ubicacion){
             comprador.agregarDireccion(direccion)
-            dataBaseSimulator.actualizarComprador(comprador)
         }
     }
     override fun onCreate(savedInstanceState: Bundle?) {

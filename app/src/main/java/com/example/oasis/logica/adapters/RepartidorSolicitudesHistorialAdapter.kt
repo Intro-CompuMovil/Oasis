@@ -21,7 +21,7 @@ class RepartidorSolicitudesHistorialAdapter (private val context: Context, priva
 
     override fun onBindViewHolder(holder: RepartidorViewHolder, position: Int) {
         val solicitud = solicitudes[position]
-        holder.fecha.text = DateHelper().getDateWithHour(solicitud.getFecha())
+        holder.fecha.text = DateHelper().getDateWithHour(solicitud.getFechaAsLocalDateTime())
         holder.comision.text = (solicitud.getTotal() * 0.1).toString()
         holder.direccion.text = solicitud.getUbicacion().getDireccion()
         holder.numProductos.text = solicitud.getOrdenes().size.toString()

@@ -10,11 +10,14 @@ import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ListView
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
 import com.example.oasis.MainActivity
 import com.example.oasis.R
+import com.example.oasis.logica.comprador.CompradorInicio.Companion.comprador
 import com.example.oasis.logica.db.DataBaseSimulator
+import com.example.oasis.logica.db.FireBaseDataBase
 import com.example.oasis.model.Ubicacion
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -72,8 +75,14 @@ class SeleccionarDireccion : DialogFragment() {
                     val address = adressList[0]
                     withContext(Dispatchers.Main){
                         val ubicacion = Ubicacion(address.latitude, address.longitude, direccion)
-                        CompradorInicio.agregarDireccion(ubicacion, DataBaseSimulator(requireContext()))
-                        listener.onDireccionSeleccionada(ubicacion)
+                        comprador.agregarDireccion(ubicacion)
+                        if(FireBaseDataBase().updateComprador(comprador)){
+                            CompradorInicio.agregarDireccion(ubicacion)
+                            listener.onDireccionSeleccionada(ubicacion)
+                        }
+                        else{
+                            Toast.makeText(requireContext(), "No se pudo agregar la dirección", Toast.LENGTH_SHORT).show()
+                        }
                     }
                 }
                 else{

@@ -9,7 +9,6 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.oasis.R
 import com.example.oasis.logica.db.DataBaseSimulator
-import com.example.oasis.logica.repartidor.RepartidorEntrega
 import com.example.oasis.logica.repartidor.RepartidorSolicitudDetalles
 import com.example.oasis.logica.utility.AppUtilityHelper
 import com.example.oasis.logica.utility.DateHelper
@@ -35,7 +34,7 @@ class RepartidorInicioAdapter(
         holder.comision.text = (solicitud.getTotal() * 0.1).toString()
         holder.direccion.text = solicitud.getUbicacion().getDireccion()
         holder.numProductos.text = solicitud.getOrdenes().size.toString()
-        holder.fecha.text = DateHelper().getDateWithHour(solicitud.getFecha())
+        holder.fecha.text = DateHelper().getDateWithHour(solicitud.getFechaAsLocalDateTime())
 
         holder.itemView.setOnClickListener {
             solicitud.setRepartidor(repartidor)

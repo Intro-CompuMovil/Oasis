@@ -10,6 +10,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.oasis.MainActivity
@@ -17,9 +18,11 @@ import com.example.oasis.R
 import com.example.oasis.datos.Data
 import com.example.oasis.logica.adapters.CarritoAdapter
 import com.example.oasis.logica.db.DataBaseSimulator
+import com.example.oasis.logica.db.FireBaseDataBase
 import com.example.oasis.logica.utility.UIHelper
 import com.example.oasis.model.Solicitud
 import com.example.oasis.model.Ubicacion
+import kotlinx.coroutines.launch
 
 class MiCarrito : AppCompatActivity(), SeleccionarDireccion.SeleccionarDireccionListener {
     private var direccionSeleccionada: Ubicacion = Ubicacion(0.0,  0.0, "")
@@ -85,12 +88,19 @@ class MiCarrito : AppCompatActivity(), SeleccionarDireccion.SeleccionarDireccion
     private fun procederPago(){
         if (direccionSeleccionada.getDireccion().isNotEmpty()){
             val solicitud = getSolicitud()
-            val dataBaseSimulator = DataBaseSimulator(this)
-            dataBaseSimulator.addSolicitud(solicitud)
-            MainActivity.clearCarrito()
-            val intent = Intent(this, CompradorSolicitudNoEntregada::class.java)
-            intent.putExtra("solicitud", solicitud)
-            startActivity(intent)
+            var solicitudExitosa = false
+            lifecycleScope.launch{
+                solicitudExitosa = FireBaseDataBase().createSolicitud(solicitud)
+                if (solicitudExitosa){
+                    MainActivity.clearCarrito()
+                    val intent = Intent(this@MiCarrito, CompradorSolicitudNoEntregada::class.java)
+                    intent.putExtra("solicitud", solicitud)
+                    startActivity(intent)
+                }
+                else{
+                    Toast.makeText(this@MiCarrito, "Error al crear la solicitud, intenta de nuevo", Toast.LENGTH_SHORT).show()
+                }
+            }
         }
         else{
             Toast.makeText(this, "Por favor seleccione una dirección", Toast.LENGTH_SHORT).show()
@@ -104,7 +114,7 @@ class MiCarrito : AppCompatActivity(), SeleccionarDireccion.SeleccionarDireccion
         val direccion = direccionSeleccionada
         val fecha = java.time.LocalDateTime.now()
         val comprador = CompradorInicio.comprador
-        return Solicitud(0, ordenes, total, fecha, estado, direccion, comprador, null, null, null)
+        return Solicitud("", ordenes, total, fecha, estado, direccion, comprador, null, null, null)
     }
 
     private fun initDireccion() {

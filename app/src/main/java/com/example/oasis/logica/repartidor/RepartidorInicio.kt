@@ -10,12 +10,14 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.oasis.R
 import com.example.oasis.datos.Data
 import com.example.oasis.logica.adapters.RepartidorInicioAdapter
 import com.example.oasis.logica.db.DataBaseSimulator
+import com.example.oasis.logica.db.FireBaseDataBase
 import com.example.oasis.logica.utility.AppUtilityHelper
 import com.example.oasis.logica.utility.UIHelper
 import com.example.oasis.model.Repartidor
@@ -23,11 +25,12 @@ import com.example.oasis.model.Solicitud
 import com.example.oasis.model.Ubicacion
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
+import kotlinx.coroutines.launch
 
 class RepartidorInicio : AppCompatActivity() {
 
     companion object {
-        var repartidor: Repartidor = Repartidor(-1, "", "", "")
+        var repartidor: Repartidor = Repartidor("", "", "", "")
 
         fun actualizarRepartidor(repartidor: Repartidor, dataBaseSimulator: DataBaseSimulator) {
             this.repartidor = repartidor
@@ -65,18 +68,23 @@ class RepartidorInicio : AppCompatActivity() {
     private fun initSolicitudes() {
         rvSolicitudes = findViewById<RecyclerView>(R.id.rvRepartidorSolicitudesCercanas)
         rvSolicitudes.layoutManager = LinearLayoutManager(this)
-        val dataBaseSimulator = DataBaseSimulator(this)
-        solicitudes = dataBaseSimulator.getSolicitudesActivas()
-        /*val haySolicitudActiva = solicitudes.find { it.getRepartidor()?.getEmail() == repartidor.getEmail() }
-        if (haySolicitudActiva != null) {
-            Intent(this, RepartidorEntrega::class.java).also {
-                it.putExtra("solicitud", haySolicitudActiva)
-                startActivity(it)
+        lifecycleScope.launch {
+            solicitudes = FireBaseDataBase().getSolicitudesActivas()
+            /*val haySolicitudActiva = solicitudes.find { it.getRepartidor()?.getEmail() == repartidor.getEmail() }
+            if (haySolicitudActiva != null) {
+                Intent(this, RepartidorEntrega::class.java).also {
+                    it.putExtra("solicitud", haySolicitudActiva)
+                    startActivity(it)
+                }*/
+            /*}else{
+                loadSolicitudes()
             }*/
-        /*}else{
-            loadSolicitudes()
-        }*/
-        loadSolicitudes()
+            if (solicitudes.isNotEmpty()){
+                loadSolicitudes()
+            }else{
+                Toast.makeText(this@RepartidorInicio, "No hay solicitudes activas", Toast.LENGTH_LONG).show()
+            }
+        }
     }
 
     private fun loadSolicitudes() {
