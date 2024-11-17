@@ -121,7 +121,7 @@ class RepartidorPerfil : AppCompatActivity() {
         }
     }
 
-    private fun initEdicionPerfil(){
+    private fun initEdicionPerfil() {
         val btnEditarPerfil = findViewById<Button>(R.id.btnEditar)
         val btnGuardar = findViewById<Button>(R.id.btnGuardar)
         val tvNombre = findViewById<EditText>(R.id.etNombrePerfil)
@@ -135,10 +135,21 @@ class RepartidorPerfil : AppCompatActivity() {
             tvDescripcionCambiarFoto.visibility = TextView.VISIBLE
         }
 
-
         btnGuardar.setOnClickListener {
             lifecycleScope.launch {
-                if (guardarCambios(tvNombre, tvCorreo)){
+                val userId = auth.currentUser?.uid
+                if (guardarCambios(tvNombre, tvCorreo)) {
+                    if (userId != null && this@RepartidorPerfil::photoUri.isInitialized) {
+                        // Subir la imagen a Firebase Storage y guardar el URL
+                        val photoURL = uploadImageToFirebaseStorage(userId)
+                        if (photoURL.isNotEmpty()) {
+                            val userRef = database.reference.child("repartidores").child(userId)
+                            userRef.child("photoURL").setValue(photoURL)
+                            Toast.makeText(this@RepartidorPerfil, "Cambios guardados correctamente", Toast.LENGTH_SHORT).show()
+                        } else {
+                            Toast.makeText(this@RepartidorPerfil, "Error al subir la imagen1", Toast.LENGTH_LONG).show()
+                        }
+                    }
                     btnEditarPerfil.isEnabled = true
                     btnEditarPerfil.isClickable = true
                     deshabilitarEdicionPerfil(tvNombre, tvCorreo, btnGuardar)
@@ -147,6 +158,7 @@ class RepartidorPerfil : AppCompatActivity() {
             }
         }
     }
+
 
     private suspend fun guardarCambios(tvNombre: TextView, tvCorreo: TextView): Boolean{
 
@@ -299,21 +311,37 @@ class RepartidorPerfil : AppCompatActivity() {
     }
 
     // Registrar el ActivityResultLauncher para manejar el resultado
+    // Registrar el ActivityResultLauncher para manejar el resultado
     private val imageChooserLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         if (result.resultCode == Activity.RESULT_OK) {
             val data: Intent? = result.data
 
-            // Verificar si viene de la cámara o la galería
-            if (data != null && data.data != null) {
-                // Imagen desde galería
-                val selectedImageUri = data.data
-                btnFotoPerfil.setImageURI(selectedImageUri)
-                photoUri = selectedImageUri!!
-            } else {
-                // Imagen desde la cámara
-                btnFotoPerfil.setImageURI(photoUri)
+            lifecycleScope.launch {
+                val userId = auth.currentUser?.uid
+                if (userId != null) {
+                    // Verificar si la imagen viene de la galería
+                    if (data != null && data.data != null) {
+                        val selectedImageUri = data.data
+                        btnFotoPerfil.setImageURI(selectedImageUri)
+                        photoUri = selectedImageUri!!
+                    } else {
+                        // Imagen capturada desde la cámara
+                        btnFotoPerfil.setImageURI(photoUri)
+                    }
+
+                    // Subir la imagen a Firebase Storage y guardar el URL en Firebase Database
+                    val photoURL = uploadImageToFirebaseStorage(userId)
+                    if (photoURL.isNotEmpty()) {
+                        val userRef = database.reference.child("repartidores").child(userId)
+                        userRef.child("photoURL").setValue(photoURL)
+                        Toast.makeText(this@RepartidorPerfil, "Foto actualizada correctamente", Toast.LENGTH_LONG).show()
+                    } else {
+                        Toast.makeText(this@RepartidorPerfil, "Error al subir la imagen2", Toast.LENGTH_LONG).show()
+                    }
+                }
             }
+            AppUtilityHelper.deleteTempFiles(this)
         }
-        AppUtilityHelper.deleteTempFiles(this)
     }
+
 }
