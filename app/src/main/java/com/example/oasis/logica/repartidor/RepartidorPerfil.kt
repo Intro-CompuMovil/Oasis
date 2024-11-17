@@ -9,6 +9,8 @@ import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
+import android.util.Log
+import android.util.Patterns
 import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.EditText
@@ -32,6 +34,10 @@ import com.example.oasis.logica.db.FireBaseDataBase
 import com.example.oasis.logica.utility.AppUtilityHelper
 import com.example.oasis.logica.utility.FieldValidatorHelper
 import com.example.oasis.logica.utility.UIHelper
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.storage.FirebaseStorage
+import kotlinx.coroutines.tasks.await
 import java.io.File
 import java.util.Date
 import java.util.Locale
@@ -42,13 +48,57 @@ class RepartidorPerfil : AppCompatActivity() {
 
     lateinit var photoUri: Uri
 
+    // declarar variables de firebase
+
+    private lateinit var auth: FirebaseAuth
+    private lateinit var storage: FirebaseStorage
+    private lateinit var database: FirebaseDatabase
+
+    // mirar si la imagen esta cargada
+    private var imagenCargada = false
+
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_repartidor_perfil)
+
         UIHelper().setupRepartidorFooter(this)
         UIHelper().setupHeader(this, "Perfil")
+
+        // instanciar var de firebase
+        auth = FirebaseAuth.getInstance()
+        storage = FirebaseStorage.getInstance()
+        database = FirebaseDatabase.getInstance()
+
+        val currentUser = auth.currentUser
+
+        if (currentUser != null) {
+            val userId = currentUser.uid
+            Log.d("FirebaseAuth", "Usuario autenticado con UID: $userId")
+        } else {
+            Log.e("FirebaseAuth", "Usuario no autenticado")
+        }
+
+
         initUI()
         initSalir()
+    }
+
+    private suspend fun uploadImageToFirebaseStorage(userId: String): String {
+        var photoURL = ""
+        if (photoUri != null) {
+            val storageRef = storage.reference.child("${Data.MY_PERMISSIONS_REQUEST_STORAGE}$userId.jpg")
+            try {
+                storageRef.putFile(photoUri).await()
+                Log.d("Registro", "Successfully uploaded image")
+                photoURL = storageRef.downloadUrl.await().toString()
+            } catch (e: Exception) {
+                Log.e("Registro", "Failed to upload image: ${e.message}")
+            }
+            AppUtilityHelper.deleteTempFiles(this)
+        }
+        return photoURL
     }
 
     private fun initUI(){
@@ -97,9 +147,21 @@ class RepartidorPerfil : AppCompatActivity() {
     }
 
     private fun guardarCambios(tvNombre: TextView, tvCorreo: TextView): Boolean{
+        Log.d("GuardarCambios", "Método guardarCambios llamado")
+
+
+
         val nombre = tvNombre.text.toString()
         val correo = tvCorreo.text.toString()
         var cambiosCorrectos = false
+
+        val userId = auth.currentUser?.uid
+        if (userId == null) {
+            Toast.makeText(this, "Error: Usuario no autenticado", Toast.LENGTH_SHORT).show()
+            return false
+        }
+
+
 
         if(nombre.isEmpty() || correo.isEmpty()){
             Toast.makeText(this, "Por favor llena todos los campos", Toast.LENGTH_SHORT).show()
@@ -108,12 +170,44 @@ class RepartidorPerfil : AppCompatActivity() {
             Toast.makeText(this, "Correo inválido", Toast.LENGTH_SHORT).show()
         }
         else{
+            //val userId = auth.currentUser?.uid
+
+            if (userId != null) {
+                // Crear un mapa con los valores a actualizar
+                val updates = mapOf(
+                    "nombre" to nombre,
+                    "email" to correo
+                )
+                // Referencia al nodo del usuario en Firebase
+                database.reference.child("repartidores").child(userId)
+                    .updateChildren(updates)
+                    .addOnSuccessListener {
+                        Toast.makeText(this, "Cambios guardados correctamente", Toast.LENGTH_SHORT).show()
+                        cambiosCorrectos = true
+                    }
+                    .addOnFailureListener {
+                        Toast.makeText(this, "Error al guardar los cambios: ${it.message}", Toast.LENGTH_SHORT).show()
+                    }
+
+                // También actualizar el correo en Firebase Authentication
+                auth.currentUser?.updateEmail(correo)
+                    ?.addOnCompleteListener { task ->
+                        if (task.isSuccessful) {
+                            Log.d("RepartidorPerfil", "Correo actualizado en Firebase Auth")
+                        } else {
+                            Log.e("RepartidorPerfil", "Error al actualizar el correo en Auth: ${task.exception?.message}")
+                        }
+                    }
+            }
+
+            /*
             //MainActivity.repartidorNombre = nombre
             Toast.makeText(this, "Cambios guardados", Toast.LENGTH_SHORT).show()
             val repartidor = RepartidorInicio.repartidor
             repartidor.setNombre(nombre)
             RepartidorInicio.actualizarRepartidor(repartidor, DataBaseSimulator(this))
             cambiosCorrectos = true
+*/
         }
         return cambiosCorrectos
     }
@@ -121,8 +215,8 @@ class RepartidorPerfil : AppCompatActivity() {
     private fun habilitarEdicionPerfil(tvNombre: TextView, tvCorreo: TextView, btnGuardar: Button){
         tvNombre.isEnabled = true
         tvNombre.setTextColor(ContextCompat.getColor(this, R.color.black))
-        /*tvCorreo.isEnabled = true
-        tvCorreo.setTextColor(ContextCompat.getColor(this, R.color.black))*/
+        tvCorreo.isEnabled = true
+        tvCorreo.setTextColor(ContextCompat.getColor(this, R.color.black))
         btnFotoPerfil.isEnabled = true
         btnFotoPerfil.isClickable = true
         btnGuardar.isEnabled = true
@@ -132,8 +226,8 @@ class RepartidorPerfil : AppCompatActivity() {
     private fun deshabilitarEdicionPerfil(tvNombre: TextView, tvCorreo: TextView, btnGuardar: Button){
         tvNombre.isEnabled = false
         tvNombre.setTextColor(ContextCompat.getColor(this, R.color.white))
-        /*tvCorreo.isEnabled = false
-        tvCorreo.setTextColor(ContextCompat.getColor(this, R.color.white))*/
+        tvCorreo.isEnabled = false
+        tvCorreo.setTextColor(ContextCompat.getColor(this, R.color.white))
         btnFotoPerfil.isEnabled = false
         btnFotoPerfil.isClickable = false
         btnGuardar.isEnabled = false
@@ -220,6 +314,7 @@ class RepartidorPerfil : AppCompatActivity() {
                 // Imagen desde galería
                 val selectedImageUri = data.data
                 btnFotoPerfil.setImageURI(selectedImageUri)
+                photoUri = selectedImageUri!!
             } else {
                 // Imagen desde la cámara
                 btnFotoPerfil.setImageURI(photoUri)
