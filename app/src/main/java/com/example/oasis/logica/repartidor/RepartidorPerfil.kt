@@ -27,6 +27,7 @@ import androidx.core.content.FileProvider
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.lifecycleScope
+import com.bumptech.glide.Glide
 import com.example.oasis.MainActivity
 import com.example.oasis.R
 import com.example.oasis.datos.Data
@@ -105,7 +106,22 @@ class RepartidorPerfil : AppCompatActivity() {
 
         tvNombre.setText(RepartidorInicio.repartidor.getNombre())
         tvCorreo.setText(RepartidorInicio.repartidor.getEmail())
-
+        // Verificar si el campo photoURL tiene un URL válido
+        val userId = auth.currentUser?.uid
+        if (userId != null) {
+            val userRef = database.reference.child("repartidores").child(userId)
+            userRef.child("photoURL").get().addOnSuccessListener { dataSnapshot ->
+                val photoURL = dataSnapshot.getValue(String::class.java) // Obtener el valor del campo
+                if (!photoURL.isNullOrEmpty()) {
+                    // Usar Glide para cargar la imagen desde el URL (más eficiente)
+                    Glide.with(this)
+                        .load(photoURL)
+                        .into(btnFotoPerfil)
+                }
+            }.addOnFailureListener {
+                Log.e("RepartidorPerfil", "Error al obtener el campo photoURL: ${it.message}")
+            }
+        }
         initFotoPerfilButton()
         initEdicionPerfil()
     }

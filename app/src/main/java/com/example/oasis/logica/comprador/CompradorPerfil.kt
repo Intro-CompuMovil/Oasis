@@ -62,6 +62,7 @@ class CompradorPerfil : AppCompatActivity() {
         tvCorreo.setText(CompradorInicio.comprador.getEmail())
         lvDirecciones.adapter = DireccionesAdapter(this, CompradorInicio.comprador.getDirecciones())
 
+
         initFotoPerfilButton()
         initEdicionPerfil()
     }
