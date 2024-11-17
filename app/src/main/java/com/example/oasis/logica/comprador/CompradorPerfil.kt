@@ -163,7 +163,7 @@ class CompradorPerfil : AppCompatActivity() {
                             userRef.child("photoURL").setValue(photoURL)
                             Toast.makeText(this@CompradorPerfil, "Cambios guardados correctamente", Toast.LENGTH_SHORT).show()
                         } else {
-                            Toast.makeText(this@CompradorPerfil, "Error al subir la imagen1", Toast.LENGTH_LONG).show()
+                           // Toast.makeText(this@CompradorPerfil, "Error al subir la imagen1", Toast.LENGTH_LONG).show()
                         }
                     }
                     btnEditarPerfil.isEnabled = true
