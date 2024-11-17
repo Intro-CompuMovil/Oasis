@@ -237,8 +237,8 @@ class RepartidorPerfil : AppCompatActivity() {
     private fun habilitarEdicionPerfil(tvNombre: TextView, tvCorreo: TextView, btnGuardar: Button){
         tvNombre.isEnabled = true
         tvNombre.setTextColor(ContextCompat.getColor(this, R.color.black))
-        tvCorreo.isEnabled = true
-        tvCorreo.setTextColor(ContextCompat.getColor(this, R.color.black))
+        /*tvCorreo.isEnabled = true
+        tvCorreo.setTextColor(ContextCompat.getColor(this, R.color.black))*/
         btnFotoPerfil.isEnabled = true
         btnFotoPerfil.isClickable = true
         btnGuardar.isEnabled = true
@@ -248,8 +248,8 @@ class RepartidorPerfil : AppCompatActivity() {
     private fun deshabilitarEdicionPerfil(tvNombre: TextView, tvCorreo: TextView, btnGuardar: Button){
         tvNombre.isEnabled = false
         tvNombre.setTextColor(ContextCompat.getColor(this, R.color.white))
-        tvCorreo.isEnabled = false
-        tvCorreo.setTextColor(ContextCompat.getColor(this, R.color.white))
+        /*tvCorreo.isEnabled = false
+         tvCorreo.setTextColor(ContextCompat.getColor(this, R.color.white))*/
         btnFotoPerfil.isEnabled = false
         btnFotoPerfil.isClickable = false
         btnGuardar.isEnabled = false
