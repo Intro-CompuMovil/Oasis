@@ -1,5 +1,6 @@
 package com.example.oasis.model
 
+import android.hardware.camera2.CameraExtensionSession.StillCaptureLatency
 import java.io.Serializable
 
 class Comprador(
@@ -7,10 +8,12 @@ class Comprador(
     private var nombre: String,
     private var email: String,
     private var contrasena: String,
+    private var photoURL:String,
     private var direcciones : MutableList<Ubicacion>
 ) : Serializable{
 
     constructor() : this(
+        "",
         "",
         "",
         "",
@@ -25,6 +28,9 @@ class Comprador(
     // Getters
     fun getId(): String {
         return idUsuario
+    }
+    fun getphotoURL(): String {
+        return photoURL
     }
 
     fun getNombre(): String {
@@ -53,7 +59,13 @@ class Comprador(
         this.nombre = nombre
     }
 
+
+
     fun setEmail(email: String) {
+        this.email = email
+    }
+
+    fun setphotoURL(email: String) {
         this.email = email
     }
 
