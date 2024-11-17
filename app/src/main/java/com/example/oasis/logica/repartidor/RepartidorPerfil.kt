@@ -26,6 +26,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.lifecycle.lifecycleScope
 import com.example.oasis.MainActivity
 import com.example.oasis.R
 import com.example.oasis.datos.Data
@@ -34,9 +35,12 @@ import com.example.oasis.logica.db.FireBaseDataBase
 import com.example.oasis.logica.utility.AppUtilityHelper
 import com.example.oasis.logica.utility.FieldValidatorHelper
 import com.example.oasis.logica.utility.UIHelper
+import com.example.oasis.model.Repartidor
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.storage.FirebaseStorage
+import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import java.io.File
 import java.util.Date
@@ -73,12 +77,6 @@ class RepartidorPerfil : AppCompatActivity() {
 
         val currentUser = auth.currentUser
 
-        if (currentUser != null) {
-            val userId = currentUser.uid
-            Log.d("FirebaseAuth", "Usuario autenticado con UID: $userId")
-        } else {
-            Log.e("FirebaseAuth", "Usuario no autenticado")
-        }
 
 
         initUI()
@@ -114,8 +112,9 @@ class RepartidorPerfil : AppCompatActivity() {
 
     private fun initSalir(){
         val btnSalir = findViewById<TextView>(R.id.btnSalir)
-        FireBaseDataBase().logout()
+
         btnSalir.setOnClickListener {
+            FireBaseDataBase().logout()
             Intent(this, MainActivity::class.java).also {
                 startActivity(it)
             }
@@ -136,32 +135,25 @@ class RepartidorPerfil : AppCompatActivity() {
             tvDescripcionCambiarFoto.visibility = TextView.VISIBLE
         }
 
+
         btnGuardar.setOnClickListener {
-            if (guardarCambios(tvNombre, tvCorreo)){
-                btnEditarPerfil.isEnabled = true
-                btnEditarPerfil.isClickable = true
-                deshabilitarEdicionPerfil(tvNombre, tvCorreo, btnGuardar)
-                tvDescripcionCambiarFoto.visibility = TextView.INVISIBLE
+            lifecycleScope.launch {
+                if (guardarCambios(tvNombre, tvCorreo)){
+                    btnEditarPerfil.isEnabled = true
+                    btnEditarPerfil.isClickable = true
+                    deshabilitarEdicionPerfil(tvNombre, tvCorreo, btnGuardar)
+                    tvDescripcionCambiarFoto.visibility = TextView.INVISIBLE
+                }
             }
         }
     }
 
-    private fun guardarCambios(tvNombre: TextView, tvCorreo: TextView): Boolean{
-        Log.d("GuardarCambios", "Método guardarCambios llamado")
-
+    private suspend fun guardarCambios(tvNombre: TextView, tvCorreo: TextView): Boolean{
 
 
         val nombre = tvNombre.text.toString()
         val correo = tvCorreo.text.toString()
         var cambiosCorrectos = false
-
-        val userId = auth.currentUser?.uid
-        if (userId == null) {
-            Toast.makeText(this, "Error: Usuario no autenticado", Toast.LENGTH_SHORT).show()
-            return false
-        }
-
-
 
         if(nombre.isEmpty() || correo.isEmpty()){
             Toast.makeText(this, "Por favor llena todos los campos", Toast.LENGTH_SHORT).show()
@@ -170,45 +162,47 @@ class RepartidorPerfil : AppCompatActivity() {
             Toast.makeText(this, "Correo inválido", Toast.LENGTH_SHORT).show()
         }
         else{
-            //val userId = auth.currentUser?.uid
-
+            val userId = auth.currentUser?.uid
+            cambiosCorrectos =false
             if (userId != null) {
-                // Crear un mapa con los valores a actualizar
-                val updates = mapOf(
-                    "nombre" to nombre,
-                    "email" to correo
-                )
-                // Referencia al nodo del usuario en Firebase
-                database.reference.child("repartidores").child(userId)
-                    .updateChildren(updates)
-                    .addOnSuccessListener {
-                        Toast.makeText(this, "Cambios guardados correctamente", Toast.LENGTH_SHORT).show()
-                        cambiosCorrectos = true
+
+                val userRef = database.reference.child("repartidores").child(userId)
+                cambiosCorrectos =true
+
+                // Actualizar el nombre
+                userRef.child("nombre").setValue(nombre)
+                    /*.addOnSuccessListener {
+                        Log.d("RepartidorPerfil", "Nombre actualizado correctamente")
+
+
                     }
                     .addOnFailureListener {
-                        Toast.makeText(this, "Error al guardar los cambios: ${it.message}", Toast.LENGTH_SHORT).show()
+                        Log.e("RepartidorPerfil", "Error al actualizar el nombre: ${it.message}")
+                    }
+                    */
+
+
+                // Actualizar el correo
+                userRef.child("email").setValue(correo)
+                    /*
+                    .addOnSuccessListener {
+                        Log.d("RepartidorPerfil", "Correo actualizado correctamente")
+                        cambiosCorrectos = true
+                        Toast.makeText(this, "Cambios guardados correctamente", Toast.LENGTH_SHORT).show()
+                    }
+                    .addOnFailureListener {
+                        Log.e("RepartidorPerfil", "Error al actualizar el correo: ${it.message}")
                     }
 
-                // También actualizar el correo en Firebase Authentication
-                auth.currentUser?.updateEmail(correo)
-                    ?.addOnCompleteListener { task ->
-                        if (task.isSuccessful) {
-                            Log.d("RepartidorPerfil", "Correo actualizado en Firebase Auth")
-                        } else {
-                            Log.e("RepartidorPerfil", "Error al actualizar el correo en Auth: ${task.exception?.message}")
-                        }
-                    }
+                     */
+                //auth.currentUser?.updateEmail(correo)
+
+
             }
 
-            /*
-            //MainActivity.repartidorNombre = nombre
-            Toast.makeText(this, "Cambios guardados", Toast.LENGTH_SHORT).show()
-            val repartidor = RepartidorInicio.repartidor
-            repartidor.setNombre(nombre)
-            RepartidorInicio.actualizarRepartidor(repartidor, DataBaseSimulator(this))
-            cambiosCorrectos = true
-*/
+
         }
+
         return cambiosCorrectos
     }
 
