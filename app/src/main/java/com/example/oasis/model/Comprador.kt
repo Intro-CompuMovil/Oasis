@@ -76,4 +76,8 @@ class Comprador(
     fun setDirecciones(direcciones: MutableList<Ubicacion>) {
         this.direcciones = direcciones
     }
+
+    fun copy(): Comprador{
+        return Comprador(idUsuario, nombre, email, contrasena, photoURL, direcciones)
+    }
 }

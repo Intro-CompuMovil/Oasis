@@ -161,10 +161,11 @@ class RepartidorPerfil : AppCompatActivity() {
                         if (photoURL.isNotEmpty()) {
                             val userRef = database.reference.child("repartidores").child(userId)
                             userRef.child("photoURL").setValue(photoURL)
-                            Toast.makeText(this@RepartidorPerfil, "Cambios guardados correctamente", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(this@RepartidorPerfil, "Nueva foto guardada", Toast.LENGTH_SHORT).show()
                         } else {
-                           // Toast.makeText(this@RepartidorPerfil, "Error al subir la imagen1", Toast.LENGTH_LONG).show()
+                            Toast.makeText(this@RepartidorPerfil, "Error al subir la imagen", Toast.LENGTH_LONG).show()
                         }
+                        AppUtilityHelper.deleteTempFiles(this@RepartidorPerfil)
                     }
                     btnEditarPerfil.isEnabled = true
                     btnEditarPerfil.isClickable = true
@@ -177,8 +178,6 @@ class RepartidorPerfil : AppCompatActivity() {
 
 
     private suspend fun guardarCambios(tvNombre: TextView, tvCorreo: TextView): Boolean{
-
-
         val nombre = tvNombre.text.toString()
         val correo = tvCorreo.text.toString()
         var cambiosCorrectos = false
@@ -186,51 +185,22 @@ class RepartidorPerfil : AppCompatActivity() {
         if(nombre.isEmpty() || correo.isEmpty()){
             Toast.makeText(this, "Por favor llena todos los campos", Toast.LENGTH_SHORT).show()
         }
-        if (!FieldValidatorHelper().validateEmail(correo)){
+        else if (!FieldValidatorHelper().validateEmail(correo)){
             Toast.makeText(this, "Correo inválido", Toast.LENGTH_SHORT).show()
         }
         else{
-            val userId = auth.currentUser?.uid
-            cambiosCorrectos =false
-            if (userId != null) {
-
-                val userRef = database.reference.child("repartidores").child(userId)
-                cambiosCorrectos =true
-
-                // Actualizar el nombre
-                userRef.child("nombre").setValue(nombre)
-                    /*.addOnSuccessListener {
-                        Log.d("RepartidorPerfil", "Nombre actualizado correctamente")
-
-
-                    }
-                    .addOnFailureListener {
-                        Log.e("RepartidorPerfil", "Error al actualizar el nombre: ${it.message}")
-                    }
-                    */
-
-
-                // Actualizar el correo
-                userRef.child("email").setValue(correo)
-                    /*
-                    .addOnSuccessListener {
-                        Log.d("RepartidorPerfil", "Correo actualizado correctamente")
-                        cambiosCorrectos = true
-                        Toast.makeText(this, "Cambios guardados correctamente", Toast.LENGTH_SHORT).show()
-                    }
-                    .addOnFailureListener {
-                        Log.e("RepartidorPerfil", "Error al actualizar el correo: ${it.message}")
-                    }
-
-                     */
-                //auth.currentUser?.updateEmail(correo)
-
-
+            val dataBase = FireBaseDataBase()
+            val newRepartidor = RepartidorInicio.repartidor.copy()
+            newRepartidor.setNombre(nombre)
+            //newRepartidor.setEmail(correo)
+            if (dataBase.updateRepartidor(newRepartidor)){
+                cambiosCorrectos = true
+                RepartidorInicio.repartidor = newRepartidor
+                Toast.makeText(this, "Cambios guardados correctamente", Toast.LENGTH_SHORT).show()
+            }else{
+                Toast.makeText(this, "Error al guardar los cambios", Toast.LENGTH_SHORT).show()
             }
-
-
         }
-
         return cambiosCorrectos
     }
 
@@ -249,7 +219,7 @@ class RepartidorPerfil : AppCompatActivity() {
         tvNombre.isEnabled = false
         tvNombre.setTextColor(ContextCompat.getColor(this, R.color.white))
         /*tvCorreo.isEnabled = false
-         tvCorreo.setTextColor(ContextCompat.getColor(this, R.color.white))*/
+        tvCorreo.setTextColor(ContextCompat.getColor(this, R.color.white))*/
         btnFotoPerfil.isEnabled = false
         btnFotoPerfil.isClickable = false
         btnGuardar.isEnabled = false
@@ -327,36 +297,19 @@ class RepartidorPerfil : AppCompatActivity() {
     }
 
     // Registrar el ActivityResultLauncher para manejar el resultado
-    // Registrar el ActivityResultLauncher para manejar el resultado
     private val imageChooserLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         if (result.resultCode == Activity.RESULT_OK) {
             val data: Intent? = result.data
 
-            lifecycleScope.launch {
-                val userId = auth.currentUser?.uid
-                if (userId != null) {
-                    // Verificar si la imagen viene de la galería
-                    if (data != null && data.data != null) {
-                        val selectedImageUri = data.data
-                        btnFotoPerfil.setImageURI(selectedImageUri)
-                        photoUri = selectedImageUri!!
-                    } else {
-                        // Imagen capturada desde la cámara
-                        btnFotoPerfil.setImageURI(photoUri)
-                    }
-
-                    // Subir la imagen a Firebase Storage y guardar el URL en Firebase Database
-                    val photoURL = uploadImageToFirebaseStorage(userId)
-                    if (photoURL.isNotEmpty()) {
-                        val userRef = database.reference.child("repartidores").child(userId)
-                        userRef.child("photoURL").setValue(photoURL)
-                        Toast.makeText(this@RepartidorPerfil, "Foto actualizada correctamente", Toast.LENGTH_LONG).show()
-                    } else {
-                        Toast.makeText(this@RepartidorPerfil, "Error al subir la imagen2", Toast.LENGTH_LONG).show()
-                    }
-                }
+            // Verificar si viene de la cámara o la galería
+            if (data != null && data.data != null) {
+                // Imagen desde galería
+                val selectedImageUri = data.data
+                btnFotoPerfil.setImageURI(selectedImageUri)
+            } else {
+                // Imagen desde la cámara
+                btnFotoPerfil.setImageURI(photoUri)
             }
-            AppUtilityHelper.deleteTempFiles(this)
         }
     }
 

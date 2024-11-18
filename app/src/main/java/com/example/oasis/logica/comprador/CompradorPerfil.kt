@@ -161,10 +161,11 @@ class CompradorPerfil : AppCompatActivity() {
                         if (photoURL.isNotEmpty()) {
                             val userRef = database.reference.child("compradores").child(userId)
                             userRef.child("photoURL").setValue(photoURL)
-                            Toast.makeText(this@CompradorPerfil, "Cambios guardados correctamente", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(this@CompradorPerfil, "Nueva foto guardada", Toast.LENGTH_SHORT).show()
                         } else {
-                           // Toast.makeText(this@CompradorPerfil, "Error al subir la imagen1", Toast.LENGTH_LONG).show()
+                            Toast.makeText(this@CompradorPerfil, "Error al subir la imagen", Toast.LENGTH_LONG).show()
                         }
+                        AppUtilityHelper.deleteTempFiles(this@CompradorPerfil)
                     }
                     btnEditarPerfil.isEnabled = true
                     btnEditarPerfil.isClickable = true
@@ -175,7 +176,7 @@ class CompradorPerfil : AppCompatActivity() {
         }
     }
 
-    private fun guardarCambios(tvNombre: TextView, tvCorreo: TextView): Boolean{
+    private suspend fun guardarCambios(tvNombre: TextView, tvCorreo: TextView): Boolean{
         val nombre = tvNombre.text.toString()
         val correo = tvCorreo.text.toString()
         var cambiosCorrectos = false
@@ -183,46 +184,21 @@ class CompradorPerfil : AppCompatActivity() {
         if(nombre.isEmpty() || correo.isEmpty()){
             Toast.makeText(this, "Por favor llena todos los campos", Toast.LENGTH_SHORT).show()
         }
-        if (!FieldValidatorHelper().validateEmail(correo)){
+        else if (!FieldValidatorHelper().validateEmail(correo)){
             Toast.makeText(this, "Correo inválido", Toast.LENGTH_SHORT).show()
         }
         else {
-            val userId = auth.currentUser?.uid
-            cambiosCorrectos = false
-            if (userId != null) {
+            val dataBase = FireBaseDataBase()
+            val newComprador = CompradorInicio.comprador.copy()
+            newComprador.setNombre(nombre)
 
-                val userRef = database.reference.child("compradores").child(userId)
+            if(dataBase.updateComprador(newComprador)){
+                CompradorInicio.comprador = newComprador
                 cambiosCorrectos = true
-
-                // Actualizar el nombre
-                userRef.child("nombre").setValue(nombre)
-                /*.addOnSuccessListener {
-                    Log.d("compradoresPerfil", "Nombre actualizado correctamente")
-
-
-                }
-                .addOnFailureListener {
-                    Log.e("compradoresrPerfil", "Error al actualizar el nombre: ${it.message}")
-                }
-                */
-
-
-                // Actualizar el correo
-                userRef.child("email").setValue(correo)
-                /*
-                .addOnSuccessListener {
-                    Log.d("compradoresPerfil", "Correo actualizado correctamente")
-                    cambiosCorrectos = true
-                    Toast.makeText(this, "Cambios guardados correctamente", Toast.LENGTH_SHORT).show()
-                }
-                .addOnFailureListener {
-                    Log.e("RepartidorPerfil", "Error al actualizar el correo: ${it.message}")
-                }
-
-                 */
-                //auth.currentUser?.updateEmail(correo)
-
-
+                Toast.makeText(this, "Cambios guardados", Toast.LENGTH_SHORT).show()
+            }
+            else{
+                Toast.makeText(this, "Error al guardar los cambios", Toast.LENGTH_SHORT).show()
             }
         }
         return cambiosCorrectos
@@ -324,32 +300,15 @@ class CompradorPerfil : AppCompatActivity() {
     private val imageChooserLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         if (result.resultCode == Activity.RESULT_OK) {
             val data: Intent? = result.data
-
-            lifecycleScope.launch {
-                val userId = auth.currentUser?.uid
-                if (userId != null) {
-                    // Verificar si la imagen viene de la galería
-                    if (data != null && data.data != null) {
-                        val selectedImageUri = data.data
-                        btnFotoPerfil.setImageURI(selectedImageUri)
-                        photoUri = selectedImageUri!!
-                    } else {
-                        // Imagen capturada desde la cámara
-                        btnFotoPerfil.setImageURI(photoUri)
-                    }
-
-                    // Subir la imagen a Firebase Storage y guardar el URL en Firebase Database
-                    val photoURL = uploadImageToFirebaseStorage(userId)
-                    if (photoURL.isNotEmpty()) {
-                        val userRef = database.reference.child("compradores").child(userId)
-                        userRef.child("photoURL").setValue(photoURL)
-                        Toast.makeText(this@CompradorPerfil, "Foto actualizada correctamente", Toast.LENGTH_LONG).show()
-                    } else {
-                        Toast.makeText(this@CompradorPerfil, "Error al subir la imagen2", Toast.LENGTH_LONG).show()
-                    }
-                }
+            // Verificar si viene de la cámara o la galería
+            if (data != null && data.data != null) {
+                // Imagen desde galería
+                val selectedImageUri = data.data
+                btnFotoPerfil.setImageURI(selectedImageUri)
+            } else {
+                // Imagen desde la cámara
+                btnFotoPerfil.setImageURI(photoUri)
             }
-            AppUtilityHelper.deleteTempFiles(this)
         }
     }
 

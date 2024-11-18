@@ -143,6 +143,20 @@ class FireBaseDataBase {
         }
     }
 
+    suspend fun updateCompradorWithEmail(comprador: Comprador): Boolean {
+        return try {
+            val user = auth.currentUser ?: throw Exception("Failed to get user id")
+            user.updateEmail(comprador.getEmail()).await()
+            val ref = database.getReference(Data.PATH_DATABASE_COMPRADORES)
+            ref.child(user.uid).setValue(comprador).await()
+            Log.d("Firebase", "Email updated in both places")
+            true
+        } catch (exception: Exception) {
+            Log.e("FireBaseDataBase", "Error al actualizar el comprador: $exception")
+            false
+        }
+    }
+
     suspend fun createRepartidor(repartidor: Repartidor){
         try {
             val ref = database.getReference(Data.PATH_DATABASE_REPARTIDORES)
@@ -171,6 +185,20 @@ class FireBaseDataBase {
             val ref = database.getReference(Data.PATH_DATABASE_REPARTIDORES)
             ref.child(auth.currentUser?.uid ?: throw Exception("Failed to get user id")).setValue(repartidor).await()
             Log.d("FireBaseDataBase", "Repartidor actualizado exitosamente")
+            true
+        } catch (exception: Exception) {
+            Log.e("FireBaseDataBase", "Error al actualizar el repartidor: $exception")
+            false
+        }
+    }
+
+    suspend fun updateRepartidorWithEmail(repartidor: Repartidor): Boolean {
+        return try {
+            val user = auth.currentUser ?: throw Exception("Failed to get user id")
+            user.updateEmail(repartidor.getEmail()).await()
+            val ref = database.getReference(Data.PATH_DATABASE_REPARTIDORES)
+            ref.child(user.uid).setValue(repartidor).await()
+            Log.d("Firebase", "Email updated in both places")
             true
         } catch (exception: Exception) {
             Log.e("FireBaseDataBase", "Error al actualizar el repartidor: $exception")

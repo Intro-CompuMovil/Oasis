@@ -39,6 +39,10 @@ class Repartidor (
         return contrasena
     }
 
+    fun getPhotoURL(): String {
+        return photoURL
+    }
+
     // Setters
 
     // Setters
@@ -57,5 +61,13 @@ class Repartidor (
 
     fun setContrasena(contrasena: String) {
         this.contrasena = contrasena
+    }
+
+    fun setPhotoURL(photoURL: String) {
+        this.photoURL = photoURL
+    }
+
+    fun copy(): Repartidor{
+        return Repartidor(idUsuario, nombre, email, contrasena, photoURL)
     }
 }

@@ -81,7 +81,7 @@ class Registrarse : AppCompatActivity() {
     }
 
     private fun registrarRepartidor(email: String, password: String, nombre: String){
-        val repartidor = Repartidor("1", nombre, email, "",password)
+        val repartidor = Repartidor("1", nombre, email, password, "")
         lifecycleScope.launch {
             val dataBase = FireBaseDataBase()
             dataBase.registerUser(repartidor.getEmail(), repartidor.getContrasena())
