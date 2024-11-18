@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.oasis.MainActivity
 import com.example.oasis.R
+import com.example.oasis.logica.comprador.CompradorInicio
 import com.example.oasis.logica.comprador.DetallesProducto
 import com.example.oasis.logica.utility.AppUtilityHelper
 import com.example.oasis.model.Order
@@ -20,7 +21,10 @@ import com.example.oasis.model.Product
 import kotlin.math.min
 
 
-class ProductAdapter(private val context: Context, private val productList: List<Product>) :
+class ProductAdapter(private val context: Context,
+                     private val productList: List<Product>,
+                     private val compradorInicio: CompradorInicio
+) :
     RecyclerView.Adapter<ProductAdapter.ProductViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProductViewHolder {
@@ -43,10 +47,14 @@ class ProductAdapter(private val context: Context, private val productList: List
         holder.btnAddProduct.setOnClickListener {
             if (MainActivity.addProductToCarrito(Order(product, 1, "No entregado"))) {
                 Toast.makeText(context, "Producto añadido al carrito", Toast.LENGTH_SHORT).show()
+                compradorInicio.initNumProductosCarrito()
+                holder.btnAddProduct.setImageResource(R.drawable.check)
+                holder.btnAddProduct.setBackgroundResource(R.drawable.button_product_added)
             } else {
                 Toast.makeText(context, "Producto ya está en el carrito, cantidad actualizada", Toast.LENGTH_SHORT).show()
             }
         }
+        checkProductInCarrito(product, holder)
     }
 
     override fun getItemCount(): Int {
@@ -58,5 +66,12 @@ class ProductAdapter(private val context: Context, private val productList: List
         val btnProduct: ImageButton = itemView.findViewById(R.id.btnProduct)
         val btnAddProduct: ImageButton = itemView.findViewById(R.id.btnAddProduct)
         val productName: TextView = itemView.findViewById(R.id.explorarProductName)
+    }
+
+    private fun checkProductInCarrito(product: Product, holder: ProductViewHolder) {
+        if (MainActivity.productIsInCarrito(product.getId())) {
+            holder.btnAddProduct.setImageResource(R.drawable.check)
+            holder.btnAddProduct.setBackgroundResource(R.drawable.button_product_added)
+        }
     }
 }

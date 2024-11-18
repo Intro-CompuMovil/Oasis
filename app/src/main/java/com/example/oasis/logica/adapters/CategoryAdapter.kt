@@ -10,9 +10,13 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.oasis.R
 import com.example.oasis.logica.comprador.BusquedaProductos
+import com.example.oasis.logica.comprador.CompradorInicio
 import com.example.oasis.model.Category
 
-class CategoryAdapter(private val context: Context, private val categoryList: List<Category>) :
+class CategoryAdapter(private val context: Context,
+                      private val categoryList: List<Category>,
+                        private val compradorInicio: CompradorInicio
+) :
     RecyclerView.Adapter<CategoryAdapter.CategoryViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CategoryViewHolder {
@@ -25,7 +29,7 @@ class CategoryAdapter(private val context: Context, private val categoryList: Li
         holder.tvCategoryName.text = category.nombre
 
         // Configurar el RecyclerView horizontal para los productos
-        val productAdapter = ProductAdapter(context, category.listaProductos)
+        val productAdapter = ProductAdapter(context, category.listaProductos, compradorInicio)
         holder.rvProducts.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         holder.rvProducts.adapter = productAdapter
 
