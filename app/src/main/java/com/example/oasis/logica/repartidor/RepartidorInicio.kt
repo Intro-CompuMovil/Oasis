@@ -30,7 +30,7 @@ import kotlinx.coroutines.launch
 class RepartidorInicio : AppCompatActivity() {
 
     companion object {
-        var repartidor: Repartidor = Repartidor("", "", "", "")
+        var repartidor: Repartidor = Repartidor("", "", "", "","")
 
         fun actualizarRepartidor(repartidor: Repartidor, dataBaseSimulator: DataBaseSimulator) {
             this.repartidor = repartidor

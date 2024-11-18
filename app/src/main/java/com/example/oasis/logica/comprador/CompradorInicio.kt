@@ -28,7 +28,7 @@ import java.time.LocalDateTime
 class CompradorInicio : AppCompatActivity() {
     private val dataBase = DataBaseSimulator(this)
     companion object{
-        var comprador : Comprador = Comprador("", "", "", "", mutableListOf())
+        var comprador : Comprador = Comprador("", "", "", "","", mutableListOf())
 
         fun agregarDireccion(direccion: Ubicacion){
             comprador.agregarDireccion(direccion)

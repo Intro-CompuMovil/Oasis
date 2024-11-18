@@ -11,6 +11,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
+import android.util.Log
 import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.EditText
@@ -26,6 +27,8 @@ import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.lifecycle.lifecycleScope
+import com.bumptech.glide.Glide
 import com.example.oasis.MainActivity
 import com.example.oasis.R
 import com.example.oasis.datos.Data
@@ -34,6 +37,11 @@ import com.example.oasis.logica.db.FireBaseDataBase
 import com.example.oasis.logica.utility.AppUtilityHelper
 import com.example.oasis.logica.utility.FieldValidatorHelper
 import com.example.oasis.logica.utility.UIHelper
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.storage.FirebaseStorage
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
 import java.io.File
 import java.util.Date
 import java.util.Locale
@@ -41,7 +49,17 @@ import java.util.Locale
 class CompradorPerfil : AppCompatActivity() {
     private lateinit var btnFotoPerfil: ImageButton
 
+    //FotoPerfilbtn
     lateinit var photoUri: Uri
+
+    // declarar variables de firebase
+
+    private lateinit var auth: FirebaseAuth
+    private lateinit var storage: FirebaseStorage
+    private lateinit var database: FirebaseDatabase
+
+    // mirar si la imagen esta cargada
+    private var imagenCargada = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,9 +67,34 @@ class CompradorPerfil : AppCompatActivity() {
 
         UIHelper().setupFooter(this)
         UIHelper().setupHeader(this, "Perfil")
+
+        // instanciar var de firebase
+        auth = FirebaseAuth.getInstance()
+        storage = FirebaseStorage.getInstance()
+        database = FirebaseDatabase.getInstance()
+
+        val currentUser = auth.currentUser
+
         initUI()
         initSalir()
     }
+
+    private suspend fun uploadImageToFirebaseStorage(userId: String): String {
+        var photoURL = ""
+        if (photoUri != null) {
+            val storageRef = storage.reference.child("${Data.MY_PERMISSIONS_REQUEST_STORAGE}$userId.jpg")
+            try {
+                storageRef.putFile(photoUri).await()
+                Log.d("Registro", "Successfully uploaded image")
+                photoURL = storageRef.downloadUrl.await().toString()
+            } catch (e: Exception) {
+                Log.e("Registro", "Failed to upload image: ${e.message}")
+            }
+            AppUtilityHelper.deleteTempFiles(this)
+        }
+        return photoURL
+    }
+
 
     private fun initUI(){
         val tvNombre = findViewById<EditText>(R.id.etNombrePerfil)
@@ -61,6 +104,22 @@ class CompradorPerfil : AppCompatActivity() {
         tvNombre.setText(CompradorInicio.comprador.getNombre())
         tvCorreo.setText(CompradorInicio.comprador.getEmail())
         lvDirecciones.adapter = DireccionesAdapter(this, CompradorInicio.comprador.getDirecciones())
+        // Verificar si el campo photoURL tiene un URL válido
+        val userId = auth.currentUser?.uid
+        if (userId != null) {
+            val userRef = database.reference.child("compradores").child(userId)
+            userRef.child("photoURL").get().addOnSuccessListener { dataSnapshot ->
+                val photoURL = dataSnapshot.getValue(String::class.java) // Obtener el valor del campo
+                if (!photoURL.isNullOrEmpty()) {
+                    // Usar Glide para cargar la imagen desde el URL (más eficiente)
+                    Glide.with(this)
+                        .load(photoURL)
+                        .into(btnFotoPerfil)
+                }
+            }.addOnFailureListener {
+                Log.e("compradoresPerfil", "Error al obtener el campo photoURL: ${it.message}")
+            }
+        }
 
         initFotoPerfilButton()
         initEdicionPerfil()
@@ -93,16 +152,31 @@ class CompradorPerfil : AppCompatActivity() {
         }
 
         btnGuardar.setOnClickListener {
-            if (guardarCambios(tvNombre, tvCorreo)){
-                btnEditarPerfil.isEnabled = true
-                btnEditarPerfil.isClickable = true
-                deshabilitarEdicionPerfil(tvNombre, tvCorreo, btnGuardar)
-                tvDescripcionCambiarFoto.visibility = TextView.INVISIBLE
+            lifecycleScope.launch {
+                val userId = auth.currentUser?.uid
+                if (guardarCambios(tvNombre, tvCorreo)) {
+                    if (userId != null && this@CompradorPerfil::photoUri.isInitialized) {
+                        // Subir la imagen a Firebase Storage y guardar el URL
+                        val photoURL = uploadImageToFirebaseStorage(userId)
+                        if (photoURL.isNotEmpty()) {
+                            val userRef = database.reference.child("compradores").child(userId)
+                            userRef.child("photoURL").setValue(photoURL)
+                            Toast.makeText(this@CompradorPerfil, "Nueva foto guardada", Toast.LENGTH_SHORT).show()
+                        } else {
+                            Toast.makeText(this@CompradorPerfil, "Error al subir la imagen", Toast.LENGTH_LONG).show()
+                        }
+                        AppUtilityHelper.deleteTempFiles(this@CompradorPerfil)
+                    }
+                    btnEditarPerfil.isEnabled = true
+                    btnEditarPerfil.isClickable = true
+                    deshabilitarEdicionPerfil(tvNombre, tvCorreo, btnGuardar)
+                    tvDescripcionCambiarFoto.visibility = TextView.INVISIBLE
+                }
             }
         }
     }
 
-    private fun guardarCambios(tvNombre: TextView, tvCorreo: TextView): Boolean{
+    private suspend fun guardarCambios(tvNombre: TextView, tvCorreo: TextView): Boolean{
         val nombre = tvNombre.text.toString()
         val correo = tvCorreo.text.toString()
         var cambiosCorrectos = false
@@ -110,18 +184,22 @@ class CompradorPerfil : AppCompatActivity() {
         if(nombre.isEmpty() || correo.isEmpty()){
             Toast.makeText(this, "Por favor llena todos los campos", Toast.LENGTH_SHORT).show()
         }
-        if (!FieldValidatorHelper().validateEmail(correo)){
+        else if (!FieldValidatorHelper().validateEmail(correo)){
             Toast.makeText(this, "Correo inválido", Toast.LENGTH_SHORT).show()
         }
-        else{
-            val compradorTmp = CompradorInicio.comprador
-            compradorTmp.setNombre(nombre)
-            val dataBaseSimulator = DataBaseSimulator(this)
-            if (dataBaseSimulator.actualizarComprador(compradorTmp)) {
-                CompradorInicio.comprador.setNombre(nombre)
+        else {
+            val dataBase = FireBaseDataBase()
+            val newComprador = CompradorInicio.comprador.copy()
+            newComprador.setNombre(nombre)
+
+            if(dataBase.updateComprador(newComprador)){
+                CompradorInicio.comprador = newComprador
+                cambiosCorrectos = true
+                Toast.makeText(this, "Cambios guardados", Toast.LENGTH_SHORT).show()
             }
-            Toast.makeText(this, "Cambios guardados", Toast.LENGTH_SHORT).show()
-            cambiosCorrectos = true
+            else{
+                Toast.makeText(this, "Error al guardar los cambios", Toast.LENGTH_SHORT).show()
+            }
         }
         return cambiosCorrectos
     }
@@ -222,7 +300,6 @@ class CompradorPerfil : AppCompatActivity() {
     private val imageChooserLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         if (result.resultCode == Activity.RESULT_OK) {
             val data: Intent? = result.data
-
             // Verificar si viene de la cámara o la galería
             if (data != null && data.data != null) {
                 // Imagen desde galería
@@ -233,6 +310,6 @@ class CompradorPerfil : AppCompatActivity() {
                 btnFotoPerfil.setImageURI(photoUri)
             }
         }
-        AppUtilityHelper.deleteTempFiles(this)
     }
+
 }

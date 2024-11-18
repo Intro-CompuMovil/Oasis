@@ -6,15 +6,21 @@ class Repartidor (
     private var idUsuario: String,
     private var nombre: String,
     private var email: String,
-    private var contrasena: String
+    private var contrasena: String,
+    private var photoURL: String
 ) : Serializable {
 
     constructor(): this(
         "",
         "",
         "",
+        "",
         ""
+
     )
+    fun photoURL(): String {
+        return photoURL
+    }
 
     // Getters
     fun getId(): String {
@@ -31,6 +37,10 @@ class Repartidor (
 
     fun getContrasena(): String {
         return contrasena
+    }
+
+    fun getPhotoURL(): String {
+        return photoURL
     }
 
     // Setters
@@ -51,5 +61,13 @@ class Repartidor (
 
     fun setContrasena(contrasena: String) {
         this.contrasena = contrasena
+    }
+
+    fun setPhotoURL(photoURL: String) {
+        this.photoURL = photoURL
+    }
+
+    fun copy(): Repartidor{
+        return Repartidor(idUsuario, nombre, email, contrasena, photoURL)
     }
 }

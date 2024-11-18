@@ -23,6 +23,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import com.bumptech.glide.Glide
 import com.example.oasis.BuildConfig
 import com.example.oasis.R
 import com.example.oasis.databinding.ActivityCompradorSolicitudNoEntregadaBinding
@@ -30,6 +31,7 @@ import com.example.oasis.datos.Data
 import com.example.oasis.logica.ListaEstadoSolicitud
 import com.example.oasis.logica.db.DataBaseSimulator
 import com.example.oasis.logica.utility.UIHelper
+import com.example.oasis.model.Repartidor
 import com.example.oasis.model.Solicitud
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.common.api.CommonStatusCodes
@@ -211,6 +213,9 @@ class CompradorSolicitudNoEntregada : AppCompatActivity() {
     private fun initUI(){
         solicitud = intent.getSerializableExtra("solicitud") as Solicitud
         initResumen(solicitud)
+        if (solicitud.getRepartidor() != null){
+            cargarRepartidorEnResumen(solicitud.getRepartidor()!!)
+        }
 
         initDeliveryMarker()
 
@@ -289,8 +294,7 @@ class CompradorSolicitudNoEntregada : AppCompatActivity() {
 
     private fun checkActualizaciones(updatedSolicitud: Solicitud){
         if (solicitud.getRepartidor() == null && updatedSolicitud.getRepartidor() != null){
-            binding.tvSolicitudEstadoRepartidor.text = "Repartidor asignado: " + updatedSolicitud.getRepartidor()!!.getNombre()
-            binding.ivSolicitudNoEntregada.setImageResource(R.drawable.user)
+            cargarRepartidorEnResumen(updatedSolicitud.getRepartidor()!!)
         }
         if (::repartidorLocation.isInitialized){
             actualizarPosicionRepartidor(updatedSolicitud)
@@ -302,6 +306,15 @@ class CompradorSolicitudNoEntregada : AppCompatActivity() {
 
                 actualizarPosicionSolicitud()
             }
+        }
+    }
+
+    private fun cargarRepartidorEnResumen(repartidor: Repartidor){
+        binding.tvSolicitudEstadoRepartidor.text = "Repartidor asignado: " + repartidor.getNombre()
+        binding.ivSolicitudNoEntregada.setImageResource(R.drawable.user)
+        val repartidorPhotoURL = repartidor.photoURL()
+        if(repartidorPhotoURL.isNotEmpty()){
+            Glide.with(this).load(repartidorPhotoURL).into(binding.ivSolicitudNoEntregada)
         }
     }
 
