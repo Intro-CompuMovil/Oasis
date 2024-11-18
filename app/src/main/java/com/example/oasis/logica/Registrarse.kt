@@ -64,7 +64,7 @@ class Registrarse : AppCompatActivity() {
     }
 
     private fun registrarComprador(email: String, password: String, nombre: String){
-        val comprador = Comprador("", nombre, email, password, mutableListOf())
+        val comprador = Comprador("", nombre, email, password, "",mutableListOf())
         lifecycleScope.launch {
             val dataBase = FireBaseDataBase()
             dataBase.registerUser(comprador.getEmail(), comprador.getContrasena())
@@ -81,7 +81,7 @@ class Registrarse : AppCompatActivity() {
     }
 
     private fun registrarRepartidor(email: String, password: String, nombre: String){
-        val repartidor = Repartidor("1", nombre, email, password)
+        val repartidor = Repartidor("1", nombre, email, password, "")
         lifecycleScope.launch {
             val dataBase = FireBaseDataBase()
             dataBase.registerUser(repartidor.getEmail(), repartidor.getContrasena())
