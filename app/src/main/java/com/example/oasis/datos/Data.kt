@@ -8,7 +8,7 @@ class Data {
 
         const val PATH_DATABASE_COMPRADORES = "compradores/"
         const val PATH_DATABASE_REPARTIDORES = "repartidores/"
-        const val PATH_DATABASE_PRODUCTOS = "productos/"
+        const val PATH_DATABASE_PRODUCTOS = "producto/"
         const val PATH_DATABASE_SOLICITUDES = "solicitudes/"
         const val PATH_STORAGE_USUARIOS_FOTO = "profile_images/"
     }
