@@ -1,5 +1,6 @@
 package com.example.oasis.logica.comprador
 
+import Producto
 import android.content.Intent
 import android.os.Bundle
 import android.view.inputmethod.EditorInfo
@@ -69,47 +70,30 @@ class CompradorInicio : AppCompatActivity() {
         }
     }
 
-    private fun initRecyclerView(){
-        val categoryList = getCategories()
-        val rvCategories = findViewById<RecyclerView>(R.id.rvCategories)
-        val categoryAdapter = CategoryAdapter(this, categoryList)
-        rvCategories.layoutManager = LinearLayoutManager(this)
-        rvCategories.adapter = categoryAdapter
+    private fun initRecyclerView() {
+        getCategories { categoryList ->
+            val rvCategories = findViewById<RecyclerView>(R.id.rvCategories)
+            val categoryAdapter = CategoryAdapter(this, categoryList)
+            rvCategories.layoutManager = LinearLayoutManager(this)
+            rvCategories.adapter = categoryAdapter
+        }
     }
 
-    private fun getCategories(): List<Category> {
-        /*val productsList = mutableListOf<Product>(
-            Product(1, "Laptop", "Laptop HP", 4.7f, 1000.0, "Tecnología"),
-            Product(2, "Smartphone", "Smartphone Samsung", 4.5f, 500.0, "Tecnología"),
-            Product(3, "Tablet", "Tablet Lenovo", 4.3f, 300.0, "Tecnología"),
-            Product(4, "Smartwatch", "Smartwatch Xiaomi", 4.2f, 200.0, "Tecnología"),
-            Product(5, "Audífonos", "Audífonos Sony", 4.1f, 100.0, "Tecnología"),
-            Product(6, "Sofá", "Sofá de 3 plazas", 4.8f, 800.0, "Hogar"),
-            Product(7, "Mesa", "Mesa de comedor", 4.6f, 400.0, "Hogar"),
-            Product(8, "Silla", "Silla de oficina", 4.4f, 200.0, "Hogar"),
-            Product(9, "Cama", "Cama matrimonial", 4.3f, 600.0, "Hogar"),
-            Product(10, "Escritorio", "Escritorio de madera", 4.2f, 300.0, "Hogar"),
-            Product(11, "Camisa", "Camisa de vestir", 4.7f, 50.0, "Moda"),
-            Product(12, "Pantalón", "Pantalón de mezclilla", 4.5f, 40.0, "Moda"),
-            Product(13, "Zapatos", "Zapatos de piel", 4.3f, 60.0, "Moda"),
-            Product(14, "Chamarra", "Chamarra de cuero", 4.2f, 70.0, "Moda"),
-            Product(15, "Reloj", "Reloj de pulsera", 4.1f, 30.0, "Moda"),
-            Product(16, "Balón", "Balón de fútbol", 4.8f, 20.0, "Deportes"),
-            Product(17, "Raqueta", "Raqueta de tenis", 4.6f, 30.0, "Deportes"),
-            Product(18, "Tenis", "Tenis para correr", 4.4f, 40.0, "Deportes"),
-            Product(19, "Bicicleta", "Bicicleta de montaña", 4.3f, 200.0, "Deportes"),
-            Product(20, "Pesas", "Pesas de 5 kg", 4.2f, 50.0, "Deportes")
-        )*/
-        val productsList = dataBase.getProducts()
-        MainActivity.setProductsList(productsList)
+    private fun getCategories(onCategoriesLoaded: (List<Category>) -> Unit) {
+        val productos = mutableListOf<Product>()
 
-        val categoryList = productsList.groupBy { it.getCategoria() }.map { Category(it.key, it.value) }
-        /*val solicitud = Solicitud(1, listOf( Order(MainActivity.getProductsList()[0], 1), Order(
-            MainActivity.getProductsList()[5], 3)
-        ), 3740.0, LocalDateTime.parse("2021-10-10T10:10:10"), "Entregado", "Calle 1 # 1-1")*/
+        val producto = Producto()
+        producto.obtenerProductosDesdeFirebase { productoList ->
+            // Una vez que tenemos los productos desde Firebase
+            productos.addAll(productoList)
 
-        //if (MainActivity.solicitudesList.isEmpty()) MainActivity.solicitudesList = mutableListOf(solicitud)
+            // Agrupamos los productos por categoría
+            val categoryList = productos.groupBy { it.getCategoria() }
+                .map { Category(it.key, it.value) }
 
-        return categoryList
+            // Llamamos al callback para devolver las categorías
+            onCategoriesLoaded(categoryList)
+        }
     }
+
 }
