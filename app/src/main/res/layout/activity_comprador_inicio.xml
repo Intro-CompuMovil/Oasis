@@ -84,21 +84,39 @@
 
     </ScrollView>
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/btnCarrito"
+    <FrameLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="end|bottom"
-        android:layout_marginStart="10dp"
-        android:layout_marginBottom="10dp"
-        android:backgroundTint="@color/oasis_verde_principal"
-        android:clickable="true"
-        app:fabCustomSize="80dp"
         app:layout_constraintBottom_toTopOf="@+id/footer"
         app:layout_constraintStart_toStartOf="parent"
-        app:maxImageSize="40dp"
-        app:srcCompat="@drawable/shopping_cart" />
+        android:layout_marginStart="10dp"
+        android:layout_marginBottom="10dp">
 
+        <ImageButton
+            android:id="@+id/btnCarrito"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:background="@drawable/button_carrito"
+            android:padding="20dp"
+            android:clickable="true"
+            android:scaleType="centerInside"
+            android:src="@drawable/shopping_cart"
+            app:fabCustomSize="80dp"
+            app:maxImageSize="40dp"
+            app:tint="@android:color/white" />
+
+        <TextView
+            android:id="@+id/cartItemCount"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_gravity="top|end"
+            android:background="@drawable/carrito_num_products"
+            android:gravity="center"
+            android:text="0"
+            android:textColor="@android:color/white"
+            android:textSize="12sp" />
+
+    </FrameLayout>
     <LinearLayout
         android:id="@+id/footer"
         android:layout_width="match_parent"

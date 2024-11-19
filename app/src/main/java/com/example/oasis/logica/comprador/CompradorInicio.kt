@@ -5,8 +5,10 @@ import android.os.Bundle
 import android.view.inputmethod.EditorInfo
 import android.widget.EditText
 import android.widget.ImageButton
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.oasis.MainActivity
@@ -49,6 +51,7 @@ class CompradorInicio : AppCompatActivity() {
         initBuscar()
         initButtons()
         getCategories()
+        initNumProductosCarrito()
     }
 
     private fun initBuscar(){
@@ -74,9 +77,26 @@ class CompradorInicio : AppCompatActivity() {
 
     private fun initRecyclerView(categorias: List<Category>) {
         val rvCategories = findViewById<RecyclerView>(R.id.rvCategories)
-        val categoryAdapter = CategoryAdapter(this, categorias)
+        val categoryAdapter = CategoryAdapter(this, categorias, this)
         rvCategories.layoutManager = LinearLayoutManager(this)
         rvCategories.adapter = categoryAdapter
+    }
+
+    fun initNumProductosCarrito(){
+        val cartItemCount = findViewById<TextView>(R.id.cartItemCount)
+        val numProductos = MainActivity.getCarrito().size
+
+        if (numProductos == 0){
+            cartItemCount.isVisible = false
+        }
+        else if (numProductos > 9){
+            cartItemCount.text = "9+"
+            cartItemCount.isVisible = true
+        }
+        else{
+            cartItemCount.text = numProductos.toString()
+            cartItemCount.isVisible = true
+        }
     }
 
     private fun getCategories() {
@@ -92,5 +112,4 @@ class CompradorInicio : AppCompatActivity() {
             }
         }
     }
-
 }
