@@ -3,10 +3,15 @@ package com.example.oasis.logica.db
 import android.util.Log
 import com.example.oasis.datos.Data
 import com.example.oasis.model.Comprador
+import com.example.oasis.model.Product
 import com.example.oasis.model.Repartidor
 import com.example.oasis.model.Solicitud
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import com.google.firebase.storage.FirebaseStorage
 import kotlinx.coroutines.tasks.await
 
@@ -203,6 +208,25 @@ class FireBaseDataBase {
         } catch (exception: Exception) {
             Log.e("FireBaseDataBase", "Error al actualizar el repartidor: $exception")
             false
+        }
+    }
+
+    suspend fun obtenerProductos(): List<Product> {
+        return try {
+            val ref: DatabaseReference = database.getReference(Data.PATH_DATABASE_PRODUCTOS)
+            val snapshot = ref.get().await()
+            val productos = mutableListOf<Product>()
+
+            for (productoSnapshot in snapshot.children) {
+                val producto = productoSnapshot.getValue(Product::class.java)
+                if (producto != null) {
+                    productos.add(producto)
+                }
+            }
+            productos.toList()
+        } catch (exception: Exception) {
+            Log.e("FireBaseDataBase", "Error al obtener productos: $exception")
+            listOf()
         }
     }
 }

@@ -122,6 +122,11 @@ class Registrarse : AppCompatActivity() {
             error = true
         }else{passwordError.text = ""}
 
+        if (password.length < 6){
+            passwordError.text = "La contraseña debe tener al menos 6 caracteres"
+            error = true
+        }else{passwordError.text = ""}
+
         if (nombre.isEmpty()){
             nombreError.text = "Campo vacío"
             error = true
