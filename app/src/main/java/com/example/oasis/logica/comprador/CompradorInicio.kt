@@ -1,6 +1,5 @@
 package com.example.oasis.logica.comprador
 
-import Producto
 import android.content.Intent
 import android.os.Bundle
 import android.view.inputmethod.EditorInfo
